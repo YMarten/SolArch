@@ -1,0 +1,421 @@
+// ─────────────────────────────────────────────
+// SolArch — Schema de Prisma
+// Base de datos: PostgreSQL
+// ─────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum SolutionStatus {
+  ACTIVE           // Activa
+  DEPRECATED       // Deprecada
+  IN_SUBSTITUTION  // En sustitución
+  IN_DEVELOPMENT   // En desarrollo
+  MAINTENANCE      // En mantenimiento
+}
+
+enum SolutionType {
+  WEB
+  DESKTOP
+  MOBILE
+  API
+  BATCH
+  INTEGRATION
+  INFRASTRUCTURE
+  OTHER
+}
+
+enum Criticality {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum SolutionRole {
+  CORE_TRANSACTIONAL   // System of Record: ejecuta procesos críticos y es fuente oficial de datos maestros y transaccionales
+  SATELLITE            // Extiende funcionalidad del Core, no es dueña de datos maestros, consume servicios expuestos por otras plataformas
+  INTEGRATION          // Capa transversal de desacoplamiento: habilita comunicación mediante servicios y eventos, evita dependencias directas
+  DATA_ANALYTICS       // Orientada a análisis y reporte, consume datos sin modificar ni registrar transacciones operativas
+  INTERACTION_CHANNEL  // Canales de interacción con usuarios, sin lógica de negocio crítica, delega procesamiento a sistemas correspondientes
+}
+
+enum SolutionOrigin {
+  INTERNAL      // Desarrollada y mantenida por el equipo interno
+  EXTERNAL      // Producto de tercero (SaaS, licencia), hosteado por el proveedor
+  CUSTOM_THIRD  // Desarrollada a medida por un tercero, hosteada en infraestructura propia
+}
+
+enum ConnectionType {
+  REST
+  GRAPHQL
+  EVENT           // Kafka, RabbitMQ, etc.
+  SHARED_DB       // Base de datos compartida
+  FILE            // Intercambio por archivos
+  WEBHOOK
+  GRPC
+  OTHER
+}
+
+enum AttachmentCategory {
+  DIAGRAM         // Diagrama de arquitectura
+  FUNCTIONAL_DOC  // Documentación funcional
+  TECHNICAL_DOC   // Documentación técnica
+  RUNBOOK         // Procedimiento operativo
+  ADR             // Architecture Decision Record
+  API_CONTRACT    // Swagger / OpenAPI / AsyncAPI
+  OTHER
+}
+
+enum TechCategory {
+  LANGUAGE
+  FRAMEWORK
+  DATABASE
+  INFRASTRUCTURE
+  MESSAGING
+  SECURITY
+  MONITORING
+  OTHER
+}
+
+enum ChangeAction {
+  CREATED
+  UPDATED
+  DELETED
+  RELATION_ADDED
+  RELATION_REMOVED
+}
+
+// ─────────────────────────────────────────────
+// SOLUTION — Entidad central
+// ─────────────────────────────────────────────
+
+model Solution {
+  id           String          @id @default(cuid())
+  name         String
+  description  String?
+  version      String?
+  status       SolutionStatus
+  type         SolutionType
+  role         SolutionRole    // Rol arquitectónico según marco de referencia
+  criticality  Criticality
+  origin       SolutionOrigin  // Interna, externa o a medida por tercero
+  vendor       String?         // Proveedor o empresa desarrolladora (aplica para EXTERNAL y CUSTOM_THIRD)
+  owner        String          // Dueño funcional
+  techOwner    String?         // Dueño técnico
+  repoUrl      String?         // Link al repositorio
+  lastDeploy   DateTime?       // Último despliegue a PROD (manual en Fase 1)
+  tags         String[]        // Etiquetas libres
+
+  // Relaciones
+  technologies    TechnologyOnSolution[]
+  domains         DomainOnSolution[]
+  capabilities    CapabilityOnSolution[]
+  areas           AreaOnSolution[]
+  environments    Environment[]
+  attachments     Attachment[]
+  connectionsFrom Connection[]           @relation("ConnectionFrom")
+  connectionsTo   Connection[]           @relation("ConnectionTo")
+  archReviews     ArchReview[]
+  changelog       ChangeLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([role])
+  @@index([criticality])
+  @@index([origin])
+}
+
+// ─────────────────────────────────────────────
+// TECHNOLOGY — Catálogo de tecnologías
+// ─────────────────────────────────────────────
+
+model Technology {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  category    TechCategory
+  description String?
+
+  solutions TechnologyOnSolution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TechnologyOnSolution {
+  solution     Solution   @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId   String
+  technology   Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+  technologyId String
+  version      String?    // Versión específica usada en esta solución
+
+  @@id([solutionId, technologyId])
+}
+
+// ─────────────────────────────────────────────
+// BUSINESS DOMAIN — Función de negocio
+// Ej: Gestión de pedidos, Finanzas, Experiencia del cliente
+// ─────────────────────────────────────────────
+
+model BusinessDomain {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  parentId    String? // Soporte para jerarquía (subdominio)
+
+  parent   BusinessDomain?  @relation("DomainHierarchy", fields: [parentId], references: [id])
+  children BusinessDomain[] @relation("DomainHierarchy")
+
+  capabilities BusinessCapability[]
+  solutions    DomainOnSolution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DomainOnSolution {
+  solution   Solution       @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId String
+  domain     BusinessDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  domainId   String
+
+  @@id([solutionId, domainId])
+}
+
+// ─────────────────────────────────────────────
+// BUSINESS CAPABILITY — Capacidades dentro de un dominio
+// Ej: Seguimiento en tiempo real, Gestión de devoluciones
+// ─────────────────────────────────────────────
+
+model BusinessCapability {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  level       Int     @default(1) // Nivel jerárquico (1 = raíz)
+  parentId    String?
+
+  parent   BusinessCapability?  @relation("CapabilityHierarchy", fields: [parentId], references: [id])
+  children BusinessCapability[] @relation("CapabilityHierarchy")
+
+  domain   BusinessDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  domainId String
+
+  solutions CapabilityOnSolution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, domainId])
+}
+
+model CapabilityOnSolution {
+  solution     Solution           @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId   String
+  capability   BusinessCapability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  capabilityId String
+
+  @@id([solutionId, capabilityId])
+}
+
+// ─────────────────────────────────────────────
+// BUSINESS AREA — Unidad organizacional responsable
+// Ej: Gerencia Comercial, Departamento de TI, Operaciones
+// ─────────────────────────────────────────────
+
+model BusinessArea {
+  id          String @id @default(cuid())
+  name        String @unique
+  description String?
+
+  solutions AreaOnSolution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AreaOnSolution {
+  solution   Solution     @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId String
+  area       BusinessArea @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  areaId     String
+
+  @@id([solutionId, areaId])
+}
+
+// ─────────────────────────────────────────────
+// CONNECTION — Dependencias entre soluciones
+// ─────────────────────────────────────────────
+
+model Connection {
+  id          String         @id @default(cuid())
+  type        ConnectionType
+  description String?
+
+  from         Solution @relation("ConnectionFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  fromId       String
+  to           Solution @relation("ConnectionTo", fields: [toId], references: [id], onDelete: Cascade)
+  toId         String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([fromId, toId, type]) // Evita duplicados del mismo tipo entre el mismo par
+  @@index([fromId])
+  @@index([toId])
+}
+
+// ─────────────────────────────────────────────
+// ATTACHMENT — Documentos y URLs adjuntos
+// ─────────────────────────────────────────────
+
+model Attachment {
+  id          String             @id @default(cuid())
+  title       String
+  url         String
+  category    AttachmentCategory
+  description String?
+
+  solution   Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────
+// ENVIRONMENT — Ambientes por solución
+// ─────────────────────────────────────────────
+
+model Environment {
+  id       String  @id @default(cuid())
+  name     String  // DEV, QA, STAGING, PROD, etc.
+  url      String?
+  isActive Boolean @default(true)
+  notes    String?
+
+  solution   Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([solutionId, name]) // Un solo ambiente con ese nombre por solución
+}
+
+// ─────────────────────────────────────────────
+// ARCH REVIEW — Revisiones arquitectónicas
+// ─────────────────────────────────────────────
+
+enum ReviewResult {
+  COMPLIANT              // Cumple con los lineamientos
+  COMPLIANT_WITH_NOTES   // Cumple con observaciones
+  NON_COMPLIANT          // No cumple
+  IN_REVIEW              // En revisión, veredicto pendiente
+}
+
+enum ReviewDimensionType {
+  SECURITY               // Seguridad
+  SCALABILITY            // Escalabilidad y rendimiento
+  MAINTAINABILITY        // Mantenibilidad y deuda técnica
+  DOCUMENTATION          // Documentación técnica y funcional
+  TECH_ALIGNMENT         // Alineación con lineamientos tecnológicos
+  INTEGRATION_PATTERNS   // Patrones de integración
+  DATA_MANAGEMENT        // Gestión de datos y calidad
+  RESILIENCE             // Resiliencia y disponibilidad
+  OTHER                  // Otra dimensión evaluada
+}
+
+enum ActionStatus {
+  PENDING                // Pendiente de iniciar
+  IN_PROGRESS            // En progreso
+  COMPLETED              // Completada
+  CANCELLED              // Cancelada
+}
+
+model ArchReview {
+  id              String       @id @default(cuid())
+  reviewedAt      DateTime     // Fecha en que se realizó la revisión
+  reviewedBy      String       // Arquitecto que realizó la revisión
+  result          ReviewResult // Veredicto general
+  summary         String?      // Resumen ejecutivo de la revisión
+  reviewedVersion String?      // Versión de la solución revisada
+  nextReviewDate  DateTime?    // Fecha programada para la próxima revisión
+
+  solution   Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId String
+
+  dimensions ReviewDimension[]
+  actions    ReviewAction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([solutionId])
+  @@index([reviewedAt])
+  @@index([result])
+}
+
+model ReviewDimension {
+  id          String              @id @default(cuid())
+  dimension   ReviewDimensionType // Dimensión evaluada
+  result      ReviewResult        // Resultado específico de esta dimensión
+  observation String?             // Hallazgos y observaciones detalladas
+
+  review   ArchReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId String
+
+  @@unique([reviewId, dimension]) // Una sola evaluación por dimensión por revisión
+}
+
+model ReviewAction {
+  id          String       @id @default(cuid())
+  description String       // Qué se debe corregir o mejorar
+  responsible String       // Quién debe ejecutarla
+  dueDate     DateTime?    // Fecha límite
+  status      ActionStatus @default(PENDING)
+  notes       String?      // Observaciones de seguimiento
+
+  review   ArchReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reviewId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+// ─────────────────────────────────────────────
+// CHANGELOG — Historial automático de cambios
+// ─────────────────────────────────────────────
+
+model ChangeLog {
+  id         String       @id @default(cuid())
+  action     ChangeAction
+  entityType String       // "Solution", "Connection", "Attachment", etc.
+  field      String?      // Campo modificado (solo en UPDATED)
+  oldValue   String?      // Valor anterior
+  newValue   String?      // Valor nuevo
+  note       String?      // Descripción libre del cambio
+  performedBy String      // Nombre o ID del usuario
+
+  solution   Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  solutionId String
+
+  createdAt DateTime @default(now())
+
+  @@index([solutionId])
+  @@index([createdAt])
+}
