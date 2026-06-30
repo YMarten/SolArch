@@ -30,11 +30,40 @@ const start = async () => {
   }
 }
 
-//Rutas de la BD
+server.addContentTypeParser(
+  "application/json",
+  { parseAs: "string" },
+  function (req, body, done) {
+    try {
+      const json = JSON.parse(body as string)
+      done(null, json)
+    } catch (err: any) {
+      err.statusCode = 400
+      done(err, undefined)
+    }
+  }
+)
+
+//Rutas
 
 import { solutionsRoute } from "./routes/solutions.route"
+import { technologiesRoute } from "./routes/technologies.route"
+import { domainsRoute } from "./routes/domains.route"
+import { areasRoute } from "./routes/areas.route"
+import { capabilitiesRoute } from "./routes/capabilities.route"
+import { connectionsRoute } from "./routes/connections.route"
+import { attachmentsRoute } from "./routes/attachments.route"
+import { environmentsRoute } from "./routes/environments.route"
+import { reviewsRoute } from "./routes/reviews.route"
 
-// Rutas
 server.register(solutionsRoute, { prefix: "/api/solutions" })
+server.register(technologiesRoute, { prefix: "/api/technologies" })
+server.register(domainsRoute, { prefix: "/api/domains" })
+server.register(areasRoute, { prefix: "/api/areas" })
+server.register(capabilitiesRoute, { prefix: "/api/capabilities" })
+server.register(connectionsRoute, { prefix: "/api/connections" })
+server.register(attachmentsRoute, { prefix: "/api/attachments" })
+server.register(environmentsRoute, { prefix: "/api/environments" })
+server.register(reviewsRoute, { prefix: "/api/reviews" })
 
 start()
