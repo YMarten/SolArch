@@ -1,18 +1,25 @@
 "use client"
 
-import { Card, Text, Group, Stack, Badge } from "@mantine/core"
-import { IconGitBranch } from "@tabler/icons-react"
+import { Card, Text, Group, Stack, Badge, ThemeIcon } from "@mantine/core"
+import {
+  IconGitBranch, IconDatabase, IconPuzzle,
+  IconArrowsExchange, IconChartBar, IconDevices
+} from "@tabler/icons-react"
 import { Solution } from "@/types/solution"
 import { StatusBadge } from "@/components/ui/StatusBadge"
 import { CriticalityBadge } from "@/components/ui/CriticalityBadge"
 import { useRouter } from "next/navigation"
 
-const roleLabels: Record<string, string> = {
-  CORE_TRANSACTIONAL:  "Core transaccional",
-  SATELLITE:           "Sistema satélite",
-  INTEGRATION:         "Plataforma de integración",
-  DATA_ANALYTICS:      "Información y analítica",
-  INTERACTION_CHANNEL: "Canal e interacción",
+const roleConfig: Record<string, {
+  label:  string
+  color:  string
+  icon:   React.ElementType
+}> = {
+  CORE_TRANSACTIONAL:  { label: "Core transaccional",       color: "indigo",  icon: IconDatabase        },
+  SATELLITE:           { label: "Sistema satélite",          color: "violet",  icon: IconPuzzle          },
+  INTEGRATION:         { label: "Plataforma de integración", color: "orange",  icon: IconArrowsExchange  },
+  DATA_ANALYTICS:      { label: "Información y analítica",   color: "teal",    icon: IconChartBar        },
+  INTERACTION_CHANNEL: { label: "Canal e interacción",       color: "pink",    icon: IconDevices         },
 }
 
 interface Props {
@@ -21,6 +28,12 @@ interface Props {
 
 export function SolutionCard({ solution }: Props) {
   const router = useRouter()
+  const role   = roleConfig[solution.role] ?? {
+    label: solution.role,
+    color: "gray",
+    icon:  IconDatabase,
+  }
+  const Icon = role.icon
 
   return (
     <Card
@@ -35,7 +48,14 @@ export function SolutionCard({ solution }: Props) {
           <Text fw={500} size="sm" lineClamp={1} style={{ flex: 1 }}>
             {solution.name}
           </Text>
-          <StatusBadge status={solution.status} />
+          <ThemeIcon
+            variant="light"
+            color={role.color}
+            size="md"
+            radius="md"
+          >
+            <Icon size={16} />
+          </ThemeIcon>
         </Group>
 
         {solution.description && (
@@ -44,11 +64,13 @@ export function SolutionCard({ solution }: Props) {
           </Text>
         )}
 
-        <Group gap="xs">
-          <Badge variant="light" color="blue" size="xs">
-            {roleLabels[solution.role] ?? solution.role}
-          </Badge>
-        </Group>
+        <Badge
+          variant="light"
+          color={role.color}
+          size="xs"
+        >
+          {role.label}
+        </Badge>
 
         {solution.technologies && solution.technologies.length > 0 && (
           <Group gap="xs">
@@ -74,6 +96,8 @@ export function SolutionCard({ solution }: Props) {
             </Group>
           )}
         </Group>
+
+        <StatusBadge status={solution.status} />
       </Stack>
     </Card>
   )

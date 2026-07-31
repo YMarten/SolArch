@@ -29,11 +29,11 @@ interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
 }
 
 const roleColors: Record<string, string> = {
-    CORE_TRANSACTIONAL: "#4c6ef5",
-    SATELLITE: "#7950f2",
-    INTEGRATION: "#f59f00",
-    DATA_ANALYTICS: "#12b886",
-    INTERACTION_CHANNEL: "#f03e3e",
+    CORE_TRANSACTIONAL: "#4263eb", // indigo
+    SATELLITE: "#7048e8", // violet
+    INTEGRATION: "#f76707", // orange
+    DATA_ANALYTICS: "#0ca678", // teal
+    INTERACTION_CHANNEL: "#e64980", // pink
 }
 
 const roleLabels: Record<string, string> = {
@@ -114,7 +114,7 @@ export function EcosystemGraph() {
         svg.append("defs").append("marker")
             .attr("id", "arrow")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 22)
+            .attr("refX", 32)
             .attr("refY", 0)
             .attr("markerWidth", 6)
             .attr("markerHeight", 6)
@@ -225,14 +225,14 @@ export function EcosystemGraph() {
             </Group>
 
             {/* Leyenda */}
-            <Group gap="sm">
+            <Group>
                 {Object.entries(roleLabels).map(([role, label]) => (
                     <Group key={role} gap={6}>
                         <div style={{
                             width: 12,
                             height: 12,
                             borderRadius: "50%",
-                            background: roleColors[role],
+                            background: roleColors[role] ?? "#868e96",
                         }} />
                         <Text size="xs" c="dimmed">{label}</Text>
                     </Group>

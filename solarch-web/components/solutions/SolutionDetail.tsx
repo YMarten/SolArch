@@ -17,29 +17,40 @@ import { SolutionAttachments } from "./SolutionAttachments"
 import { SolutionEnvironments } from "./SolutionEnvironments"
 import { ReviewsList } from "@/components/reviews/ReviewsList"
 
-const roleLabels: Record<string, string> = {
-  CORE_TRANSACTIONAL:  "Core transaccional",
-  SATELLITE:           "Sistema satélite",
-  INTEGRATION:         "Plataforma de integración",
-  DATA_ANALYTICS:      "Información y analítica",
-  INTERACTION_CHANNEL: "Canal e interacción",
+const roleConfig: Record<string, {
+  label: string
+  color: string
+}> = {
+  CORE_TRANSACTIONAL: { label: "Core transaccional", color: "indigo" },
+  SATELLITE: { label: "Sistema satélite", color: "violet" },
+  INTEGRATION: { label: "Plataforma de integración", color: "orange" },
+  DATA_ANALYTICS: { label: "Información y analítica", color: "teal" },
+  INTERACTION_CHANNEL: { label: "Canal e interacción", color: "pink" },
 }
 
 const originLabels: Record<string, string> = {
-  INTERNAL:     "Interna",
-  EXTERNAL:     "Externa",
+  INTERNAL: "Interna",
+  EXTERNAL: "Externa",
   CUSTOM_THIRD: "A medida (tercero)",
 }
 
 const typeLabels: Record<string, string> = {
-  WEB:            "Web",
-  MOBILE:         "Mobile",
-  DESKTOP:        "Desktop",
-  API:            "API",
-  BATCH:          "Batch",
-  INTEGRATION:    "Integración",
+  WEB: "Web",
+  MOBILE: "Mobile",
+  DESKTOP: "Desktop",
+  API: "API",
+  BATCH: "Batch",
+  INTEGRATION: "Integración",
   INFRASTRUCTURE: "Infraestructura",
-  OTHER:          "Otro",
+  OTHER: "Otro",
+}
+
+const roleLabels: Record<string, string> = {
+  CORE_TRANSACTIONAL: "Core transaccional",
+  SATELLITE: "Sistema satélite",
+  INTEGRATION: "Plataforma de integración",
+  DATA_ANALYTICS: "Información y analítica",
+  INTERACTION_CHANNEL: "Canal e interacción",
 }
 
 interface Props {
@@ -74,10 +85,24 @@ export function SolutionDetail({ solution }: Props) {
             <Group gap="xs" wrap="wrap">
               <Title order={3}>{solution.name}</Title>
               <StatusBadge status={solution.status} />
-              <Badge variant="light" color="blue">{typeLabels[solution.type]}</Badge>
+              <Badge variant="light" color="gray">
+                {typeLabels[solution.type]}
+              </Badge>
               <CriticalityBadge criticality={solution.criticality} />
-              <Badge variant="light" color="violet">{roleLabels[solution.role]}</Badge>
-              <Badge variant="light" color="gray">{originLabels[solution.origin]}</Badge>
+              <Badge
+                variant="light"
+                color={roleConfig[solution.role]?.color ?? "gray"}
+              >
+                {roleConfig[solution.role]?.label ?? solution.role}
+              </Badge>
+              <Badge variant="light" color="gray">
+                {originLabels[solution.origin]}
+              </Badge>
+              {solution.vendor && (
+                <Badge variant="outline" color="gray">
+                  {solution.vendor}
+                </Badge>
+              )}
             </Group>
 
             {solution.description && (
@@ -158,8 +183,8 @@ export function SolutionDetail({ solution }: Props) {
               <Group gap="xs" mt={4}>
                 {solution.domains && solution.domains.length > 0
                   ? solution.domains.map(({ domain }) => (
-                      <Badge key={domain.id} variant="light">{domain.name}</Badge>
-                    ))
+                    <Badge key={domain.id} variant="light">{domain.name}</Badge>
+                  ))
                   : <Text size="xs" c="dimmed">Sin dominios asignados</Text>
                 }
               </Group>
@@ -169,8 +194,8 @@ export function SolutionDetail({ solution }: Props) {
               <Group gap="xs" mt={4}>
                 {solution.areas && solution.areas.length > 0
                   ? solution.areas.map(({ area }) => (
-                      <Badge key={area.id} variant="light" color="orange">{area.name}</Badge>
-                    ))
+                    <Badge key={area.id} variant="light" color="orange">{area.name}</Badge>
+                  ))
                   : <Text size="xs" c="dimmed">Sin áreas asignadas</Text>
                 }
               </Group>
@@ -183,10 +208,10 @@ export function SolutionDetail({ solution }: Props) {
           <Group gap="xs">
             {solution.technologies && solution.technologies.length > 0
               ? solution.technologies.map(({ technology }) => (
-                  <Badge key={technology.id} variant="light" color="blue">
-                    {technology.name}
-                  </Badge>
-                ))
+                <Badge key={technology.id} variant="light" color="blue">
+                  {technology.name}
+                </Badge>
+              ))
               : <Text size="xs" c="dimmed">Sin tecnologías registradas</Text>
             }
           </Group>
@@ -195,29 +220,29 @@ export function SolutionDetail({ solution }: Props) {
 
       {/* Tabs */}
       <Tabs defaultValue="connections">
-  <Tabs.List>
-    <Tabs.Tab value="connections">Conexiones</Tabs.Tab>
-    <Tabs.Tab value="attachments">Adjuntos</Tabs.Tab>
-    <Tabs.Tab value="environments">Ambientes</Tabs.Tab>
-    <Tabs.Tab value="reviews">Revisiones</Tabs.Tab>
-  </Tabs.List>
+        <Tabs.List>
+          <Tabs.Tab value="connections">Conexiones</Tabs.Tab>
+          <Tabs.Tab value="attachments">Adjuntos</Tabs.Tab>
+          <Tabs.Tab value="environments">Ambientes</Tabs.Tab>
+          <Tabs.Tab value="reviews">Revisiones</Tabs.Tab>
+        </Tabs.List>
 
-  <Tabs.Panel value="connections" pt="md">
-    <SolutionConnections solutionId={solution.id} />
-  </Tabs.Panel>
+        <Tabs.Panel value="connections" pt="md">
+          <SolutionConnections solutionId={solution.id} />
+        </Tabs.Panel>
 
-  <Tabs.Panel value="attachments" pt="md">
-    <SolutionAttachments solutionId={solution.id} />
-  </Tabs.Panel>
+        <Tabs.Panel value="attachments" pt="md">
+          <SolutionAttachments solutionId={solution.id} />
+        </Tabs.Panel>
 
-  <Tabs.Panel value="environments" pt="md">
-    <SolutionEnvironments solutionId={solution.id} />
-  </Tabs.Panel>
+        <Tabs.Panel value="environments" pt="md">
+          <SolutionEnvironments solutionId={solution.id} />
+        </Tabs.Panel>
 
-  <Tabs.Panel value="reviews" pt="md">
-    <ReviewsList solutionId={solution.id} />
-  </Tabs.Panel>
-</Tabs>
+        <Tabs.Panel value="reviews" pt="md">
+          <ReviewsList solutionId={solution.id} />
+        </Tabs.Panel>
+      </Tabs>
     </Stack>
   )
 }
