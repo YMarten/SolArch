@@ -9,7 +9,10 @@ const server = Fastify({
 
 // Plugins
 server.register(cors, {
-  origin: "http://localhost:3000" // URL del frontend
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 })
 
 server.register(helmet)
@@ -34,6 +37,10 @@ server.addContentTypeParser(
   "application/json",
   { parseAs: "string" },
   function (req, body, done) {
+    if (!body) {
+      done(null, null)
+      return
+    }
     try {
       const json = JSON.parse(body as string)
       done(null, json)

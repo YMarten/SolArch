@@ -5,6 +5,7 @@ import "@mantine/dates/styles.css"
 import "./globals.css"
 import { MantineProvider, ColorSchemeScript } from "@mantine/core"
 import { Notifications } from "@mantine/notifications"
+import { AppShell } from "@/components/layout/AppShell"
 
 export const metadata: Metadata = {
   title: "SolArch",
@@ -24,7 +25,9 @@ export default function RootLayout({
       <body>
         <MantineProvider>
           <Notifications />
-          {children}
+          <AppShell>
+            {children}
+          </AppShell>
         </MantineProvider>
       </body>
     </html>

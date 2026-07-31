@@ -41,14 +41,15 @@ export async function reviewsRoute(server: FastifyInstance) {
   })
 
   // POST /api/reviews
-  server.post("/", async (request, reply) => {
-    try {
-      const review = await reviewsService.create(request.body as CreateReviewDTO)
-      return reply.status(201).send(review)
-    } catch (error) {
-      return reply.status(500).send({ error: "Error al crear la revisión" })
-    }
-  })
+server.post("/", async (request, reply) => {
+  try {
+    const review = await reviewsService.create(request.body as CreateReviewDTO)
+    return reply.status(201).send(review)
+  } catch (error) {
+    server.log.error(error)
+    return reply.status(500).send({ error: "Error al crear la revisión" })
+  }
+})
 
   // PUT /api/reviews/:id
   server.put("/:id", async (request, reply) => {

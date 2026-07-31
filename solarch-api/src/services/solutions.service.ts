@@ -14,6 +14,9 @@ export const solutionsService = {
         areas: {
           include: { area: true }
         },
+        capabilities: {
+        include: { capability: true }
+      },
       },
       orderBy: { createdAt: "desc" }
     })

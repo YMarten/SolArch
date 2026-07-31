@@ -17,11 +17,13 @@ import { CreateSolutionDTO, SolutionStatus, SolutionType, SolutionRole, Solution
 import { Technology } from "@/types/technology"
 import { Domain } from "@/types/domain"
 import { Area } from "@/types/area"
+import { Capability } from "@/types/capability"
 
 interface Props {
   technologies: Technology[]
   domains: Domain[]
   areas: Area[]
+  capabilities: Capability[]
   initialValues?: Partial<CreateSolutionDTO>
   solutionId?: string
 }
@@ -38,7 +40,7 @@ interface EnvironmentRow {
   isActive: boolean
 }
 
-export function SolutionForm({ technologies, domains, areas, initialValues, solutionId }: Props) {
+export function SolutionForm({ technologies, domains, areas, capabilities, initialValues, solutionId }: Props) {
   const router = useRouter()
   const isEditing = !!solutionId
 
@@ -336,6 +338,14 @@ export function SolutionForm({ technologies, domains, areas, initialValues, solu
                 data={areas.map(a => ({ value: a.id, label: a.name }))}
                 searchable
                 {...form.getInputProps("areaIds")}
+              />
+              <MultiSelect
+                label="Capacidades empresariales"
+                description="Capacidades específicas que esta solución habilita o soporta."
+                placeholder="Seleccionar capacidades..."
+                data={capabilities.map(c => ({ value: c.id, label: c.name }))}
+                searchable
+                {...form.getInputProps("capabilityIds")}
               />
             </Stack>
           )}

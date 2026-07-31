@@ -24,26 +24,31 @@ export const reviewsService = {
     })
   },
 
-  async create(data: CreateReviewDTO) {
-    const { solutionId, dimensions, actions, ...reviewData } = data
+async create(data: CreateReviewDTO) {
+  const { solutionId, dimensions, actions, ...reviewData } = data
 
-    return prisma.archReview.create({
-      data: {
-        ...reviewData,
-        solution: { connect: { id: solutionId } },
-        dimensions: dimensions ? {
-          create: dimensions
-        } : undefined,
-        actions: actions ? {
-          create: actions
-        } : undefined,
-      },
-      include: {
-        dimensions: true,
-        actions: true
-      }
-    })
-  },
+  return prisma.archReview.create({
+    data: {
+      ...reviewData,
+      reviewedAt:    new Date(reviewData.reviewedAt),
+      nextReviewDate: reviewData.nextReviewDate
+        ? new Date(reviewData.nextReviewDate)
+        : undefined,
+      solution: { connect: { id: solutionId } },
+      dimensions: dimensions ? { create: dimensions } : undefined,
+      actions: actions ? {
+        create: actions.map(a => ({
+          ...a,
+          dueDate: a.dueDate ? new Date(a.dueDate) : undefined,
+        }))
+      } : undefined,
+    },
+    include: {
+      dimensions: true,
+      actions:    true
+    }
+  })
+},
 
   async update(id: string, data: UpdateReviewDTO) {
     return prisma.archReview.update({
