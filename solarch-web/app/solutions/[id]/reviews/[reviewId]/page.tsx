@@ -1,22 +1,32 @@
-import { reviewsService } from "@/services/reviews.service"
+"use client"
+
+import { useEffect, useState } from "react"
+import { Loader, Center, Stack, Title, Text, Group } from "@mantine/core"
+import { useParams } from "next/navigation"
 import { solutionsService } from "@/services/solutions.service"
-import { notFound } from "next/navigation"
+import { reviewsService } from "@/services/reviews.service"
+import { ArchReview } from "@/types/review"
+import { Solution } from "@/types/solution"
 import { ReviewDetail } from "@/components/reviews/ReviewDetail"
-import { Stack, Title, Text, Group, ActionIcon, Button } from "@mantine/core"
 
-interface Props {
-  params: Promise<{ id: string; reviewId: string }>
-}
+export default function ReviewDetailPage() {
+  const { id, reviewId }              = useParams<{ id: string; reviewId: string }>()
+  const [solution, setSolution]       = useState<Solution | null>(null)
+  const [review, setReview]           = useState<ArchReview | null>(null)
+  const [loading, setLoading]         = useState(true)
 
-export default async function ReviewDetailPage({ params }: Props) {
-  const { id, reviewId } = await params
+  useEffect(() => {
+    Promise.all([
+      solutionsService.getById(id),
+      reviewsService.getById(reviewId),
+    ]).then(([sol, rev]) => {
+      setSolution(sol)
+      setReview(rev)
+    }).finally(() => setLoading(false))
+  }, [id, reviewId])
 
-  const [solution, review] = await Promise.all([
-    solutionsService.getById(id).catch(() => null),
-    reviewsService.getById(reviewId).catch(() => null),
-  ])
-
-  if (!solution || !review) notFound()
+  if (loading) return <Center h={400}><Loader /></Center>
+  if (!solution || !review) return null
 
   return (
     <Stack p="xl" gap="md" maw={860} mx="auto">

@@ -3,7 +3,12 @@ import {
   SolutionType,
   SolutionRole,
   SolutionOrigin,
-  Criticality
+  Criticality,
+  UsageStatus,
+  UsageFrequency,
+  AnswerStatus,
+  HostingMode,
+  FailureImpact
 } from "@prisma/client"
 
 export interface CreateSolutionDTO {
@@ -21,6 +26,26 @@ export interface CreateSolutionDTO {
   repoUrl?: string
   lastDeploy?: Date
   tags?: string[]
+  responsibleAreaId?: string | null
+  businessProcess?: string
+  userGroups?: string[]
+  usageStatus?: UsageStatus | null
+  usageFrequency?: UsageFrequency | null
+  hasSimilarSolution?: boolean
+  similarSolutionId?: string | null
+  supportStatus?: AnswerStatus
+  receivesUpdates?: AnswerStatus
+  licenseStatus?: AnswerStatus
+  hostingMode?: HostingMode
+  knownDependencies?: string
+  failureImpact?: FailureImpact
+  failureImpactDetails?: string
+  hasProblems?: boolean
+  problemDetails?: string
+  hasReplacementInitiative?: boolean
+  replacementSolutionId?: string | null
+  proposedReplacementName?: string
+  additionalNotes?: string
   // Relaciones
   technologyIds?: string[]
   domainIds?: string[]

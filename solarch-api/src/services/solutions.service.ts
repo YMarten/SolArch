@@ -15,8 +15,11 @@ export const solutionsService = {
           include: { area: true }
         },
         capabilities: {
-        include: { capability: true }
-      },
+          include: { capability: true }
+        },
+        responsibleArea: true,
+        similarSolution: { select: { id: true, name: true } },
+        replacementSolution: { select: { id: true, name: true } },
       },
       orderBy: { createdAt: "desc" }
     })
@@ -38,6 +41,9 @@ export const solutionsService = {
         areas: {
           include: { area: true }
         },
+        responsibleArea: true,
+        similarSolution: { select: { id: true, name: true } },
+        replacementSolution: { select: { id: true, name: true } },
         environments: true,
         attachments: true,
         connectionsFrom: {
@@ -56,9 +62,23 @@ export const solutionsService = {
   async create(data: CreateSolutionDTO) {
     const { technologyIds, domainIds, capabilityIds, areaIds, ...solutionData } = data
 
+    if (solutionData.similarSolutionId && solutionData.replacementSolutionId &&
+        solutionData.similarSolutionId === solutionData.replacementSolutionId) {
+      throw new Error("La solución similar y la sustituta deben ser diferentes")
+    }
+
+    const normalizedData = {
+      ...solutionData,
+      lastDeploy: solutionData.lastDeploy ? new Date(solutionData.lastDeploy) : undefined,
+      similarSolutionId: solutionData.hasSimilarSolution ? solutionData.similarSolutionId : null,
+      problemDetails: solutionData.hasProblems ? solutionData.problemDetails : null,
+      replacementSolutionId: solutionData.hasReplacementInitiative ? solutionData.replacementSolutionId : null,
+      proposedReplacementName: solutionData.hasReplacementInitiative ? solutionData.proposedReplacementName : null,
+    }
+
     return prisma.solution.create({
       data: {
-        ...solutionData,
+        ...normalizedData,
         technologies: technologyIds ? {
           create: technologyIds.map(id => ({ technologyId: id }))
         } : undefined,
@@ -78,10 +98,24 @@ export const solutionsService = {
   async update(id: string, data: UpdateSolutionDTO) {
     const { technologyIds, domainIds, capabilityIds, areaIds, ...solutionData } = data
 
+    if (solutionData.similarSolutionId === id || solutionData.replacementSolutionId === id) {
+      throw new Error("Una solución no puede relacionarse consigo misma")
+    }
+
+    const normalizedData = {
+      ...solutionData,
+      ...(solutionData.lastDeploy ? { lastDeploy: new Date(solutionData.lastDeploy) } : {}),
+      ...(solutionData.hasSimilarSolution === false ? { similarSolutionId: null } : {}),
+      ...(solutionData.hasProblems === false ? { problemDetails: null } : {}),
+      ...(solutionData.hasReplacementInitiative === false
+        ? { replacementSolutionId: null, proposedReplacementName: null }
+        : {}),
+    }
+
     return prisma.solution.update({
       where: { id },
       data: {
-        ...solutionData,
+        ...normalizedData,
         technologies: technologyIds ? {
           deleteMany: {},
           create: technologyIds.map(id => ({ technologyId: id }))

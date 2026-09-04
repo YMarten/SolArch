@@ -2,6 +2,16 @@ import "dotenv/config"
 import Fastify from "fastify"
 import cors from "@fastify/cors"
 import helmet from "@fastify/helmet"
+import { solutionsRoute } from "./routes/solutions.route"
+import { technologiesRoute } from "./routes/technologies.route"
+import { domainsRoute } from "./routes/domains.route"
+import { areasRoute } from "./routes/areas.route"
+import { capabilitiesRoute } from "./routes/capabilities.route"
+import { connectionsRoute } from "./routes/connections.route"
+import { attachmentsRoute } from "./routes/attachments.route"
+import { environmentsRoute } from "./routes/environments.route"
+import { reviewsRoute } from "./routes/reviews.route"
+import { prisma }             from "./prisma"
 
 const server = Fastify({
   logger: true
@@ -25,6 +35,11 @@ server.get("/health", async () => {
 // Arrancar el servidor
 const start = async () => {
   try {
+
+    // Ejecutar migraciones al arrancar
+    await prisma.$executeRaw`SELECT 1`
+    server.log.info("Base de datos conectada")
+
     const port = Number(process.env.PORT) || 3001
     await server.listen({ port, host: "0.0.0.0" })
   } catch (error) {
@@ -52,17 +67,6 @@ server.addContentTypeParser(
 )
 
 //Rutas
-
-import { solutionsRoute } from "./routes/solutions.route"
-import { technologiesRoute } from "./routes/technologies.route"
-import { domainsRoute } from "./routes/domains.route"
-import { areasRoute } from "./routes/areas.route"
-import { capabilitiesRoute } from "./routes/capabilities.route"
-import { connectionsRoute } from "./routes/connections.route"
-import { attachmentsRoute } from "./routes/attachments.route"
-import { environmentsRoute } from "./routes/environments.route"
-import { reviewsRoute } from "./routes/reviews.route"
-
 server.register(solutionsRoute, { prefix: "/api/solutions" })
 server.register(technologiesRoute, { prefix: "/api/technologies" })
 server.register(domainsRoute, { prefix: "/api/domains" })

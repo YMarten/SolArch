@@ -17,6 +17,11 @@ export default function SolutionsPage() {
     status:      "",
     criticality: "",
     role:        "",
+    usageStatus: "",
+    hostingMode: "",
+    supportStatus: "",
+    hasProblems: "",
+    hasReplacementInitiative: "",
   })
 
   useEffect(() => {
@@ -31,7 +36,13 @@ export default function SolutionsPage() {
       const matchSearch =
         !filters.search ||
         s.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.description?.toLowerCase().includes(filters.search.toLowerCase())
+        s.description?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        s.vendor?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        s.owner?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        s.businessProcess?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        s.knownDependencies?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        s.problemDetails?.toLowerCase().includes(filters.search.toLowerCase()) ||
+        s.userGroups?.some(group => group.toLowerCase().includes(filters.search.toLowerCase()))
 
       const matchStatus =
         !filters.status || s.status === filters.status
@@ -42,7 +53,14 @@ export default function SolutionsPage() {
       const matchRole =
         !filters.role || s.role === filters.role
 
-      return matchSearch && matchStatus && matchCriticality && matchRole
+      const matchSurvey =
+        (!filters.usageStatus || s.usageStatus === filters.usageStatus) &&
+        (!filters.hostingMode || s.hostingMode === filters.hostingMode) &&
+        (!filters.supportStatus || s.supportStatus === filters.supportStatus) &&
+        (!filters.hasProblems || String(s.hasProblems) === filters.hasProblems) &&
+        (!filters.hasReplacementInitiative || String(s.hasReplacementInitiative) === filters.hasReplacementInitiative)
+
+      return matchSearch && matchStatus && matchCriticality && matchRole && matchSurvey
     })
   }, [solutions, filters])
 

@@ -1,16 +1,28 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { Loader, Center } from "@mantine/core"
+import { useParams } from "next/navigation"
 import { solutionsService } from "@/services/solutions.service"
-import { notFound } from "next/navigation"
+import { Solution } from "@/types/solution"
 import { SolutionDetail } from "@/components/solutions/SolutionDetail"
+import { notFound } from "next/navigation"
 
-interface Props {
-  params: Promise<{ id: string }>
-}
+export default function SolutionDetailPage() {
+  const { id }                        = useParams<{ id: string }>()
+  const [solution, setSolution]       = useState<Solution | null>(null)
+  const [loading, setLoading]         = useState(true)
+  const [notFoundError, setNotFound]  = useState(false)
 
-export default async function SolutionDetailPage({ params }: Props) {
-  const { id } = await params
-  const solution = await solutionsService.getById(id).catch(() => null)
+  useEffect(() => {
+    solutionsService.getById(id)
+      .then(setSolution)
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false))
+  }, [id])
 
-  if (!solution) notFound()
+  if (loading) return <Center h={400}><Loader /></Center>
+  if (notFoundError) return notFound()
 
-  return <SolutionDetail solution={solution} />
+  return solution ? <SolutionDetail solution={solution} /> : null
 }

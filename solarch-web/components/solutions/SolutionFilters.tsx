@@ -9,6 +9,11 @@ interface Filters {
   status: string
   criticality: string
   role: string
+  usageStatus: string
+  hostingMode: string
+  supportStatus: string
+  hasProblems: string
+  hasReplacementInitiative: string
 }
 
 interface Props {
@@ -23,8 +28,8 @@ export function SolutionFilters({ filters, onChange }: Props) {
     onChange({ ...filters, [key]: value })
 
   return (
-    <Group justify="space-between" mb="md">
-      <Group gap="sm">
+    <Group justify="space-between" mb="md" align="flex-start">
+      <Group gap="sm" wrap="wrap" style={{ flex: 1 }}>
         <TextInput
           placeholder="Buscar solución..."
           leftSection={<IconSearch size={14} />}
@@ -72,6 +77,11 @@ export function SolutionFilters({ filters, onChange }: Props) {
             { value: "INTERACTION_CHANNEL", label: "Canal e interacción"        },
           ]}
         />
+        <Select placeholder="Estado de uso" clearable value={filters.usageStatus} onChange={v => update("usageStatus", v ?? "")} style={{ width: 170 }} data={[{value:"IN_USE",label:"En uso"},{value:"LIMITED_USE",label:"Uso limitado"},{value:"IN_IMPLEMENTATION",label:"En implementación"},{value:"IN_SUBSTITUTION",label:"En sustitución"},{value:"OUT_OF_USE",label:"Fuera de uso"}]} />
+        <Select placeholder="Alojamiento" clearable value={filters.hostingMode} onChange={v => update("hostingMode", v ?? "")} style={{ width: 190 }} data={[{value:"CLOUD",label:"Nube"},{value:"INTERNAL_INFRASTRUCTURE",label:"Infraestructura interna"},{value:"VENDOR_INFRASTRUCTURE",label:"Infraestructura proveedor"},{value:"HYBRID",label:"Híbrida"},{value:"UNKNOWN",label:"No determinada"}]} />
+        <Select placeholder="Soporte" clearable value={filters.supportStatus} onChange={v => update("supportStatus", v ?? "")} style={{ width: 150 }} data={[{value:"YES",label:"Vigente"},{value:"NO",label:"No vigente"},{value:"UNKNOWN",label:"No determinado"}]} />
+        <Select placeholder="Problemas" clearable value={filters.hasProblems} onChange={v => update("hasProblems", v ?? "")} style={{ width: 145 }} data={[{value:"true",label:"Con problemas"},{value:"false",label:"Sin problemas"}]} />
+        <Select placeholder="Sustitución/retiro" clearable value={filters.hasReplacementInitiative} onChange={v => update("hasReplacementInitiative", v ?? "")} style={{ width: 190 }} data={[{value:"true",label:"Con iniciativa"},{value:"false",label:"Sin iniciativa"}]} />
       </Group>
       <Button
         leftSection={<IconPlus size={14} />}

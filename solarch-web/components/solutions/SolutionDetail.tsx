@@ -16,6 +16,7 @@ import { SolutionConnections } from "./SolutionConnections"
 import { SolutionAttachments } from "./SolutionAttachments"
 import { SolutionEnvironments } from "./SolutionEnvironments"
 import { ReviewsList } from "@/components/reviews/ReviewsList"
+import { SolutionSurveyDetails } from "./SolutionSurveyDetails"
 
 const roleConfig: Record<string, {
   label: string
@@ -221,11 +222,16 @@ export function SolutionDetail({ solution }: Props) {
       {/* Tabs */}
       <Tabs defaultValue="connections">
         <Tabs.List>
+          <Tabs.Tab value="survey">Levantamiento</Tabs.Tab>
           <Tabs.Tab value="connections">Conexiones</Tabs.Tab>
           <Tabs.Tab value="attachments">Adjuntos</Tabs.Tab>
           <Tabs.Tab value="environments">Ambientes</Tabs.Tab>
           <Tabs.Tab value="reviews">Revisiones</Tabs.Tab>
         </Tabs.List>
+
+        <Tabs.Panel value="survey" pt="md">
+          <SolutionSurveyDetails solution={solution} />
+        </Tabs.Panel>
 
         <Tabs.Panel value="connections" pt="md">
           <SolutionConnections solutionId={solution.id} />
