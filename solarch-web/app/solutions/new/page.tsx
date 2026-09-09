@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Loader, Center } from "@mantine/core"
+import { Alert, Loader, Center } from "@mantine/core"
 import { SolutionForm } from "@/components/solutions/SolutionForm"
 import { technologiesService } from "@/services/technologies.service"
 import { domainsService } from "@/services/domains.service"
@@ -21,6 +21,7 @@ export default function NewSolutionPage() {
   const [capabilities, setCapabilities] = useState<Capability[]>([])
   const [loading, setLoading]           = useState(true)
   const [solutions, setSolutions]       = useState<Solution[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     Promise.all([
@@ -35,10 +36,13 @@ export default function NewSolutionPage() {
       setAreas(areas)
       setCapabilities(caps)
       setSolutions(sols)
+    }).catch((error: unknown) => {
+      setError(error instanceof Error ? error.message : "No se pudieron cargar los catálogos")
     }).finally(() => setLoading(false))
   }, [])
 
   if (loading) return <Center h={400}><Loader /></Center>
+  if (error) return <Alert color="red" title="No se pudo cargar el formulario" m="xl">{error}</Alert>
 
   return (
     <SolutionForm

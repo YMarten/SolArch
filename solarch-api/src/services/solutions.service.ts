@@ -21,7 +21,7 @@ export const solutionsService = {
         similarSolution: { select: { id: true, name: true } },
         replacementSolution: { select: { id: true, name: true } },
       },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "asc" }
     })
   },
 

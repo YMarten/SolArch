@@ -31,6 +31,7 @@ async function test(method: string, path: string, body?: object) {
 }
 
 async function runTests() {
+  
   console.log("\nProbando endpoints del backend...\n")
 
   // Health

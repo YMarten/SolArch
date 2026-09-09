@@ -37,6 +37,7 @@ const start = async () => {
   try {
 
     // Ejecutar migraciones al arrancar
+    server.log.info("Validando conexion con base de datos")
     await prisma.$executeRaw`SELECT 1`
     server.log.info("Base de datos conectada")
 

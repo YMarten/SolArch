@@ -87,12 +87,18 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
   }
   const steps = ["Identificación", "Uso", "Soporte", "Tecnología", "Situación"]
 
-  return <Box maw={920} mx="auto" p="xl">
+  return <Box component="form" noValidate onSubmit={form.onSubmit(handleSubmit, errors => {
+    const firstInvalidStep = errors.name ? 1
+      : ["owner", "responsibleAreaId", "businessProcess", "usageStatus", "similarSolutionId"].some(field => errors[field]) ? 2
+      : 5
+    setStep(firstInvalidStep)
+    notifications.show({ message: "Revisa los campos indicados antes de guardar.", color: "red" })
+  })} maw={920} mx="auto" p="xl">
     <Group mb="xl"><ActionIcon variant="subtle" onClick={() => router.back()} aria-label="Volver"><IconArrowLeft size={18} /></ActionIcon><Title order={3}>{isEditing ? "Editar solución" : "Nueva solución"}</Title></Group>
     <Group mb="xl" gap="xs">{steps.map((name, i) => <Button key={name} size="xs" variant={step === i + 1 ? "filled" : "default"} onClick={() => setStep(i + 1)}>{i + 1}. {name}</Button>)}</Group>
     <Paper withBorder p="lg" radius="md">
       {step === 1 && <Stack gap="md"><Title order={5}>Identificación</Title><Divider />
-        <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="Nombre" required {...form.getInputProps("name")} /><TextInput label="Versión actual" {...form.getInputProps("version")} /></SimpleGrid>
+        <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="Nombre" /* required */ {...form.getInputProps("name")} /><TextInput label="Versión actual" {...form.getInputProps("version")} /></SimpleGrid>
         <Textarea label="Descripción general" rows={3} {...form.getInputProps("description")} />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Select label="Tipo" data={["WEB","DESKTOP","MOBILE","API","BATCH","INTEGRATION","INFRASTRUCTURE","OTHER"]} {...form.getInputProps("type")} />
@@ -106,19 +112,19 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
 
       {step === 2 && <Stack gap="md"><Title order={5}>Uso y responsabilidad</Title><Divider />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          <Select label={label("Área responsable", help.area)} searchable required data={areas.map(a => ({value:a.id,label:a.name}))} {...form.getInputProps("responsibleAreaId")} />
-          <TextInput label={label("Contacto principal", help.owner)} required {...form.getInputProps("owner")} />
+          <Select label={label("Área responsable", help.area)} searchable /* required */ data={areas.map(a => ({value:a.id,label:a.name}))} {...form.getInputProps("responsibleAreaId")} />
+          <TextInput label={label("Contacto principal", help.owner)} /* required */ {...form.getInputProps("owner")} />
           <TextInput label="Responsable técnico interno" {...form.getInputProps("techOwner")} />
-          <TextInput label={label("Proceso soportado", help.process)} required {...form.getInputProps("businessProcess")} />
+          <TextInput label={label("Proceso soportado", help.process)} /* required */ {...form.getInputProps("businessProcess")} />
         </SimpleGrid>
         <TagsInput label={label("Áreas o grupos usuarios", help.users)} placeholder="Escribe un grupo y presiona Enter" {...form.getInputProps("userGroups")} />
         <SimpleGrid cols={{ base: 1, sm: 3 }}>
-          <Select label={label("Estado actual de uso", help.usage)} required data={[{value:"IN_USE",label:"En uso"},{value:"LIMITED_USE",label:"Uso limitado"},{value:"IN_IMPLEMENTATION",label:"En implementación"},{value:"IN_SUBSTITUTION",label:"En sustitución"},{value:"OUT_OF_USE",label:"Fuera de uso"}]} {...form.getInputProps("usageStatus")} />
+          <Select label={label("Estado actual de uso", help.usage)} /* required */ data={[{value:"IN_USE",label:"En uso"},{value:"LIMITED_USE",label:"Uso limitado"},{value:"IN_IMPLEMENTATION",label:"En implementación"},{value:"IN_SUBSTITUTION",label:"En sustitución"},{value:"OUT_OF_USE",label:"Fuera de uso"}]} {...form.getInputProps("usageStatus")} />
           <Select label={label("Frecuencia de uso", help.frequency)} data={[{value:"CONTINUOUS",label:"Continua"},{value:"DAILY",label:"Diaria"},{value:"WEEKLY",label:"Semanal"},{value:"MONTHLY",label:"Mensual"},{value:"OCCASIONAL",label:"Ocasional"},{value:"UNKNOWN",label:"No determinada"}]} {...form.getInputProps("usageFrequency")} />
           <Select label={label("Criticidad", help.criticality)} data={[{value:"HIGH",label:"Alta"},{value:"MEDIUM",label:"Media"},{value:"LOW",label:"Baja"}]} {...form.getInputProps("criticality")} />
         </SimpleGrid>
         <Select label={label("¿Existe una solución similar?", help.similar)} data={booleanOptions} value={String(form.values.hasSimilarSolution)} onChange={v => form.setFieldValue("hasSimilarSolution", v === "true")} />
-        {form.values.hasSimilarSolution && <Select label="Solución similar" searchable required data={solutionOptions} {...form.getInputProps("similarSolutionId")} />}
+        {form.values.hasSimilarSolution && <Select label="Solución similar" searchable /* required */ data={solutionOptions} {...form.getInputProps("similarSolutionId")} />}
         <MultiSelect label="Dominios empresariales" searchable data={domains.map(d => ({value:d.id,label:d.name}))} {...form.getInputProps("domainIds")} />
         <MultiSelect label="Áreas relacionadas" searchable data={areas.map(a => ({value:a.id,label:a.name}))} {...form.getInputProps("areaIds")} />
         <MultiSelect label="Capacidades empresariales" searchable data={capabilities.map(c => ({value:c.id,label:c.name}))} {...form.getInputProps("capabilityIds")} />
@@ -139,12 +145,12 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
 
       {step === 5 && <Stack gap="md"><Title order={5}>Situación actual</Title><Divider />
         <Select label={label("¿Tiene problemas o limitaciones?", help.problems)} data={booleanOptions} value={String(form.values.hasProblems)} onChange={v => form.setFieldValue("hasProblems", v === "true")} />
-        {form.values.hasProblems && <Textarea label="Detalle de los problemas" required rows={4} {...form.getInputProps("problemDetails")} />}
+        {form.values.hasProblems && <Textarea label="Detalle de los problemas" /* required */ rows={4} {...form.getInputProps("problemDetails")} />}
         <Select label={label("¿Existe iniciativa de sustitución o retiro?", help.initiative)} data={booleanOptions} value={String(form.values.hasReplacementInitiative)} onChange={v => form.setFieldValue("hasReplacementInitiative", v === "true")} />
         {form.values.hasReplacementInitiative && <SimpleGrid cols={{ base: 1, sm: 2 }}><Select label={label("Solución sustituta registrada", help.replacement)} searchable clearable data={solutionOptions} {...form.getInputProps("replacementSolutionId")} /><TextInput label="Nombre de sustituta propuesta" description="Úsalo si todavía no está registrada." {...form.getInputProps("proposedReplacementName")} /></SimpleGrid>}
         <Textarea label="Observaciones adicionales" rows={4} {...form.getInputProps("additionalNotes")} />
       </Stack>}
     </Paper>
-    <Group justify="space-between" mt="lg"><Button variant="default" disabled={step === 1} onClick={() => setStep(v => v - 1)}>Atrás</Button>{step < steps.length ? <Button onClick={() => setStep(v => v + 1)}>Siguiente</Button> : <Button loading={loading} onClick={() => form.onSubmit(handleSubmit)()}>{isEditing ? "Guardar cambios" : "Guardar solución"}</Button>}</Group>
+    <Group justify="space-between" mt="lg"><Button type="button" variant="default" disabled={step === 1} onClick={() => setStep(v => v - 1)}>Atrás</Button>{step < steps.length ? <Button type="button" onClick={() => setStep(v => v + 1)}>Siguiente</Button> : <Button type="submit" loading={loading}>{isEditing ? "Guardar cambios" : "Guardar solución"}</Button>}</Group>
   </Box>
 }

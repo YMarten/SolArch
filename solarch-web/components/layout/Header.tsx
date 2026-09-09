@@ -2,7 +2,7 @@
 
 import {
   Group, Text, Breadcrumbs, Anchor, ActionIcon,
-  useMantineColorScheme, Avatar, Menu
+  useMantineColorScheme, Avatar, Menu, UnstyledButton
 } from "@mantine/core"
 import {
   IconSun, IconMoon, IconUser,
@@ -60,6 +60,7 @@ export function Header() {
           variant="subtle"
           onClick={toggleColorScheme}
           title="Cambiar modo"
+          aria-label="Cambiar modo"
         >
           {colorScheme === "dark"
             ? <IconSun size={18} />
@@ -69,8 +70,10 @@ export function Header() {
 
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>
-            <Group gap="xs" style={{ cursor: "pointer" }}>
+            <UnstyledButton type="button" aria-label="Menú de usuario">
+            <Group gap="xs" component="span">
               <Avatar
+                component="span"
                 size="sm"
                 radius="xl"
                 color="blue"
@@ -78,10 +81,11 @@ export function Header() {
               >
                 {CURRENT_USER.initials}
               </Avatar>
-              <Text size="sm" visibleFrom="sm">
+              <Text component="span" size="sm" visibleFrom="sm">
                 {CURRENT_USER.name}
               </Text>
             </Group>
+            </UnstyledButton>
           </Menu.Target>
 
           <Menu.Dropdown>

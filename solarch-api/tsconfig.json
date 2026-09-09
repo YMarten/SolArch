@@ -4,6 +4,8 @@
     "module": "CommonJS",
     "lib": ["ES2020"],
     "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmitOnError": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -11,6 +13,6 @@
     "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": ["src/**/*", "prisma.config.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
