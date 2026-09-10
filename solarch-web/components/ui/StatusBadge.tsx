@@ -3,10 +3,11 @@ import { SolutionStatus } from "@/types/solution"
 
 const config: Record<SolutionStatus, { label: string; color: string }> = {
   ACTIVE:          { label: "Activa",          color: "green"  },
-  DEPRECATED:      { label: "Deprecada",       color: "red"    },
+  DEPRECATED:      { label: "Obsoleta",       color: "red"    },
   IN_SUBSTITUTION: { label: "En sustitución",  color: "orange" },
   IN_DEVELOPMENT:  { label: "En desarrollo",   color: "blue"   },
-  MAINTENANCE:     { label: "Mantenimiento",   color: "yellow" },
+  MAINTENANCE:     { label: "Solo mantenimiento",   color: "yellow" },
+  RETIRED:         { label: "Retirada", color: "gray" },
 }
 
 export function StatusBadge({ status }: { status: SolutionStatus }) {

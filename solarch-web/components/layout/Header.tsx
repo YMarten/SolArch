@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  Group, Text, Breadcrumbs, Anchor, ActionIcon,
+  Box, Group, Text, Breadcrumbs, Anchor, ActionIcon,
   useMantineColorScheme, Avatar, Menu, UnstyledButton
 } from "@mantine/core"
 import {
@@ -32,7 +32,7 @@ const CURRENT_USER = {
 
 export function Header() {
   const pathname                            = usePathname()
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const { toggleColorScheme } = useMantineColorScheme()
 
   const segments = pathname
     .split("/")
@@ -62,10 +62,12 @@ export function Header() {
           title="Cambiar modo"
           aria-label="Cambiar modo"
         >
-          {colorScheme === "dark"
-            ? <IconSun size={18} />
-            : <IconMoon size={18} />
-          }
+          <Box component="span" lightHidden style={{ display: "flex" }}>
+            <IconSun size={18} />
+          </Box>
+          <Box component="span" darkHidden style={{ display: "flex" }}>
+            <IconMoon size={18} />
+          </Box>
         </ActionIcon>
 
         <Menu shadow="md" width={200} position="bottom-end">

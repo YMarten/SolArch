@@ -80,6 +80,7 @@ export default function EditSolutionPage() {
         receivesUpdates: solution.receivesUpdates,
         licenseStatus: solution.licenseStatus,
         hostingMode: solution.hostingMode,
+        managementModel: solution.managementModel ?? "UNKNOWN",
         knownDependencies: solution.knownDependencies,
         failureImpact: solution.failureImpact,
         failureImpactDetails: solution.failureImpactDetails,

@@ -16,6 +16,7 @@ datasource db {
 // ─────────────────────────────────────────────
 
 enum SolutionStatus {
+  RETIRED
   ACTIVE           // Activa
   DEPRECATED       // Deprecada
   IN_SUBSTITUTION  // En sustitución
@@ -57,9 +58,7 @@ enum SolutionOrigin {
 enum UsageStatus {
   IN_USE
   LIMITED_USE
-  IN_IMPLEMENTATION
-  IN_SUBSTITUTION
-  OUT_OF_USE
+  NOT_IN_USE
 }
 
 enum UsageFrequency {
@@ -78,9 +77,9 @@ enum AnswerStatus {
 }
 
 enum HostingMode {
-  CLOUD
-  INTERNAL_INFRASTRUCTURE
-  VENDOR_INFRASTRUCTURE
+  ON_PREMISE
+  CLOUD_COMPANY
+  EXTERNAL
   HYBRID
   UNKNOWN
 }
@@ -89,6 +88,13 @@ enum FailureImpact {
   HIGH
   MEDIUM
   LOW
+  UNKNOWN
+}
+
+enum ManagementModel {
+  COMPANY_MANAGED
+  PROVIDER_MANAGED
+  SHARED_MANAGEMENT
   UNKNOWN
 }
 
@@ -157,7 +163,8 @@ model Solution {
   responsibleAreaId          String?
   businessProcess            String?
   userGroups                 String[]        @default([])
-  usageStatus                UsageStatus?
+    usageStatus                UsageStatus?
+    legacyUsageStatus          String?
   usageFrequency             UsageFrequency?
   hasSimilarSolution         Boolean         @default(false)
   similarSolutionId          String?
@@ -165,6 +172,7 @@ model Solution {
   receivesUpdates            AnswerStatus    @default(UNKNOWN)
   licenseStatus              AnswerStatus    @default(UNKNOWN)
   hostingMode                HostingMode     @default(UNKNOWN)
+  managementModel            ManagementModel @default(UNKNOWN)
   knownDependencies          String?
   failureImpact              FailureImpact   @default(UNKNOWN)
   failureImpactDetails       String?
@@ -203,6 +211,7 @@ model Solution {
   @@index([responsibleAreaId])
   @@index([usageStatus])
   @@index([hostingMode])
+  @@index([managementModel])
   @@index([supportStatus])
   @@index([licenseStatus])
   @@index([hasProblems])

@@ -8,6 +8,7 @@ import {
   UsageFrequency,
   AnswerStatus,
   HostingMode,
+  ManagementModel,
   FailureImpact
 } from "@prisma/client"
 
@@ -24,7 +25,7 @@ export interface CreateSolutionDTO {
   owner: string
   techOwner?: string
   repoUrl?: string
-  lastDeploy?: Date
+  lastDeploy?: Date | string | null
   tags?: string[]
   responsibleAreaId?: string | null
   businessProcess?: string
@@ -37,6 +38,7 @@ export interface CreateSolutionDTO {
   receivesUpdates?: AnswerStatus
   licenseStatus?: AnswerStatus
   hostingMode?: HostingMode
+  managementModel?: ManagementModel
   knownDependencies?: string
   failureImpact?: FailureImpact
   failureImpactDetails?: string

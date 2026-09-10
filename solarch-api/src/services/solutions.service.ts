@@ -104,7 +104,9 @@ export const solutionsService = {
 
     const normalizedData = {
       ...solutionData,
-      ...(solutionData.lastDeploy ? { lastDeploy: new Date(solutionData.lastDeploy) } : {}),
+      ...(solutionData.lastDeploy !== undefined
+        ? { lastDeploy: solutionData.lastDeploy ? new Date(solutionData.lastDeploy) : null }
+        : {}),
       ...(solutionData.hasSimilarSolution === false ? { similarSolutionId: null } : {}),
       ...(solutionData.hasProblems === false ? { problemDetails: null } : {}),
       ...(solutionData.hasReplacementInitiative === false
