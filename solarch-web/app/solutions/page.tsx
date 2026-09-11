@@ -19,6 +19,7 @@ export default function SolutionsPage() {
     role:        "",
     usageStatus: "",
     hostingMode: "",
+    managementModel: "",
     supportStatus: "",
     hasProblems: "",
     hasReplacementInitiative: "",
@@ -56,6 +57,7 @@ export default function SolutionsPage() {
       const matchSurvey =
         (!filters.usageStatus || s.usageStatus === filters.usageStatus) &&
         (!filters.hostingMode || s.hostingMode === filters.hostingMode) &&
+        (!filters.managementModel || s.managementModel === filters.managementModel) &&
         (!filters.supportStatus || s.supportStatus === filters.supportStatus) &&
         (!filters.hasProblems || String(s.hasProblems) === filters.hasProblems) &&
         (!filters.hasReplacementInitiative || String(s.hasReplacementInitiative) === filters.hasReplacementInitiative)

@@ -22,7 +22,7 @@ exports.solutionsService = {
                 similarSolution: { select: { id: true, name: true } },
                 replacementSolution: { select: { id: true, name: true } },
             },
-            orderBy: { createdAt: "desc" }
+            orderBy: { createdAt: "asc" }
         });
     },
     async findById(id) {
@@ -97,7 +97,9 @@ exports.solutionsService = {
         }
         const normalizedData = {
             ...solutionData,
-            ...(solutionData.lastDeploy ? { lastDeploy: new Date(solutionData.lastDeploy) } : {}),
+            ...(solutionData.lastDeploy !== undefined
+                ? { lastDeploy: solutionData.lastDeploy ? new Date(solutionData.lastDeploy) : null }
+                : {}),
             ...(solutionData.hasSimilarSolution === false ? { similarSolutionId: null } : {}),
             ...(solutionData.hasProblems === false ? { problemDetails: null } : {}),
             ...(solutionData.hasReplacementInitiative === false

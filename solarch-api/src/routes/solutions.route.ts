@@ -1,6 +1,21 @@
 import { FastifyInstance } from "fastify"
 import { solutionsService } from "../services/solutions.service"
 import { CreateSolutionDTO, UpdateSolutionDTO } from "../types/solution.types"
+import { SolutionStatus, UsageStatus, HostingMode, ManagementModel } from "@prisma/client"
+
+export const solutionStateBodySchema = {
+  type: "object",
+  properties: {
+    hostingMode: { type: "string", enum: Object.values(HostingMode) },
+    managementModel: { type: "string", enum: Object.values(ManagementModel) },
+    status: { type: "string", enum: Object.values(SolutionStatus) },
+    usageStatus: { anyOf: [
+      { type: "string", enum: Object.values(UsageStatus) },
+      { type: "null" },
+    ] },
+    legacyUsageStatus: { not: {} },
+  },
+}
 
 export async function solutionsRoute(server: FastifyInstance) {
 
@@ -31,7 +46,7 @@ export async function solutionsRoute(server: FastifyInstance) {
   })
 
   // POST /api/solutions
-  server.post("/", async (request, reply) => {
+  server.post("/", { schema: { body: { ...solutionStateBodySchema, required: ["status"] } } }, async (request, reply) => {
     try {
       const body = request.body as CreateSolutionDTO
       const solution = await solutionsService.create(body)
@@ -42,13 +57,14 @@ export async function solutionsRoute(server: FastifyInstance) {
   })
 
   // PUT /api/solutions/:id
-  server.put("/:id", async (request, reply) => {
+  server.put("/:id", { schema: { body: solutionStateBodySchema } }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }
       const body = request.body as UpdateSolutionDTO
       const solution = await solutionsService.update(id, body)
       return reply.send(solution)
     } catch (error) {
+      request.log.error({ err: error }, "Error al actualizar la solución")
       return reply.status(500).send({ error: "Error al actualizar la solución" })
     }
   })

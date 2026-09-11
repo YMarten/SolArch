@@ -1,7 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.solutionStateBodySchema = void 0;
 exports.solutionsRoute = solutionsRoute;
 const solutions_service_1 = require("../services/solutions.service");
+const client_1 = require("@prisma/client");
+exports.solutionStateBodySchema = {
+    type: "object",
+    properties: {
+        hostingMode: { type: "string", enum: Object.values(client_1.HostingMode) },
+        managementModel: { type: "string", enum: Object.values(client_1.ManagementModel) },
+        status: { type: "string", enum: Object.values(client_1.SolutionStatus) },
+        usageStatus: { anyOf: [
+                { type: "string", enum: Object.values(client_1.UsageStatus) },
+                { type: "null" },
+            ] },
+        legacyUsageStatus: { not: {} },
+    },
+};
 async function solutionsRoute(server) {
     // GET /api/solutions
     server.get("/", async (request, reply) => {
@@ -28,7 +43,7 @@ async function solutionsRoute(server) {
         }
     });
     // POST /api/solutions
-    server.post("/", async (request, reply) => {
+    server.post("/", { schema: { body: { ...exports.solutionStateBodySchema, required: ["status"] } } }, async (request, reply) => {
         try {
             const body = request.body;
             const solution = await solutions_service_1.solutionsService.create(body);
@@ -39,7 +54,7 @@ async function solutionsRoute(server) {
         }
     });
     // PUT /api/solutions/:id
-    server.put("/:id", async (request, reply) => {
+    server.put("/:id", { schema: { body: exports.solutionStateBodySchema } }, async (request, reply) => {
         try {
             const { id } = request.params;
             const body = request.body;
@@ -47,6 +62,7 @@ async function solutionsRoute(server) {
             return reply.send(solution);
         }
         catch (error) {
+            request.log.error({ err: error }, "Error al actualizar la solución");
             return reply.status(500).send({ error: "Error al actualizar la solución" });
         }
     });

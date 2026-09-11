@@ -2,13 +2,13 @@
 
 import { Anchor, Badge, Group, Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { Solution } from "@/types/solution"
+import { hostingModeOptions, managementModelOptions } from "@/lib/hosting-mode"
 
 const labels: Record<string, string> = {
-  IN_USE: "En uso", LIMITED_USE: "Uso limitado", IN_IMPLEMENTATION: "En implementación",
-  IN_SUBSTITUTION: "En sustitución", OUT_OF_USE: "Fuera de uso", CONTINUOUS: "Continua",
+  IN_USE: "En uso", LIMITED_USE: "Uso limitado",
+  NOT_IN_USE: "Fuera de uso", CONTINUOUS: "Continua",
   DAILY: "Diaria", WEEKLY: "Semanal", MONTHLY: "Mensual", OCCASIONAL: "Ocasional",
-  YES: "Sí", NO: "No", UNKNOWN: "No determinado", CLOUD: "Nube",
-  INTERNAL_INFRASTRUCTURE: "Infraestructura interna", VENDOR_INFRASTRUCTURE: "Infraestructura del proveedor",
+  YES: "Sí", NO: "No", UNKNOWN: "No determinado",
   HYBRID: "Híbrida", HIGH: "Alto", MEDIUM: "Medio", LOW: "Bajo",
 }
 
@@ -21,7 +21,8 @@ export function SolutionSurveyDetails({ solution }: { solution: Solution }) {
     <Paper withBorder p="md"><Title order={5} mb="md">Uso y responsabilidad</Title><SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
       <Value label="Área responsable" value={solution.responsibleArea?.name} /><Value label="Contacto principal" value={solution.owner} />
       <Value label="Responsable técnico" value={solution.techOwner} /><Value label="Proceso soportado" value={solution.businessProcess} />
-      <Value label="Estado actual" value={solution.usageStatus} /><Value label="Frecuencia" value={solution.usageFrequency} />
+      <Value label="Estado actual de uso" value={solution.usageStatus} /><Value label="Frecuencia" value={solution.usageFrequency} />
+      {!solution.usageStatus && solution.legacyUsageStatus && <Value label="Uso anterior (pendiente de revisión)" value={solution.legacyUsageStatus === "IN_IMPLEMENTATION" ? "En implementación" : solution.legacyUsageStatus === "IN_SUBSTITUTION" ? "En sustitución" : solution.legacyUsageStatus} />}
     </SimpleGrid>{solution.userGroups?.length > 0 && <Group mt="md" gap="xs"><Text size="xs" c="dimmed">Grupos usuarios:</Text>{solution.userGroups.map(g => <Badge key={g} variant="light">{g}</Badge>)}</Group>}
       {solution.similarSolution && <Text size="sm" mt="md">Solución similar: <Anchor href={`/solutions/${solution.similarSolution.id}`}>{solution.similarSolution.name}</Anchor></Text>}
     </Paper>
@@ -30,7 +31,8 @@ export function SolutionSurveyDetails({ solution }: { solution: Solution }) {
       <Value label="Recibe actualizaciones" value={solution.receivesUpdates} /><Value label="Licenciamiento vigente" value={solution.licenseStatus} />
     </SimpleGrid></Paper>
     <Paper withBorder p="md"><Title order={5} mb="md">Tecnología y dependencias</Title><SimpleGrid cols={{ base: 1, sm: 2 }}>
-      <Value label="Alojamiento" value={solution.hostingMode} /><Value label="Impacto de una falla" value={solution.failureImpact} />
+      <Value label="Alojamiento" value={hostingModeOptions.find(option => option.value === solution.hostingMode)?.label ?? solution.hostingMode} /><Value label="Impacto de una falla" value={solution.failureImpact} />
+      <Value label="Modelo de administración" value={managementModelOptions.find(option => option.value === solution.managementModel)?.label ?? "No determinado"} />
       <Value label="Dependencias conocidas" value={solution.knownDependencies} /><Value label="Detalle del impacto" value={solution.failureImpactDetails} />
     </SimpleGrid></Paper>
     <Paper withBorder p="md"><Title order={5} mb="md">Situación actual</Title><Stack gap="sm">

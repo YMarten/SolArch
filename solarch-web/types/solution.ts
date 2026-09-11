@@ -9,6 +9,7 @@ export type SolutionStatus =
   | "IN_SUBSTITUTION"
   | "IN_DEVELOPMENT"
   | "MAINTENANCE"
+  | "RETIRED"
 
 export type SolutionType =
   | "WEB"
@@ -33,10 +34,11 @@ export type SolutionOrigin =
   | "CUSTOM_THIRD"
 
 export type Criticality = "HIGH" | "MEDIUM" | "LOW"
-export type UsageStatus = "IN_USE" | "LIMITED_USE" | "IN_IMPLEMENTATION" | "IN_SUBSTITUTION" | "OUT_OF_USE"
+export type UsageStatus = "IN_USE" | "LIMITED_USE" | "NOT_IN_USE"
 export type UsageFrequency = "CONTINUOUS" | "DAILY" | "WEEKLY" | "MONTHLY" | "OCCASIONAL" | "UNKNOWN"
 export type AnswerStatus = "YES" | "NO" | "UNKNOWN"
-export type HostingMode = "CLOUD" | "INTERNAL_INFRASTRUCTURE" | "VENDOR_INFRASTRUCTURE" | "HYBRID" | "UNKNOWN"
+export type HostingMode = "ON_PREMISE" | "CLOUD_COMPANY" | "EXTERNAL" | "HYBRID" | "UNKNOWN"
+export type ManagementModel = "COMPANY_MANAGED" | "PROVIDER_MANAGED" | "SHARED_MANAGEMENT" | "UNKNOWN"
 export type FailureImpact = "HIGH" | "MEDIUM" | "LOW" | "UNKNOWN"
 
 export interface Solution {
@@ -59,7 +61,8 @@ export interface Solution {
   responsibleArea?: Area
   businessProcess?: string
   userGroups: string[]
-  usageStatus?: UsageStatus
+  usageStatus?: UsageStatus | null
+  legacyUsageStatus?: string | null
   usageFrequency?: UsageFrequency
   hasSimilarSolution: boolean
   similarSolutionId?: string
@@ -68,6 +71,7 @@ export interface Solution {
   receivesUpdates: AnswerStatus
   licenseStatus: AnswerStatus
   hostingMode: HostingMode
+  managementModel: ManagementModel
   knownDependencies?: string
   failureImpact: FailureImpact
   failureImpactDetails?: string
@@ -112,6 +116,7 @@ export interface CreateSolutionDTO {
   receivesUpdates?: AnswerStatus
   licenseStatus?: AnswerStatus
   hostingMode?: HostingMode
+  managementModel?: ManagementModel
   knownDependencies?: string
   failureImpact?: FailureImpact
   failureImpactDetails?: string

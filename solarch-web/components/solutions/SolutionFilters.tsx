@@ -1,5 +1,7 @@
 "use client"
 
+import { solutionStatusOptions, usageStatusOptions } from "@/lib/solution-status"
+import { hostingModeOptions, managementModelOptions } from "@/lib/hosting-mode"
 import { Group, TextInput, Select, Button } from "@mantine/core"
 import { IconSearch, IconPlus } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"
@@ -11,6 +13,7 @@ interface Filters {
   role: string
   usageStatus: string
   hostingMode: string
+  managementModel: string
   supportStatus: string
   hasProblems: string
   hasReplacementInitiative: string
@@ -38,18 +41,12 @@ export function SolutionFilters({ filters, onChange }: Props) {
           style={{ width: 220 }}
         />
         <Select
-          placeholder="Estado"
+          placeholder="Estado arquitectónico"
           clearable
           value={filters.status}
           onChange={v => update("status", v ?? "")}
           style={{ width: 160 }}
-          data={[
-            { value: "ACTIVE",          label: "Activa"          },
-            { value: "DEPRECATED",      label: "Deprecada"       },
-            { value: "IN_SUBSTITUTION", label: "En sustitución"  },
-            { value: "IN_DEVELOPMENT",  label: "En desarrollo"   },
-            { value: "MAINTENANCE",     label: "Mantenimiento"   },
-          ]}
+          data={solutionStatusOptions}
         />
         <Select
           placeholder="Criticidad"
@@ -77,8 +74,9 @@ export function SolutionFilters({ filters, onChange }: Props) {
             { value: "INTERACTION_CHANNEL", label: "Canal e interacción"        },
           ]}
         />
-        <Select placeholder="Estado de uso" clearable value={filters.usageStatus} onChange={v => update("usageStatus", v ?? "")} style={{ width: 170 }} data={[{value:"IN_USE",label:"En uso"},{value:"LIMITED_USE",label:"Uso limitado"},{value:"IN_IMPLEMENTATION",label:"En implementación"},{value:"IN_SUBSTITUTION",label:"En sustitución"},{value:"OUT_OF_USE",label:"Fuera de uso"}]} />
-        <Select placeholder="Alojamiento" clearable value={filters.hostingMode} onChange={v => update("hostingMode", v ?? "")} style={{ width: 190 }} data={[{value:"CLOUD",label:"Nube"},{value:"INTERNAL_INFRASTRUCTURE",label:"Infraestructura interna"},{value:"VENDOR_INFRASTRUCTURE",label:"Infraestructura proveedor"},{value:"HYBRID",label:"Híbrida"},{value:"UNKNOWN",label:"No determinada"}]} />
+        <Select placeholder="Estado de uso" clearable value={filters.usageStatus} onChange={v => update("usageStatus", v ?? "")} style={{ width: 170 }} data={usageStatusOptions} />
+        <Select placeholder="Alojamiento" clearable value={filters.hostingMode} onChange={v => update("hostingMode", v ?? "")} style={{ width: 190 }} data={hostingModeOptions} />
+        <Select placeholder="Administración" clearable value={filters.managementModel} onChange={v => update("managementModel", v ?? "")} style={{ width: 220 }} data={managementModelOptions} />
         <Select placeholder="Soporte" clearable value={filters.supportStatus} onChange={v => update("supportStatus", v ?? "")} style={{ width: 150 }} data={[{value:"YES",label:"Vigente"},{value:"NO",label:"No vigente"},{value:"UNKNOWN",label:"No determinado"}]} />
         <Select placeholder="Problemas" clearable value={filters.hasProblems} onChange={v => update("hasProblems", v ?? "")} style={{ width: 145 }} data={[{value:"true",label:"Con problemas"},{value:"false",label:"Sin problemas"}]} />
         <Select placeholder="Sustitución/retiro" clearable value={filters.hasReplacementInitiative} onChange={v => update("hasReplacementInitiative", v ?? "")} style={{ width: 190 }} data={[{value:"true",label:"Con iniciativa"},{value:"false",label:"Sin iniciativa"}]} />
