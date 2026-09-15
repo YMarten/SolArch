@@ -26,7 +26,6 @@ export type SolutionRole =
   | "SATELLITE"
   | "INTEGRATION"
   | "DATA_ANALYTICS"
-  | "INTERACTION_CHANNEL"
 
 export type SolutionOrigin =
   | "INTERNAL"

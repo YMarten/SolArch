@@ -131,7 +131,7 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Select label="Tipo" data={["WEB","DESKTOP","MOBILE","API","BATCH","INTEGRATION","INFRASTRUCTURE","OTHER"]} {...form.getInputProps("type")} />
           <Select label="Origen" data={[{value:"INTERNAL",label:"Interna"},{value:"EXTERNAL",label:"Externa"},{value:"CUSTOM_THIRD",label:"A medida por tercero"}]} {...form.getInputProps("origin")} />
-          <Select label="Rol arquitectónico" data={[{value:"CORE_TRANSACTIONAL",label:"Core transaccional"},{value:"SATELLITE",label:"Satélite"},{value:"INTEGRATION",label:"Integración"},{value:"DATA_ANALYTICS",label:"Datos y analítica"},{value:"INTERACTION_CHANNEL",label:"Canal de interacción"}]} {...form.getInputProps("role")} />
+          <Select label="Rol arquitectónico" data={[{value:"CORE_TRANSACTIONAL",label:"Core transaccional"},{value:"SATELLITE",label:"Satélite"},{value:"INTEGRATION",label:"Integración"},{value:"DATA_ANALYTICS",label:"Datos y analítica"}]} {...form.getInputProps("role")} />
         </SimpleGrid>
         <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="URL del repositorio" {...form.getInputProps("repoUrl")} /><TextInput type="date" label="Último despliegue a producción" {...form.getInputProps("lastDeploy")} /></SimpleGrid>
         <TagsInput label="Etiquetas" {...form.getInputProps("tags")} />

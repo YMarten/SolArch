@@ -71,7 +71,6 @@ export function SolutionFilters({ filters, onChange }: Props) {
             { value: "SATELLITE",           label: "Sistema satélite"           },
             { value: "INTEGRATION",         label: "Plataforma de integración"  },
             { value: "DATA_ANALYTICS",      label: "Información y analítica"    },
-            { value: "INTERACTION_CHANNEL", label: "Canal e interacción"        },
           ]}
         />
         <Select placeholder="Estado de uso" clearable value={filters.usageStatus} onChange={v => update("usageStatus", v ?? "")} style={{ width: 170 }} data={usageStatusOptions} />

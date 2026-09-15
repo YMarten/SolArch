@@ -26,7 +26,6 @@ const roleConfig: Record<string, {
   SATELLITE: { label: "Sistema satélite", color: "violet" },
   INTEGRATION: { label: "Plataforma de integración", color: "orange" },
   DATA_ANALYTICS: { label: "Información y analítica", color: "teal" },
-  INTERACTION_CHANNEL: { label: "Canal e interacción", color: "pink" },
 }
 
 const originLabels: Record<string, string> = {
@@ -46,13 +45,6 @@ const typeLabels: Record<string, string> = {
   OTHER: "Otro",
 }
 
-const roleLabels: Record<string, string> = {
-  CORE_TRANSACTIONAL: "Core transaccional",
-  SATELLITE: "Sistema satélite",
-  INTEGRATION: "Plataforma de integración",
-  DATA_ANALYTICS: "Información y analítica",
-  INTERACTION_CHANNEL: "Canal e interacción",
-}
 
 interface Props {
   solution: Solution

@@ -20,6 +20,25 @@ test("solution states: validate requests before persistence", async () => {
   }
   try {
     for (const method of ["POST", "PUT"] as const) {
+      for (const role of ["CORE_TRANSACTIONAL", "SATELLITE", "INTEGRATION", "DATA_ANALYTICS"]) {
+        const response = await app.inject({
+          method, url: method === "POST" ? "/api/solutions" : "/api/solutions/test",
+          payload: { status: "ACTIVE", role },
+        })
+        assert.equal(response.statusCode, method === "POST" ? 201 : 200)
+        assert.equal(response.json().role, role)
+      }
+      for (const role of ["INTERACTION_CHANNEL", "INVALID", "", null]) {
+        const count = calls.length
+        const response = await app.inject({
+          method, url: method === "POST" ? "/api/solutions" : "/api/solutions/test",
+          payload: { status: "ACTIVE", role },
+        })
+        assert.equal(response.statusCode, 400)
+        assert.equal(calls.length, count)
+      }
+    }
+    for (const method of ["POST", "PUT"] as const) {
       for (const hostingMode of ["ON_PREMISE", "CLOUD_COMPANY", "EXTERNAL", "HYBRID", "UNKNOWN"]) {
         const response = await app.inject({
           method, url: method === "POST" ? "/api/solutions" : "/api/solutions/test",

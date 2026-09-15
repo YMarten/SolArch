@@ -33,7 +33,6 @@ const roleColors: Record<string, string> = {
     SATELLITE: "#7048e8", // violet
     INTEGRATION: "#f76707", // orange
     DATA_ANALYTICS: "#0ca678", // teal
-    INTERACTION_CHANNEL: "#e64980", // pink
 }
 
 const roleLabels: Record<string, string> = {
@@ -41,7 +40,6 @@ const roleLabels: Record<string, string> = {
     SATELLITE: "Sistema satélite",
     INTEGRATION: "Plataforma de integración",
     DATA_ANALYTICS: "Información y analítica",
-    INTERACTION_CHANNEL: "Canal e interacción",
 }
 
 export function EcosystemGraph() {

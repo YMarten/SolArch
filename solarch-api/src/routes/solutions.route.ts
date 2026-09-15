@@ -1,11 +1,12 @@
 import { FastifyInstance } from "fastify"
 import { solutionsService } from "../services/solutions.service"
 import { CreateSolutionDTO, UpdateSolutionDTO } from "../types/solution.types"
-import { SolutionStatus, UsageStatus, HostingMode, ManagementModel } from "@prisma/client"
+import { SolutionStatus, UsageStatus, HostingMode, ManagementModel, SolutionRole } from "@prisma/client"
 
 export const solutionStateBodySchema = {
   type: "object",
   properties: {
+    role: { type: "string", enum: Object.values(SolutionRole) },
     hostingMode: { type: "string", enum: Object.values(HostingMode) },
     managementModel: { type: "string", enum: Object.values(ManagementModel) },
     status: { type: "string", enum: Object.values(SolutionStatus) },

@@ -3,7 +3,7 @@
 import { Card, Text, Group, Stack, Badge, ThemeIcon } from "@mantine/core"
 import {
   IconGitBranch, IconDatabase, IconPuzzle,
-  IconArrowsExchange, IconChartBar, IconDevices
+  IconArrowsExchange, IconChartBar
 } from "@tabler/icons-react"
 import { Solution } from "@/types/solution"
 import { StatusBadge } from "@/components/ui/StatusBadge"
@@ -19,7 +19,6 @@ const roleConfig: Record<string, {
   SATELLITE:           { label: "Sistema satélite",          color: "violet",  icon: IconPuzzle          },
   INTEGRATION:         { label: "Plataforma de integración", color: "orange",  icon: IconArrowsExchange  },
   DATA_ANALYTICS:      { label: "Información y analítica",   color: "teal",    icon: IconChartBar        },
-  INTERACTION_CHANNEL: { label: "Canal e interacción",       color: "pink",    icon: IconDevices         },
 }
 
 interface Props {

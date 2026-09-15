@@ -116,7 +116,7 @@ The database has 16 models and 12 enums. `Solution` is the central entity.
 - `ChangeLog` — automatic audit log of changes to a solution
 
 **Key enums:**
-- `SolutionRole`: CORE_TRANSACTIONAL | SATELLITE | INTEGRATION | DATA_ANALYTICS | INTERACTION_CHANNEL
+- `SolutionRole`: CORE_TRANSACTIONAL | SATELLITE | INTEGRATION | DATA_ANALYTICS
 - `SolutionStatus`: ACTIVE | DEPRECATED | IN_SUBSTITUTION | IN_DEVELOPMENT | MAINTENANCE
 - `SolutionOrigin`: INTERNAL | EXTERNAL | CUSTOM_THIRD
 - `ReviewResult`: COMPLIANT | COMPLIANT_WITH_NOTES | NON_COMPLIANT | IN_REVIEW

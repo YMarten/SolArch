@@ -43,10 +43,9 @@ enum Criticality {
 
 enum SolutionRole {
   CORE_TRANSACTIONAL   // System of Record: ejecuta procesos críticos y es fuente oficial de datos maestros y transaccionales
-  SATELLITE            // Extiende funcionalidad del Core, no es dueña de datos maestros, consume servicios expuestos por otras plataformas
+  SATELLITE            // Complementa al core con funciones de negocio o canales de acceso e interacción para usuarios
   INTEGRATION          // Capa transversal de desacoplamiento: habilita comunicación mediante servicios y eventos, evita dependencias directas
   DATA_ANALYTICS       // Orientada a análisis y reporte, consume datos sin modificar ni registrar transacciones operativas
-  INTERACTION_CHANNEL  // Canales de interacción con usuarios, sin lógica de negocio crítica, delega procesamiento a sistemas correspondientes
 }
 
 enum SolutionOrigin {
