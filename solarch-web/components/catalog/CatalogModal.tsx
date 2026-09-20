@@ -16,7 +16,7 @@ interface Field {
 interface Props {
   opened: boolean
   onClose: () => void
-  onSubmit: (values: Record<string, string>) => Promise<void>
+  onSubmit: (values: Record<string, string>) => Promise<void | false>
   title: string
   fields: Field[]
   initialValues?: Record<string, string>
@@ -39,13 +39,12 @@ export function CatalogModal({
   }, [opened])
 
   const handleSubmit = async (values: Record<string, string>) => {
-    await onSubmit(values)
-    form.reset()
+    if (await onSubmit(values) !== false) form.reset()
   }
 
   return (
-    <Modal opened={opened} onClose={onClose} title={title} centered>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+    <Modal opened={opened} onClose={onClose} title={title} centered closeOnEscape={!loading} closeOnClickOutside={!loading} withCloseButton={!loading}>
+      <form onSubmit={event => { event.stopPropagation(); form.onSubmit(handleSubmit)(event) }}>
         <Stack gap="sm">
           {fields.map(f => {
             if (f.type === "select") {
@@ -81,7 +80,7 @@ export function CatalogModal({
             )
           })}
           <Group justify="flex-end" mt="sm">
-            <Button type="button" variant="default" onClick={onClose}>Cancelar</Button>
+            <Button type="button" variant="default" onClick={onClose} disabled={loading}>Cancelar</Button>
             <Button type="submit" loading={loading}>Guardar</Button>
           </Group>
         </Stack>

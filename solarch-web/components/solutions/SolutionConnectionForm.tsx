@@ -18,6 +18,7 @@ interface Props {
 }
 
 const connectionTypes = [
+  { value: "SOAP", label: "SOAP" },
   { value: "REST",      label: "REST"             },
   { value: "GRAPHQL",   label: "GraphQL"          },
   { value: "EVENT",     label: "Evento (Kafka/RabbitMQ)" },
@@ -83,11 +84,11 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId 
         <Stack gap="sm">
 
           <Select
-            label="Dirección"
-            description="¿Esta solución consume o provee?"
+            label="¿Quién llama?"
+            description="Indica quién inicia la llamada, independientemente de si envía o recibe datos."
             data={[
-              { value: "outgoing", label: "Esta solución provee a →" },
-              { value: "incoming", label: "Esta solución consume de ←" },
+              { value: "outgoing", label: "Esta solución llama a →" },
+              { value: "incoming", label: "Esta solución recibe llamadas de ←" },
             ]}
             {...form.getInputProps("direction")}
           />

@@ -98,6 +98,7 @@ enum ManagementModel {
 }
 
 enum ConnectionType {
+  SOAP
   REST
   GRAPHQL
   EVENT           // Kafka, RabbitMQ, etc.
@@ -346,9 +347,9 @@ model Connection {
   description String?
 
   from         Solution @relation("ConnectionFrom", fields: [fromId], references: [id], onDelete: Cascade)
-  fromId       String
+  fromId       String // Solución que llama
   to           Solution @relation("ConnectionTo", fields: [toId], references: [id], onDelete: Cascade)
-  toId         String
+  toId         String // Solución llamada
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

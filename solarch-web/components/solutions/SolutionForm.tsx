@@ -2,8 +2,11 @@
 
 import { solutionStatusOptions, usageStatusOptions, statusExplanation } from "@/lib/solution-status"
 import { hostingModeOptions, managementModelOptions } from "@/lib/hosting-mode"
+import { DescribedSelect } from "@/components/ui/DescribedSelect"
+import { solutionTypeOptions, solutionOriginOptions, solutionRoleOptions, usageFrequencyOptions, criticalityOptions, failureImpactOptions, supportStatusOptions, updatesOptions, licenseStatusOptions, similarOptions, problemOptions, replacementOptions } from "@/lib/solution-options"
+import { InlineCatalogField, type CatalogKind, type CatalogEntry } from "@/components/catalog/InlineCatalogField"
 import { useState } from "react"
-import { ActionIcon, Box, Button, Divider, Group, MultiSelect, Paper, Select, SimpleGrid, Stack, TagsInput, Text, Textarea, TextInput, Title } from "@mantine/core"
+import { ActionIcon, Box, Button, Divider, Group, Paper, Select, SimpleGrid, Stack, TagsInput, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
 import { IconArrowLeft } from "@tabler/icons-react"
@@ -21,8 +24,6 @@ interface Props {
   solutions: Solution[]; initialValues?: Partial<CreateSolutionDTO>; solutionId?: string
 }
 
-const yesNoUnknown = [{ value: "YES", label: "Sí" }, { value: "NO", label: "No" }, { value: "UNKNOWN", label: "No determinado" }]
-const booleanOptions = [{ value: "false", label: "No" }, { value: "true", label: "Sí" }]
 const help = {
   owner: "Persona que conoce el uso funcional y puede responder por la solución.",
   area: "Unidad organizacional principal responsable de la solución.",
@@ -44,6 +45,9 @@ const help = {
 }
 
 export function SolutionForm({ technologies, domains, areas, capabilities, solutions, initialValues, solutionId }: Props) {
+  const [createdCatalogs, setCreatedCatalogs] = useState<Record<CatalogKind, CatalogEntry[]>>({ domains: [], areas: [], capabilities: [], technologies: [] })
+  const catalogEntries = (kind: CatalogKind) => [...new Map([...({ domains, areas, capabilities, technologies }[kind]), ...createdCatalogs[kind]].map(item => [item.id, item])).values()]
+  const addCatalogEntry = (kind: CatalogKind, record: CatalogEntry) => setCreatedCatalogs(current => ({ ...current, [kind]: [...current[kind].filter(item => item.id !== record.id), record] }))
   const router = useRouter()
   const isEditing = Boolean(solutionId)
   const [step, setStep] = useState(1)
@@ -120,18 +124,18 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
     setStep(firstInvalidStep)
     notifications.show({ message: "Revisa los campos indicados antes de guardar.", color: "red" })
   })} maw={920} mx="auto" p="xl">
-    <Group mb="xl"><ActionIcon variant="subtle" onClick={() => router.back()} aria-label="Volver"><IconArrowLeft size={18} /></ActionIcon><Title order={3}>{isEditing ? "Editar solución" : "Nueva solución"}</Title></Group>
+    <Group mb="xl"><ActionIcon variant="subtle" onClick={() => router.back()} aria-label="Volver"><IconArrowLeft size={18} /></ActionIcon><Title order={3} style={{ overflowWrap: "anywhere", minWidth: 0, flex: 1 }}>{isEditing ? `Editar solución${initialValues?.name ? ` · ${initialValues.name}` : ""}` : "Nueva solución"}</Title></Group>
     <Group mb="xl" gap="xs">{steps.map((name, i) => <Button key={name} size="xs" variant={step === i + 1 ? "filled" : "default"} onClick={() => setStep(i + 1)}>{i + 1}. {name}</Button>)}</Group>
     <Paper withBorder p="lg" radius="md">
       {step === 1 && <Stack gap="md"><Title order={5}>Identificación</Title><Divider />
         <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="Nombre" /* required */ {...form.getInputProps("name")} /><TextInput label="Versión actual" {...form.getInputProps("version")} /></SimpleGrid>
         <Textarea label="Descripción general" rows={3} {...form.getInputProps("description")} />
         <Text size="sm" c="dimmed">{statusExplanation}</Text>
-        <Select label={label("Estado arquitectónico", "Indica la situación de la solución dentro de la arquitectura.")} required allowDeselect={false} data={solutionStatusOptions} {...form.getInputProps("status")} />
+        <DescribedSelect label={label("Estado arquitectónico", "Indica la situación de la solución dentro de la arquitectura.")} required allowDeselect={false} data={solutionStatusOptions} {...form.getInputProps("status")} value={form.values.status ?? null} />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          <Select label="Tipo" data={["WEB","DESKTOP","MOBILE","API","BATCH","INTEGRATION","INFRASTRUCTURE","OTHER"]} {...form.getInputProps("type")} />
-          <Select label="Origen" data={[{value:"INTERNAL",label:"Interna"},{value:"EXTERNAL",label:"Externa"},{value:"CUSTOM_THIRD",label:"A medida por tercero"}]} {...form.getInputProps("origin")} />
-          <Select label="Rol arquitectónico" data={[{value:"CORE_TRANSACTIONAL",label:"Core transaccional"},{value:"SATELLITE",label:"Satélite"},{value:"INTEGRATION",label:"Integración"},{value:"DATA_ANALYTICS",label:"Datos y analítica"}]} {...form.getInputProps("role")} />
+          <DescribedSelect label="Tipo" data={solutionTypeOptions} {...form.getInputProps("type")} value={form.values.type ?? null} />
+          <DescribedSelect label="Origen" data={solutionOriginOptions} {...form.getInputProps("origin")} value={form.values.origin ?? null} />
+          <DescribedSelect label="Rol arquitectónico" data={solutionRoleOptions} {...form.getInputProps("role")} value={form.values.role ?? null} />
         </SimpleGrid>
         <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="URL del repositorio" {...form.getInputProps("repoUrl")} /><TextInput type="date" label="Último despliegue a producción" {...form.getInputProps("lastDeploy")} /></SimpleGrid>
         <TagsInput label="Etiquetas" {...form.getInputProps("tags")} />
@@ -139,7 +143,7 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
 
       {step === 2 && <Stack gap="md"><Title order={5}>Uso y responsabilidad</Title><Divider />
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          <Select label={label("Área responsable", help.area)} searchable /* required */ data={areas.map(a => ({value:a.id,label:a.name}))} {...form.getInputProps("responsibleAreaId")} />
+          <InlineCatalogField kind="areas" label={label("Área responsable", help.area)} entries={catalogEntries("areas")} value={form.values.responsibleAreaId ?? null} error={form.errors.responsibleAreaId} onChange={ids => form.setFieldValue("responsibleAreaId", ids[0] ?? null)} onCreated={record => addCatalogEntry("areas", record)} />
           <TextInput label={label("Contacto principal", help.owner)} /* required */ {...form.getInputProps("owner")} />
           <TextInput label="Responsable técnico interno" {...form.getInputProps("techOwner")} />
           <TextInput label={label("Proceso soportado", help.process)} /* required */ {...form.getInputProps("businessProcess")} />
@@ -147,35 +151,35 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
         <TagsInput label={label("Áreas o grupos usuarios", help.users)} placeholder="Escribe un grupo y presiona Enter" {...form.getInputProps("userGroups")} />
         <Text size="sm" c="dimmed">{statusExplanation}</Text>
         <SimpleGrid cols={{ base: 1, sm: 3 }}>
-          <Select label={label("Estado actual de uso", help.usage)} /* required */ data={usageStatusOptions} {...form.getInputProps("usageStatus")} />
-          <Select label={label("Frecuencia de uso", help.frequency)} data={[{value:"CONTINUOUS",label:"Continua"},{value:"DAILY",label:"Diaria"},{value:"WEEKLY",label:"Semanal"},{value:"MONTHLY",label:"Mensual"},{value:"OCCASIONAL",label:"Ocasional"},{value:"UNKNOWN",label:"No determinada"}]} {...form.getInputProps("usageFrequency")} />
-          <Select label={label("Criticidad", help.criticality)} data={[{value:"HIGH",label:"Alta"},{value:"MEDIUM",label:"Media"},{value:"LOW",label:"Baja"}]} {...form.getInputProps("criticality")} />
+          <DescribedSelect label={label("Estado actual de uso", help.usage)} /* required */ data={usageStatusOptions} {...form.getInputProps("usageStatus")} value={form.values.usageStatus ?? null} />
+          <DescribedSelect label={label("Frecuencia de uso", help.frequency)} data={usageFrequencyOptions} {...form.getInputProps("usageFrequency")} value={form.values.usageFrequency ?? null} />
+          <DescribedSelect label={label("Criticidad", help.criticality)} data={criticalityOptions} {...form.getInputProps("criticality")} value={form.values.criticality ?? null} />
         </SimpleGrid>
-        <Select label={label("¿Existe una solución similar?", help.similar)} data={booleanOptions} value={String(form.values.hasSimilarSolution)} onChange={v => form.setFieldValue("hasSimilarSolution", v === "true")} />
+        <DescribedSelect label={label("¿Existe una solución similar?", help.similar)} data={similarOptions} value={String(form.values.hasSimilarSolution)} onChange={v => form.setFieldValue("hasSimilarSolution", v === "true")} />
         {form.values.hasSimilarSolution && <Select label="Solución similar" searchable /* required */ data={solutionOptions} {...form.getInputProps("similarSolutionId")} />}
-        <MultiSelect label="Dominios empresariales" searchable data={domains.map(d => ({value:d.id,label:d.name}))} {...form.getInputProps("domainIds")} />
-        <MultiSelect label="Áreas relacionadas" searchable data={areas.map(a => ({value:a.id,label:a.name}))} {...form.getInputProps("areaIds")} />
-        <MultiSelect label="Capacidades empresariales" searchable data={capabilities.map(c => ({value:c.id,label:c.name}))} {...form.getInputProps("capabilityIds")} />
+        <InlineCatalogField kind="domains" multiple label="Dominios empresariales" entries={catalogEntries("domains")} domains={catalogEntries("domains")} defaultDomainId={form.values.domainIds?.length === 1 ? form.values.domainIds[0] : undefined} value={form.values.domainIds ?? []} error={form.errors.domainIds} onChange={ids => form.setFieldValue("domainIds", ids)} onCreated={record => addCatalogEntry("domains", record)} />
+        <InlineCatalogField kind="areas" multiple label="Áreas relacionadas" entries={catalogEntries("areas")} domains={catalogEntries("domains")} defaultDomainId={form.values.domainIds?.length === 1 ? form.values.domainIds[0] : undefined} value={form.values.areaIds ?? []} error={form.errors.areaIds} onChange={ids => form.setFieldValue("areaIds", ids)} onCreated={record => addCatalogEntry("areas", record)} />
+        <InlineCatalogField kind="capabilities" multiple label="Capacidades empresariales" entries={catalogEntries("capabilities")} domains={catalogEntries("domains")} defaultDomainId={form.values.domainIds?.length === 1 ? form.values.domainIds[0] : undefined} value={form.values.capabilityIds ?? []} error={form.errors.capabilityIds} onChange={ids => form.setFieldValue("capabilityIds", ids)} onCreated={record => addCatalogEntry("capabilities", record)} />
       </Stack>}
 
       {step === 3 && <Stack gap="md"><Title order={5}>Proveedor y soporte</Title><Divider />
-        <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="Proveedor" {...form.getInputProps("vendor")} /><Select label={label("Soporte vigente", help.support)} data={yesNoUnknown} {...form.getInputProps("supportStatus")} /><Select label={label("La versión recibe actualizaciones", help.updates)} data={yesNoUnknown} {...form.getInputProps("receivesUpdates")} /><Select label={label("Contrato o licenciamiento vigente", help.license)} data={yesNoUnknown} {...form.getInputProps("licenseStatus")} /></SimpleGrid>
+        <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="Proveedor" {...form.getInputProps("vendor")} /><DescribedSelect label={label("Soporte vigente", help.support)} data={supportStatusOptions} {...form.getInputProps("supportStatus")} value={form.values.supportStatus ?? null} /><DescribedSelect label={label("La versión recibe actualizaciones", help.updates)} data={updatesOptions} {...form.getInputProps("receivesUpdates")} value={form.values.receivesUpdates ?? null} /><DescribedSelect label={label("Contrato o licenciamiento vigente", help.license)} data={licenseStatusOptions} {...form.getInputProps("licenseStatus")} value={form.values.licenseStatus ?? null} /></SimpleGrid>
       </Stack>}
 
       {step === 4 && <Stack gap="md"><Title order={5}>Tecnología y dependencias</Title><Divider />
-        <Select label={label("Modalidad de alojamiento", help.hosting)} allowDeselect={false} data={hostingModeOptions} description={hostingModeOptions.find(option => option.value === form.values.hostingMode)?.description} {...form.getInputProps("hostingMode")} />
-        <Select label={label("Modelo de administración", "Indica quién administra la plataforma.")} allowDeselect={false} data={managementModelOptions} description={managementModelOptions.find(option => option.value === form.values.managementModel)?.description} {...form.getInputProps("managementModel")} />
-        <MultiSelect label="Tecnologías" searchable data={technologies.map(t => ({value:t.id,label:`${t.name} (${t.category})`}))} {...form.getInputProps("technologyIds")} />
+        <DescribedSelect label={label("Modalidad de alojamiento", help.hosting)} allowDeselect={false} data={hostingModeOptions} {...form.getInputProps("hostingMode")} value={form.values.hostingMode ?? null} />
+        <DescribedSelect label={label("Modelo de administración", "Indica quién administra la plataforma.")} allowDeselect={false} data={managementModelOptions} {...form.getInputProps("managementModel")} value={form.values.managementModel ?? null} />
+        <InlineCatalogField kind="technologies" multiple label="Tecnologías" entries={catalogEntries("technologies")} domains={catalogEntries("domains")} defaultDomainId={form.values.domainIds?.length === 1 ? form.values.domainIds[0] : undefined} value={form.values.technologyIds ?? []} error={form.errors.technologyIds} onChange={ids => form.setFieldValue("technologyIds", ids)} onCreated={record => addCatalogEntry("technologies", record)} />
         <Textarea label={label("Dependencias conocidas", help.dependencies)} rows={3} {...form.getInputProps("knownDependencies")} />
-        <Select label={label("Impacto de una falla", help.impact)} data={[{value:"HIGH",label:"Alto"},{value:"MEDIUM",label:"Medio"},{value:"LOW",label:"Bajo"},{value:"UNKNOWN",label:"No determinado"}]} {...form.getInputProps("failureImpact")} />
+        <DescribedSelect label={label("Impacto de una falla", help.impact)} data={failureImpactOptions} {...form.getInputProps("failureImpact")} value={form.values.failureImpact ?? null} />
         <Textarea label="Detalle del impacto" rows={3} {...form.getInputProps("failureImpactDetails")} />
         <Text size="xs" c="dimmed">Los sistemas integrados se administran como conexiones desde el detalle de la solución.</Text>
       </Stack>}
 
       {step === 5 && <Stack gap="md"><Title order={5}>Situación actual</Title><Divider />
-        <Select label={label("¿Tiene problemas o limitaciones?", help.problems)} data={booleanOptions} value={String(form.values.hasProblems)} onChange={v => form.setFieldValue("hasProblems", v === "true")} />
+        <DescribedSelect label={label("¿Tiene problemas o limitaciones?", help.problems)} data={problemOptions} value={String(form.values.hasProblems)} onChange={v => form.setFieldValue("hasProblems", v === "true")} />
         {form.values.hasProblems && <Textarea label="Detalle de los problemas" /* required */ rows={4} {...form.getInputProps("problemDetails")} />}
-        <Select label={label("¿Existe iniciativa de sustitución o retiro?", help.initiative)} data={booleanOptions} value={String(form.values.hasReplacementInitiative)} onChange={v => form.setFieldValue("hasReplacementInitiative", v === "true")} />
+        <DescribedSelect label={label("¿Existe iniciativa de sustitución o retiro?", help.initiative)} data={replacementOptions} value={String(form.values.hasReplacementInitiative)} onChange={v => form.setFieldValue("hasReplacementInitiative", v === "true")} />
         {form.values.hasReplacementInitiative && <SimpleGrid cols={{ base: 1, sm: 2 }}><Select label={label("Solución sustituta registrada", help.replacement)} searchable clearable data={solutionOptions} {...form.getInputProps("replacementSolutionId")} /><TextInput label="Nombre de sustituta propuesta" description="Úsalo si todavía no está registrada." {...form.getInputProps("proposedReplacementName")} /></SimpleGrid>}
         <Textarea label="Observaciones adicionales" rows={4} {...form.getInputProps("additionalNotes")} />
       </Stack>}

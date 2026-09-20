@@ -24,6 +24,25 @@ const solutions_service_1 = require("../services/solutions.service");
     };
     try {
         for (const method of ["POST", "PUT"]) {
+            for (const role of ["CORE_TRANSACTIONAL", "SATELLITE", "INTEGRATION", "DATA_ANALYTICS"]) {
+                const response = await app.inject({
+                    method, url: method === "POST" ? "/api/solutions" : "/api/solutions/test",
+                    payload: { status: "ACTIVE", role },
+                });
+                strict_1.default.equal(response.statusCode, method === "POST" ? 201 : 200);
+                strict_1.default.equal(response.json().role, role);
+            }
+            for (const role of ["INTERACTION_CHANNEL", "INVALID", "", null]) {
+                const count = calls.length;
+                const response = await app.inject({
+                    method, url: method === "POST" ? "/api/solutions" : "/api/solutions/test",
+                    payload: { status: "ACTIVE", role },
+                });
+                strict_1.default.equal(response.statusCode, 400);
+                strict_1.default.equal(calls.length, count);
+            }
+        }
+        for (const method of ["POST", "PUT"]) {
             for (const hostingMode of ["ON_PREMISE", "CLOUD_COMPANY", "EXTERNAL", "HYBRID", "UNKNOWN"]) {
                 const response = await app.inject({
                     method, url: method === "POST" ? "/api/solutions" : "/api/solutions/test",

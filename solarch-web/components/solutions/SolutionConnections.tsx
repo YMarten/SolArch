@@ -20,6 +20,7 @@ interface Connection {
 }
 
 const typeColors: Record<string, string> = {
+  SOAP: "cyan",
   REST:      "blue",
   GRAPHQL:   "violet",
   EVENT:     "orange",
@@ -81,7 +82,7 @@ export function SolutionConnections({ solutionId }: Props) {
         <>
           {incoming.length > 0 && (
             <div>
-              <Text size="sm" fw={500} mb="xs">Consume de</Text>
+              <Text size="sm" fw={500} mb="xs">Recibe llamadas de</Text>
               <Stack gap="xs">
                 {incoming.map(c => (
                   <Paper key={c.id} withBorder p="sm" radius="md">
@@ -98,7 +99,7 @@ export function SolutionConnections({ solutionId }: Props) {
                         <Badge color={typeColors[c.type] ?? "gray"} variant="light" size="sm">
                           {c.type}
                         </Badge>
-                        <Badge color="blue" variant="outline" size="sm">Entrada</Badge>
+                        <Badge color="blue" variant="outline" size="sm">Recibe llamada</Badge>
                         <ActionIcon
                           variant="subtle"
                           color="red"
@@ -117,7 +118,7 @@ export function SolutionConnections({ solutionId }: Props) {
 
           {outgoing.length > 0 && (
             <div>
-              <Text size="sm" fw={500} mb="xs">Provee a</Text>
+              <Text size="sm" fw={500} mb="xs">Llama a</Text>
               <Stack gap="xs">
                 {outgoing.map(c => (
                   <Paper key={c.id} withBorder p="sm" radius="md">
@@ -134,7 +135,7 @@ export function SolutionConnections({ solutionId }: Props) {
                         <Badge color={typeColors[c.type] ?? "gray"} variant="light" size="sm">
                           {c.type}
                         </Badge>
-                        <Badge color="gray" variant="outline" size="sm">Salida</Badge>
+                        <Badge color="gray" variant="outline" size="sm">Inicia llamada</Badge>
                         <ActionIcon
                           variant="subtle"
                           color="red"

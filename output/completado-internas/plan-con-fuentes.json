@@ -1,0 +1,1019 @@
+{
+  "createdAt": "2026-09-17T14:48:36.892Z",
+  "plan": [
+    {
+      "id": "cmu36851f000018nic42sn4zp",
+      "name": "Aplicaciones de Interfaz",
+      "source": "Aplicativos Rica  1\\Plantila - Aplicaciones de Interfaz .docx",
+      "patch": {
+        "knownDependencies": "WS_PUNTO_VENTAS_HANA, WS_SYNAGRO, WS_SEND_MAIL, WEB_SERVICE_RICA, Diferentes servicios SOAP que vienen desde SAP Integration Suite (RRHH, LIQUIDACION)"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantila - Aplicaciones de Interfaz .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantila - Aplicaciones de Interfaz .docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantila - Aplicaciones de Interfaz .docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantila - Aplicaciones de Interfaz .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "Windows Forms",
+        "SQL Server"
+      ],
+      "pending": "La ficha indica Activo y SolArch DEPRECATED. Se conserva el estado actual del inventario."
+    },
+    {
+      "id": "cmu36855x000118nicxbmvjfl",
+      "name": "ServicioRica",
+      "source": "Aplicativos Rica  1\\Plantila - ServicioRica .docx",
+      "patch": {
+        "businessProcess": "Automatización y ejecución de tareas empresariales programadas o solicitadas durante el día.",
+        "knownDependencies": "WebServiceRica, WS_SEND_MAIL, Intefaces SAP, WS_BAVEL,  Algunos servicos de la plataforma de Service_Now",
+        "hostingMode": "ON_PREMISE",
+        "usageFrequency": "CONTINUOUS",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantila - ServicioRica .docx.\nLenguaje de programación: Visual Basic 2008\nFrameworks: .Net Framework_3.5\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2008\\ServicioRica_hana"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantila - ServicioRica .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantila - ServicioRica .docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantila - ServicioRica .docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "usageFrequency": {
+          "source": "Aplicativos Rica  1\\Plantila - ServicioRica .docx",
+          "section": "2. Descripción: supervisión constante de tareas"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantila - ServicioRica .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "Windows Forms",
+        "SQL Server"
+      ],
+      "pending": null
+    },
+    {
+      "id": "cmu368585000218niar576wqs",
+      "name": "WebServiceRica",
+      "source": "Aplicativos Rica  1\\Plantila - WebServiceRica .docx",
+      "patch": {
+        "businessProcess": "Integración de aplicaciones internas, consulta y actualización de datos y generación de reportes.",
+        "knownDependencies": "Ws_mail.",
+        "hostingMode": "ON_PREMISE",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantila - WebServiceRica .docx.\nLenguaje de programación: Visual Basic 2008\nFrameworks: .Net Framework_3.5\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Web\\VB.NET 2008\\Web ServiceRica IS\nURL de acceso documentada (ambiente por confirmar): http://prdttis00001/WebServicesRica/Service.asmx"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantila - WebServiceRica .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantila - WebServiceRica .docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantila - WebServiceRica .docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantila - WebServiceRica .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "SQL Server"
+      ],
+      "pending": null
+    },
+    {
+      "id": "cmu3685ak000318nidhuk2mkz",
+      "name": "CargarOrdenCarga",
+      "source": "Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx",
+      "patch": {
+        "businessProcess": "Consulta y distribución de órdenes de carga y recarga de SAP a los puntos de venta para aprobación o rechazo.",
+        "knownDependencies": "WEB_SERVICE_RICA, Diferentes servicios SOAP que vienen desde SAP Integration Suite ( LIQUIDACION), WS_SEND_MAIL",
+        "hostingMode": "ON_PREMISE",
+        "userGroups": [
+          "Personal de puntos de venta Viverde y Expendios"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.0\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2012\\DownloadExpendios_hana\nPendiente: La ficha indica .NET 4.0 y una ruta de DownloadExpendios; Excel indica .NET 4.5+ y una ruta propia de CargarOrdenCarga. Confirmar versión y repositorio."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - CargarOrdenCarga.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "ASP.NET",
+        "SQL Server"
+      ],
+      "pending": "La ficha indica .NET 4.0 y una ruta de DownloadExpendios; Excel indica .NET 4.5+ y una ruta propia de CargarOrdenCarga. Confirmar versión y repositorio."
+    },
+    {
+      "id": "cmu3685cy000418ninj17odhs",
+      "name": "Download Expendio",
+      "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+      "patch": {
+        "businessProcess": "Sincronización diaria de datos maestros desde SAP a las bases locales de los puntos de venta.",
+        "knownDependencies": "WEB_SERVICE_RICA, Diferentes servicios SOAP que vienen desde SAP Integration Suite ( LIQUIDACION), WS_SEND_MAILJI8[",
+        "hostingMode": "ON_PREMISE",
+        "usageFrequency": "DAILY",
+        "userGroups": [
+          "Personal de tiendas Viverde"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.5\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2012\\DownloadExpendios_hana\nPendiente: La dependencia WS_SEND_MAILJI8[ contiene un posible error de transcripción; se conserva literalmente para validación."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "usageFrequency": {
+          "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+          "section": "2. Descripción: ejecución o registro diario"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Donwload Expendios.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "Windows Forms",
+        "SQL Server"
+      ],
+      "pending": "La dependencia WS_SEND_MAILJI8[ contiene un posible error de transcripción; se conserva literalmente para validación."
+    },
+    {
+      "id": "cmu3685f6000518nibs365hld",
+      "name": "Genera Orden Hana",
+      "source": "Aplicativos Rica  1\\Plantilla - Genera orden hana .docx",
+      "patch": {
+        "businessProcess": "Procesamiento de pedidos XML y generación de órdenes en SAP mediante servicios web.",
+        "knownDependencies": "Servicios WS_SEND_MAIL, SERVICIOS SOAP SAP, WS_BAVEL.",
+        "hostingMode": "ON_PREMISE",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Genera orden hana .docx.\nLenguaje de programación: VISUAL BASIC\nFrameworks: .NET FRAMEWORK 3.5\nBase de datos: SQL SERVER\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2012\\GENERA ORDEN Hana\nPendiente: La ficha declara .NET 3.5 y Excel .NET 4.5+. Confirmar versión."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Genera orden hana .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Genera orden hana .docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - Genera orden hana .docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Genera orden hana .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "SQL Server"
+      ],
+      "pending": "La ficha declara .NET 3.5 y Excel .NET 4.5+. Confirmar versión."
+    },
+    {
+      "id": "cmu3685i2000618nic42h6e7u",
+      "name": "GeoRica",
+      "source": "Aplicativos Rica  1\\Plantilla - GeoRica .docx",
+      "patch": {
+        "businessProcess": "Actualización de coordenadas geográficas de clientes y sincronización con SAP.",
+        "knownDependencies": "SAP para sincronización de coordenadas y SQLite para almacenamiento local sin conexión.",
+        "userGroups": [
+          "Departamento de Ingeniería de Rutas"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - GeoRica .docx.\nLenguaje de programación:  Javascript\nFrameworks: React Native.\nBase de datos: SQL LITE\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Mobile\\React Native\\GeoRica\nPendiente: La ficha indica On Premise y aplicación Android. Confirmar el alcance del alojamiento de sus servicios antes de clasificar la solución completa."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - GeoRica .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - GeoRica .docx",
+          "section": "2. Descripción"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - GeoRica .docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - GeoRica .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "React Native",
+        "React",
+        "Expo",
+        "SQLite"
+      ],
+      "pending": "La ficha indica On Premise y aplicación Android. Confirmar el alcance del alojamiento de sus servicios antes de clasificar la solución completa."
+    },
+    {
+      "id": "cmu3685k1000718nirffbohst",
+      "name": "Lotería Rica",
+      "source": "Aplicativos Rica  1\\Plantilla - Loteria Rica.docx",
+      "patch": {
+        "businessProcess": "Registro de participantes y ejecución de sorteos para las celebraciones de fin de año.",
+        "knownDependencies": "ws_send_mail, Servicios SOAP Sap.",
+        "userGroups": [
+          "Organizadores de sorteos de empleados"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Loteria Rica.docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.0\nBase de datos: SQL Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2008\\Loteria Fiesta Rica\\Loteria Rica\nPendiente: La ficha menciona .NET 3.5 y 4.0; Excel indica 3.5. Figura Obsoleto en la ficha y RETIRED en SolArch; se conserva RETIRED."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Loteria Rica.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Loteria Rica.docx",
+          "section": "4. Dependencias"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - Loteria Rica.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Loteria Rica.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "Windows Forms",
+        "SQL Server"
+      ],
+      "pending": "La ficha menciona .NET 3.5 y 4.0; Excel indica 3.5. Figura Obsoleto en la ficha y RETIRED en SolArch; se conserva RETIRED."
+    },
+    {
+      "id": "cmu3685ly000818ni1d947ht7",
+      "name": "Menú Rica",
+      "source": "Aplicativos Rica  1\\Plantilla - Menu Rica.docx",
+      "patch": {
+        "businessProcess": "Acceso centralizado a las aplicaciones internas según los permisos de cada usuario.",
+        "knownDependencies": "ws_send_mail, Servicios SOAP Sap.",
+        "hostingMode": "ON_PREMISE",
+        "userGroups": [
+          "Colaboradores de Grupo Rica"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Menu Rica.docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.0\nBase de datos: SQL Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2012\\W_IRICA\nURL de acceso documentada (ambiente por confirmar): https://prdttis00001.rica.com.do/aplicaciones/pages/wmenu.aspx\nPendiente: La ficha declara .NET 4.0 y Excel .NET 4.5+. Confirmar versión."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Menu Rica.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Menu Rica.docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - Menu Rica.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - Menu Rica.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Menu Rica.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "ASP.NET",
+        "SQL Server"
+      ],
+      "pending": "La ficha declara .NET 4.0 y Excel .NET 4.5+. Confirmar versión."
+    },
+    {
+      "id": "cmu3685ny000918nim78jkf8c",
+      "name": "Portal Proveedores",
+      "source": "Aplicativos Rica  1\\Plantilla - Portal de Proveedores .docx",
+      "patch": {
+        "businessProcess": "Registro, documentación, aprobación y gestión de proveedores.",
+        "knownDependencies": "Servicios SOAP Sap.",
+        "userGroups": [
+          "Proveedores",
+          "Administradores del portal"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Portal de Proveedores .docx.\nLenguaje de programación: Javascript, Typescript\nFrameworks: React, Express\nBase de datos: SQL Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Web\\REACT\nPendiente: La ficha indica Cloud, sin identificar si la cuenta es de Grupo Rica o del proveedor. Alojamiento y administración pendientes."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Portal de Proveedores .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Portal de Proveedores .docx",
+          "section": "4. Dependencias"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - Portal de Proveedores .docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Portal de Proveedores .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "TypeScript",
+        "SQL Server",
+        "React",
+        "Express",
+        "Node.js"
+      ],
+      "pending": "La ficha indica Cloud, sin identificar si la cuenta es de Grupo Rica o del proveedor. Alojamiento y administración pendientes."
+    },
+    {
+      "id": "cmu3685q9000a18nib3viq6s0",
+      "name": "App Recolección",
+      "source": "Aplicativos Rica  1\\Plantilla - Recoleccion.docx",
+      "patch": {
+        "businessProcess": "Registro de la recolección de leche por productor y generación de órdenes de compra en SAP.",
+        "knownDependencies": "Servicios Odata SAP.",
+        "usageFrequency": "DAILY",
+        "userGroups": [
+          "Recolectores de leche"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Recoleccion.docx.\nLenguaje de programación: Java\nFrameworks: Android Gradle Plugin 3.5.3\nBase de datos: Realm\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Mobile\\Recoleccion\nPendiente: La ficha documenta riesgos de compilación con Android Gradle Plugin 3.5.3 en IDEs de 2025. Confirmar si fueron resueltos antes de cambiar hasProblems. La aplicación móvil no permite concluir por sí sola el alojamiento de sus servicios."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Recoleccion.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Recoleccion.docx",
+          "section": "4. Dependencias"
+        },
+        "usageFrequency": {
+          "source": "Aplicativos Rica  1\\Plantilla - Recoleccion.docx",
+          "section": "2. Descripción: ejecución o registro diario"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - Recoleccion.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Recoleccion.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Java",
+        "Realm",
+        "Android Gradle Plugin"
+      ],
+      "pending": "La ficha documenta riesgos de compilación con Android Gradle Plugin 3.5.3 en IDEs de 2025. Confirmar si fueron resueltos antes de cambiar hasProblems. La aplicación móvil no permite concluir por sí sola el alojamiento de sus servicios."
+    },
+    {
+      "id": "cmu3685sb000b18nia887mjwn",
+      "name": "Reportes SQL",
+      "source": "Aplicativos Rica  1\\Plantilla - Reportes SQL.docx",
+      "patch": {
+        "businessProcess": "Consulta y exportación de reportes de ventas e inventarios para la liquidación de puntos de venta.",
+        "knownDependencies": "Datos del antiguo POS SatPro y base de datos SQL Server.",
+        "hostingMode": "ON_PREMISE",
+        "userGroups": [
+          "Personal de liquidación de Viverde Duarte y Villa Altagracia"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Reportes SQL.docx.\nLenguaje de programación: Visual Basic 2008\nFrameworks: .Net Framework 3.5\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Web\\VB.NET 2008\\ReportesSQL\nURL de acceso documentada (ambiente por confirmar): https://prdttis00001.rica.com.do/ReportesSQL/index.aspx"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Reportes SQL.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - Reportes SQL.docx",
+          "section": "2. Descripción y 3. Tecnologías"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - Reportes SQL.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "userGroups": {
+          "source": "Aplicativos Rica  1\\Plantilla - Reportes SQL.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Reportes SQL.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "SQL Server"
+      ],
+      "pending": null
+    },
+    {
+      "id": "cmu3685ua000c18ni8gvlyyvx",
+      "name": "Servicio Mail (SendMail)",
+      "source": "Aplicativos Rica  1\\Plantilla - Servicio Mail.docx",
+      "patch": {
+        "businessProcess": "Envío de confirmaciones, reportes y notificaciones de errores desde las aplicaciones internas.",
+        "hostingMode": "ON_PREMISE",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - Servicio Mail.docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.0\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Web\\VB.NET 2012\\Servicio Mail\nURL de acceso documentada (ambiente por confirmar): http://prdttis00001:70/Webservices/SendMail/ws_rica_mail.asmx\nPendiente: La ficha declara .NET 4.0 y Excel .NET 4.5+. Confirmar versión."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - Servicio Mail.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - Servicio Mail.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - Servicio Mail.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "ASP.NET",
+        "SQL Server"
+      ],
+      "pending": "La ficha declara .NET 4.0 y Excel .NET 4.5+. Confirmar versión."
+    },
+    {
+      "id": "cmu3685w7000d18niso34ade1",
+      "name": "WS_BAVEL_S4",
+      "source": "Aplicativos Rica  1\\Plantilla - WS_BAVEL_S4 .docx",
+      "patch": {
+        "businessProcess": "Transformación y envío de pedidos XML a SAP mediante el servicio Z_PROCESAR_PEDIDO_BAVEL.",
+        "knownDependencies": "Servicios WS_SEND_MAIL, SERVICIOS SOAP SAP.",
+        "hostingMode": "ON_PREMISE",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - WS_BAVEL_S4 .docx.\nLenguaje de programación: C#\nFrameworks: .NET FRAMEWORK 3.5\nBase de datos: SQL SERVER\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Web\\VB.NET 2012\\wsBavelS4\nPendiente: La ficha declara C# y Excel Visual Basic. Se omite asignar lenguaje hasta confirmar."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_BAVEL_S4 .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_BAVEL_S4 .docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_BAVEL_S4 .docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_BAVEL_S4 .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        ".NET Framework",
+        "ASP.NET",
+        "SQL Server"
+      ],
+      "pending": "La ficha declara C# y Excel Visual Basic. Se omite asignar lenguaje hasta confirmar."
+    },
+    {
+      "id": "cmu3685yd000e18niaqfi70j0",
+      "name": "WS_PUNTO_VENTA",
+      "source": "Aplicativos Rica  1\\Plantilla - WS_PUNTO_VENTA.docx",
+      "patch": {
+        "businessProcess": "Carga y sincronización de ventas, inventarios y conteos de puntos de venta.",
+        "knownDependencies": "WEB_SERVICE_RICA, Diferentes servicios SOAP que vienen desde SAP Integration Suite ( LIQUIDACION)",
+        "hostingMode": "ON_PREMISE",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - WS_PUNTO_VENTA.docx.\nLenguaje de programación: Visual Basic 2008\nFrameworks: .Net Framework 3.5\nBase de datos: Sql Server"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_PUNTO_VENTA.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_PUNTO_VENTA.docx",
+          "section": "4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_PUNTO_VENTA.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_PUNTO_VENTA.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "SQL Server"
+      ],
+      "pending": null
+    },
+    {
+      "id": "cmu36860c000f18ni8ku40nf0",
+      "name": "WS_SYNAGRO",
+      "source": "Aplicativos Rica  1\\Plantilla - WS_SYNAGRO .docx",
+      "patch": {
+        "businessProcess": "Consulta y mantenimiento de datos de Synagro mediante conexiones OLEDB.",
+        "knownDependencies": "Conexiones OLEDB a entornos de Synagro; la descripción menciona Sybase y Sybase Desarrollo.",
+        "hostingMode": "ON_PREMISE",
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Aplicativos Rica  1\\Plantilla - WS_SYNAGRO .docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.0\nBase de datos: Sql Server, OLEDB\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Web\\VB.NET 2012\\WS_Synagro\nURL de acceso documentada (ambiente por confirmar): http://prdttis00002/WS_Synagro/WS_Synagro.asmx\nPendiente: La ficha declara .NET 4.0 y Excel .NET 4.5+. Se menciona SQL Server y también entornos Sybase; confirmar arquitectura de datos."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_SYNAGRO .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "knownDependencies": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_SYNAGRO .docx",
+          "section": "2. Descripción"
+        },
+        "hostingMode": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_SYNAGRO .docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "additionalNotes": {
+          "source": "Aplicativos Rica  1\\Plantilla - WS_SYNAGRO .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "ASP.NET",
+        "SQL Server",
+        "OLE DB"
+      ],
+      "pending": "La ficha declara .NET 4.0 y Excel .NET 4.5+. Se menciona SQL Server y también entornos Sybase; confirmar arquitectura de datos."
+    },
+    {
+      "id": "cmu36866o000i18ni8l54hf98",
+      "name": "Update_RNC",
+      "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+      "patch": {
+        "businessProcess": "Actualización de RNC de los puntos de venta con datos descargados desde la DGII.",
+        "techOwner": "Juan Then",
+        "knownDependencies": "WebServiceRica y descarga de datos de contribuyentes desde servidores de la DGII mediante FTP.",
+        "hostingMode": "ON_PREMISE",
+        "userGroups": [
+          "Expendios",
+          "Viverde"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx.\nLenguaje de programación: Visual Basic 2012\nFrameworks: .Net Framework 4.0\nBase de datos: Sql Server\nRuta de código documentada (no URL de repositorio): C:\\desarollo\\Aplicaciones Windows\\VB.NET 2012\\UpdateRNC_EXP"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "techOwner": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+          "section": "6. Contactos"
+        },
+        "knownDependencies": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+          "section": "2. Descripción y 4. Dependencias"
+        },
+        "hostingMode": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+          "section": "3. Tecnologías, declaración de alojamiento"
+        },
+        "userGroups": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - UpdateRNC.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "Visual Basic",
+        ".NET Framework",
+        "SQL Server"
+      ],
+      "pending": null
+    },
+    {
+      "id": "cmu368696000j18nix4rz49ej",
+      "name": "ITS - Estacion de muestras",
+      "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx",
+      "patch": {
+        "businessProcess": "Registro y control de muestras y frascos de recolección para acopio y calidad.",
+        "techOwner": "Jabes Ribas, Ronny de la Cruz",
+        "knownDependencies": "SAP HANA e ITS Mobile.",
+        "userGroups": [
+          "Recolección y Acopio",
+          "Gestión de Calidad"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx.\nLenguaje de programación: Javascript\nFrameworks: ITS Mobile\nBase de datos: SAP HANA\nURL de acceso documentada (ambiente por confirmar): https://vhrics4pci.hec.gruporica.com:44300/sap/bc/gui/sap/its/zqm004?sap-client=400\nPendiente: La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "techOwner": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx",
+          "section": "6. Contactos"
+        },
+        "knownDependencies": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx",
+          "section": "3. Tecnologías"
+        },
+        "userGroups": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Extraccion de muestras.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "ITS Mobile",
+        "SAP HANA"
+      ],
+      "pending": "La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+    },
+    {
+      "id": "cmu3686c4000k18nioyw27lpt",
+      "name": "ITS - PickingPro",
+      "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+      "patch": {
+        "businessProcess": "Captura de lotes y conteo de productos en picking de rutas, abastecimiento e inventario.",
+        "techOwner": "Jabes Ribas, Ronny de la Cruz",
+        "knownDependencies": "SAP HANA e ITS Mobile.",
+        "userGroups": [
+          "Logística"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx.\nLenguaje de programación: Javascript\nFrameworks: ITS Mobile\nBase de datos: SAP HANA\nPendiente: La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura.\nLa ficha indica que Picking de Inventario fue integrado como módulo de PickingPro.",
+        "responsibleAreaId": "cmtu5ysul0008k8ninp1eykj9"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "techOwner": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+          "section": "6. Contactos"
+        },
+        "knownDependencies": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+          "section": "3. Tecnologías"
+        },
+        "userGroups": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        },
+        "responsibleAreaId": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - PickingPro.docx",
+          "section": "Área responsable y equipo responsable",
+          "basis": "Correspondencia con la dirección existente en el catálogo: DIRECCION GESTION LOGISTICA"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "ITS Mobile",
+        "SAP HANA"
+      ],
+      "pending": "La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+    },
+    {
+      "id": "cmu3686et000l18ni8wn8lab6",
+      "name": "ITS - CombuSys",
+      "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx",
+      "patch": {
+        "businessProcess": "Registro y gestión de despachos de combustible en las estaciones de los centros.",
+        "techOwner": "Yodelvi Marten",
+        "knownDependencies": "SAP HANA e ITS Mobile.",
+        "userGroups": [
+          "Almacén"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx.\nLenguaje de programación: Javascript\nFrameworks: ITS Mobile\nBase de datos: SAP HANA\nURL de acceso documentada (ambiente por confirmar): https://vhrics4pci.hec.gruporica.com:44300/sap/bc/gui/sap/its/zws_combusys?sap-client=400\nPendiente: La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "techOwner": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx",
+          "section": "6. Contactos"
+        },
+        "knownDependencies": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx",
+          "section": "3. Tecnologías"
+        },
+        "userGroups": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - CombuSys.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "ITS Mobile",
+        "SAP HANA"
+      ],
+      "pending": "La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+    },
+    {
+      "id": "cmu3686gx000m18niwg16ilwn",
+      "name": "ITS - LiquiProd",
+      "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx",
+      "patch": {
+        "businessProcess": "Recepción de productos procedentes de las rutas.",
+        "techOwner": "Yodelvi Marten",
+        "knownDependencies": "SAP HANA e ITS Mobile.",
+        "userGroups": [
+          "Liquidación"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx.\nLenguaje de programación: Javascript\nFrameworks: ITS Mobile\nBase de datos: SAP HANA\nURL de acceso documentada (ambiente por confirmar): https://s4p.ric.hec.ondemand.com/sap/bc/gui/sap/its/zsd035?sap-client=400\nPendiente: La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "techOwner": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx",
+          "section": "6. Contactos"
+        },
+        "knownDependencies": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx",
+          "section": "3. Tecnologías"
+        },
+        "userGroups": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - LiquiProd.docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "ITS Mobile",
+        "SAP HANA"
+      ],
+      "pending": "La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+    },
+    {
+      "id": "cmu3686j5000n18ni9yvfy75z",
+      "name": "ITS - Control de seguridad",
+      "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+      "patch": {
+        "businessProcess": "Registro de entradas y salidas de camiones y su pesaje.",
+        "techOwner": "Jabes Ribas",
+        "knownDependencies": "SAP HANA e ITS Mobile.",
+        "userGroups": [
+          "Centro de Monitoreo (Seguridad Física)"
+        ],
+        "additionalNotes": "Información documental; requiere validación de vigencia. Fuente: Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx.\nLenguaje de programación: Javascript\nFrameworks: ITS Mobile\nBase de datos: SAP HANA\nURL de acceso documentada (ambiente por confirmar): https://s4p.ric.hec.ondemand.com/sap/bc/gui/sap/its/ztm_ctl_salida?sap-client=400\nPendiente: La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura.",
+        "responsibleAreaId": "cmtu5ysmy0006k8nifvgd79qx"
+      },
+      "evidence": {
+        "businessProcess": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+          "section": "2. Descripción",
+          "basis": "Síntesis del proceso descrito"
+        },
+        "techOwner": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+          "section": "6. Contactos"
+        },
+        "knownDependencies": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+          "section": "3. Tecnologías"
+        },
+        "userGroups": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+          "section": "2. Descripción y 6. Equipo responsable"
+        },
+        "additionalNotes": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+          "section": "3. Tecnologías, 5. Información operativa y 7. Notas"
+        },
+        "responsibleAreaId": {
+          "source": "Plantilla - Aplicativos Faltantes 2\\Plantilla - Control de seguridad .docx",
+          "section": "Área responsable y equipo responsable",
+          "basis": "Correspondencia con la dirección existente en el catálogo: DIRECCION DE SEGURIDAD"
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "ITS Mobile",
+        "SAP HANA"
+      ],
+      "pending": "La ficha declara On Premise pero publica una URL de SAP HEC. No se asigna alojamiento sin confirmar la cuenta y el alcance de infraestructura."
+    }
+  ],
+  "technologies": [
+    {
+      "name": "Visual Basic",
+      "category": "LANGUAGE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": ".NET Framework",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Windows Forms",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "SQL Server",
+      "category": "DATABASE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "ASP.NET",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "JavaScript",
+      "category": "LANGUAGE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "React Native",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "React",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Expo",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "SQLite",
+      "category": "DATABASE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "TypeScript",
+      "category": "LANGUAGE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Express",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Node.js",
+      "category": "INFRASTRUCTURE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Java",
+      "category": "LANGUAGE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Realm",
+      "category": "DATABASE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "Android Gradle Plugin",
+      "category": "OTHER",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "OLE DB",
+      "category": "OTHER",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "ITS Mobile",
+      "category": "FRAMEWORK",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    },
+    {
+      "name": "SAP HANA",
+      "category": "DATABASE",
+      "description": "Tecnología documentada en las fichas de aplicativos internos de Grupo Rica."
+    }
+  ],
+  "unmatched": [
+    "Scania Refresh Token",
+    "WS_SCANIA",
+    "Latirica - Kiosko",
+    "Captacion de clientes"
+  ]
+}

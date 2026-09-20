@@ -7,6 +7,7 @@ const client_1 = require("@prisma/client");
 exports.solutionStateBodySchema = {
     type: "object",
     properties: {
+        role: { type: "string", enum: Object.values(client_1.SolutionRole) },
         hostingMode: { type: "string", enum: Object.values(client_1.HostingMode) },
         managementModel: { type: "string", enum: Object.values(client_1.ManagementModel) },
         status: { type: "string", enum: Object.values(client_1.SolutionStatus) },

@@ -222,6 +222,8 @@ export function EcosystemGraph() {
                 />
             </Group>
 
+            <Text size="sm" c="dimmed">La flecha indica quién llama a quién: origen → destino. No representa el flujo de datos.</Text>
+
             {/* Leyenda */}
             <Group>
                 {Object.entries(roleLabels).map(([role, label]) => (
