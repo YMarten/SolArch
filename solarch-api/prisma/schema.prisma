@@ -185,6 +185,7 @@ model Solution {
 
   // Relaciones
   technologies    TechnologyOnSolution[]
+  groups          SolutionGroupMember[]
   domains         DomainOnSolution[]
   capabilities    CapabilityOnSolution[]
   areas           AreaOnSolution[]
@@ -223,6 +224,32 @@ model Solution {
 // ─────────────────────────────────────────────
 // TECHNOLOGY — Catálogo de tecnologías
 // ─────────────────────────────────────────────
+
+enum SolutionParticipation {
+  NEW
+  REUSED
+  ADAPTED
+}
+
+model SolutionGroup {
+  id          String @id @default(cuid())
+  name        String @unique
+  description String?
+  members     SolutionGroupMember[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SolutionGroupMember {
+  groupId       String
+  solutionId    String
+  participation SolutionParticipation
+  group         SolutionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  solution      Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, solutionId])
+  @@index([solutionId])
+}
 
 model Technology {
   id          String        @id @default(cuid())

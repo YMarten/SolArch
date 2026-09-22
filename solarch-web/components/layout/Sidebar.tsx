@@ -13,6 +13,7 @@ const navItems = [
     section: "Inventario",
     items: [
       { label: "Catálogo",    href: "/solutions",             icon: IconLayoutGrid },
+      { label: "Grupos",      href: "/groups",                icon: IconLayoutGrid },
       { label: "Ecosistema",  href: "/ecosystem",             icon: IconHierarchy  },
       { label: "Capacidades", href: "/capabilities",          icon: IconMap2       },
     ]

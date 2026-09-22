@@ -17,6 +17,7 @@ import { SolutionAttachments } from "./SolutionAttachments"
 import { SolutionEnvironments } from "./SolutionEnvironments"
 import { ReviewsList } from "@/components/reviews/ReviewsList"
 import { SolutionSurveyDetails } from "./SolutionSurveyDetails"
+import { SolutionGroups } from "./SolutionGroups"
 
 const roleConfig: Record<string, {
   label: string
@@ -48,15 +49,16 @@ const typeLabels: Record<string, string> = {
 
 interface Props {
   solution: Solution
+  preview?: boolean
 }
 
-export function SolutionDetail({ solution }: Props) {
+export function SolutionDetail({ solution, preview = false }: Props) {
   const router = useRouter()
 
   return (
-    <Stack p="xl" gap="md">
+    <Stack p={preview ? 0 : "xl"} gap="md" style={{ overflowWrap: "anywhere" }}>
       {/* Topbar */}
-      <Group justify="space-between">
+      {!preview && <Group justify="space-between">
         <Group>
           <ActionIcon variant="subtle" onClick={() => router.push("/solutions")}>
             <IconArrowLeft size={18} />
@@ -69,11 +71,11 @@ export function SolutionDetail({ solution }: Props) {
         >
           Editar
         </Button>
-      </Group>
+      </Group>}
 
       {/* Hero */}
       <Paper withBorder p="lg" radius="md">
-        <SimpleGrid cols={2} spacing="xl">
+        <SimpleGrid cols={preview ? 1 : { base: 1, md: 2 }} spacing="xl">
           <Stack gap="sm">
             <Group gap="xs" wrap="wrap">
               <Title order={3}>{solution.name}</Title>
@@ -167,7 +169,7 @@ export function SolutionDetail({ solution }: Props) {
       </Paper>
 
       {/* Contexto de negocio y tecnologías */}
-      <SimpleGrid cols={2} spacing="md">
+      <SimpleGrid cols={preview ? 1 : { base: 1, sm: 2 }} spacing="md">
         <Paper withBorder p="md" radius="md">
           <Text size="sm" fw={500} mb="sm">Contexto de negocio</Text>
           <Stack gap="xs">
@@ -212,14 +214,19 @@ export function SolutionDetail({ solution }: Props) {
       </SimpleGrid>
 
       {/* Tabs */}
-      <Tabs defaultValue="connections">
+      <Tabs defaultValue="survey" keepMounted={!preview}>
         <Tabs.List>
+          <Tabs.Tab value="groups">Grupos</Tabs.Tab>
           <Tabs.Tab value="survey">Levantamiento</Tabs.Tab>
           <Tabs.Tab value="connections">Conexiones</Tabs.Tab>
           <Tabs.Tab value="attachments">Adjuntos</Tabs.Tab>
           <Tabs.Tab value="environments">Ambientes</Tabs.Tab>
           <Tabs.Tab value="reviews">Revisiones</Tabs.Tab>
         </Tabs.List>
+
+        <Tabs.Panel value="groups" pt="md">
+          <SolutionGroups key={solution.id} solutionId={solution.id} />
+        </Tabs.Panel>
 
         <Tabs.Panel value="survey" pt="md">
           <SolutionSurveyDetails solution={solution} />

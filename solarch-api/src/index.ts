@@ -11,6 +11,7 @@ import { connectionsRoute } from "./routes/connections.route"
 import { attachmentsRoute } from "./routes/attachments.route"
 import { environmentsRoute } from "./routes/environments.route"
 import { reviewsRoute } from "./routes/reviews.route"
+import { groupsRoute } from "./routes/groups.route"
 import { prisma }             from "./prisma"
 
 const server = Fastify({
@@ -77,5 +78,6 @@ server.register(connectionsRoute, { prefix: "/api/connections" })
 server.register(attachmentsRoute, { prefix: "/api/attachments" })
 server.register(environmentsRoute, { prefix: "/api/environments" })
 server.register(reviewsRoute, { prefix: "/api/reviews" })
+server.register(groupsRoute, { prefix: "/api/groups" })
 
 start()

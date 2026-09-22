@@ -1,4 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const groups_test_1 = require("./groups.test");
+const prisma_1 = require("../prisma");
 const BASE_URL = "http://localhost:3001";
 const results = [];
 async function test(method, path, body) {
@@ -188,4 +191,7 @@ async function runTests() {
     console.log("-".repeat(70));
     console.log(`\nPasaron: ${passed} | Fallaron: ${failed} | Total: ${results.length}\n`);
 }
-runTests();
+runTests().then(() => (0, groups_test_1.testGroups)()).catch(error => {
+    console.error(error);
+    process.exitCode = 1;
+}).finally(() => prisma_1.prisma.$disconnect());

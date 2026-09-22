@@ -6,6 +6,7 @@
   "scripts": {
   "dev": "ts-node src/index.ts",
   "test:api": "ts-node src/tests/api.test.ts",
+  "test:groups": "ts-node src/tests/groups.test.ts",
   "build": "tsc",
   "start": "node dist/index.js"
   },

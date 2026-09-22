@@ -1,3 +1,6 @@
+import { testGroups } from "./groups.test"
+import { prisma } from "../prisma"
+
 const BASE_URL = "http://localhost:3001"
 
 interface TestResult {
@@ -215,4 +218,7 @@ results.forEach(r => {
   console.log(`\nPasaron: ${passed} | Fallaron: ${failed} | Total: ${results.length}\n`)
 }
 
-runTests()
+runTests().then(() => testGroups()).catch(error => {
+  console.error(error)
+  process.exitCode = 1
+}).finally(() => prisma.$disconnect())
