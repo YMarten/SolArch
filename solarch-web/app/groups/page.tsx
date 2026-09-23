@@ -24,10 +24,13 @@ export default function GroupsPage() {
     {error && <Alert color="red">{error}</Alert>}
     {loading ? <Loader /> : <>
       {!filtered.length && <Text c="dimmed">{groups.length ? "No hay grupos que coincidan con la búsqueda." : "Todavía no hay grupos registrados."}</Text>}
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>{filtered.map(group => <Paper key={group.id} withBorder p="md"><Stack gap="xs">
-        <Title order={4}>{group.name}</Title><Text size="sm" lineClamp={3}>{group.description}</Text>
-        <Text size="sm" c="dimmed">{group.members.length} soluciones</Text>
-        <Button component={Link} href={`/groups/${group.id}`} variant="light">Abrir grupo</Button>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>{filtered.map(group => <Paper key={group.id} withBorder p="md" style={{ display: "flex", flexDirection: "column", minWidth: 0 }}><Stack gap="xs" style={{ flex: 1, minWidth: 0 }}>
+        <Title order={4} style={{ overflowWrap: "anywhere" }}>{group.name}</Title>
+        <Text size="sm" lineClamp={3} style={{ overflowWrap: "anywhere", overflow: "hidden" }}>{group.description}</Text>
+        <Stack gap="xs" mt="auto">
+          <Text size="sm" c="dimmed">{group.members.length} soluciones</Text>
+          <Button component={Link} href={`/groups/${group.id}`} variant="light">Abrir grupo</Button>
+        </Stack>
       </Stack></Paper>)}</SimpleGrid>
     </>}
     <Modal opened={opened} onClose={() => setOpened(false)} title="Crear grupo" closeOnClickOutside={false}>
