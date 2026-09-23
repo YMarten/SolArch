@@ -41,7 +41,7 @@ const roleLabels: Record<string, string> = {
     CORE_TRANSACTIONAL: "Core transaccional",
     SATELLITE: "Sistema satélite",
     INTEGRATION: "Plataforma de integración",
-    DATA_ANALYTICS: "Información y analítica",
+    DATA_ANALYTICS: "#0ca678", // teal
 }
 
 export function EcosystemGraph() {

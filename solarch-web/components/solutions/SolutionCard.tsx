@@ -18,7 +18,7 @@ const roleConfig: Record<string, {
   CORE_TRANSACTIONAL:  { label: "Core transaccional",       color: "indigo",  icon: IconDatabase        },
   SATELLITE:           { label: "Sistema satélite",          color: "violet",  icon: IconPuzzle          },
   INTEGRATION:         { label: "Plataforma de integración", color: "orange",  icon: IconArrowsExchange  },
-  DATA_ANALYTICS:      { label: "Información y analítica",   color: "teal",    icon: IconChartBar        },
+  DATA_ANALYTICS:      { label: "Datos / Analítica e IA",   color: "teal",    icon: IconChartBar        },
 }
 
 interface Props {

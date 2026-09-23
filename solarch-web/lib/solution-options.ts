@@ -81,8 +81,8 @@ export const solutionRoleOptions: Option<SolutionRole>[] = [
   },
   {
     "value": "DATA_ANALYTICS",
-    "label": "Datos y analítica",
-    "description": "Consolida o analiza información para indicadores, reportes y decisiones."
+    "label": "Datos / Analítica e IA",
+    "description": "Gestiona, consolida o analiza datos para generar indicadores, reportes y apoyar decisiones, o aplica inteligencia artificial para realizar predicciones, recomendaciones y automatizar tareas."
   }
 ]
 

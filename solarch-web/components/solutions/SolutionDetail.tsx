@@ -26,7 +26,7 @@ const roleConfig: Record<string, {
   CORE_TRANSACTIONAL: { label: "Core transaccional", color: "indigo" },
   SATELLITE: { label: "Sistema satélite", color: "violet" },
   INTEGRATION: { label: "Plataforma de integración", color: "orange" },
-  DATA_ANALYTICS: { label: "Información y analítica", color: "teal" },
+  DATA_ANALYTICS: { label: "Datos / Analítica e IA", color: "teal" },
 }
 
 const originLabels: Record<string, string> = {
