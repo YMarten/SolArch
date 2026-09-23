@@ -8,6 +8,7 @@ import { solutionsService } from "@/services/solutions.service"
 import { api } from "@/lib/api"
 
 interface Connection {
+    isActive: boolean
     id: string
     type: string
     fromId: string
@@ -25,6 +26,7 @@ interface GraphNode extends d3.SimulationNodeDatum {
 }
 
 interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
+    isActive: boolean
     type: string
 }
 
@@ -92,6 +94,7 @@ export function EcosystemGraph() {
                 source: c.fromId,
                 target: c.toId,
                 type: c.type,
+                isActive: c.isActive,
             }))
 
         const svg = d3.select(svgRef.current)
@@ -135,6 +138,7 @@ export function EcosystemGraph() {
             .join("line")
             .attr("stroke", "#adb5bd")
             .attr("stroke-width", 1.5)
+            .attr("stroke-dasharray", d => d.isActive ? null : "5 4")
             .attr("marker-end", "url(#arrow)")
 
         // Link labels
@@ -145,7 +149,7 @@ export function EcosystemGraph() {
             .attr("font-size", 10)
             .attr("fill", "#868e96")
             .attr("text-anchor", "middle")
-            .text(d => d.type)
+            .text(d => `${d.type} · ${d.isActive ? "Activa" : "Inactiva"}`)
 
         // Nodes group
         const node = g.append("g")

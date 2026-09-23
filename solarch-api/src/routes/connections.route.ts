@@ -3,6 +3,7 @@ import { connectionsService } from "../services/connections.service"
 import { CreateConnectionDTO, UpdateConnectionDTO } from "../types/connection.types"
 
 export async function connectionsRoute(server: FastifyInstance) {
+  const bodySchema = { type: "object", properties: { isActive: { type: "boolean" } } }
 
   // GET /api/connections?solutionId=xxx
   server.get("/", async (request, reply) => {
@@ -31,7 +32,7 @@ export async function connectionsRoute(server: FastifyInstance) {
   })
 
   // POST /api/connections
-  server.post("/", async (request, reply) => {
+  server.post("/", { schema: { body: bodySchema } }, async (request, reply) => {
     try {
       const connection = await connectionsService.create(request.body as CreateConnectionDTO)
       return reply.status(201).send(connection)
@@ -41,7 +42,7 @@ export async function connectionsRoute(server: FastifyInstance) {
   })
 
   // PUT /api/connections/:id
-  server.put("/:id", async (request, reply) => {
+  server.put("/:id", { schema: { body: bodySchema } }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }
       const connection = await connectionsService.update(id, request.body as UpdateConnectionDTO)

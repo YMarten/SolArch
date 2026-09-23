@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectionsRoute = connectionsRoute;
 const connections_service_1 = require("../services/connections.service");
 async function connectionsRoute(server) {
+    const bodySchema = { type: "object", properties: { isActive: { type: "boolean" } } };
     // GET /api/connections?solutionId=xxx
     server.get("/", async (request, reply) => {
         try {
@@ -31,7 +32,7 @@ async function connectionsRoute(server) {
         }
     });
     // POST /api/connections
-    server.post("/", async (request, reply) => {
+    server.post("/", { schema: { body: bodySchema } }, async (request, reply) => {
         try {
             const connection = await connections_service_1.connectionsService.create(request.body);
             return reply.status(201).send(connection);
@@ -41,7 +42,7 @@ async function connectionsRoute(server) {
         }
     });
     // PUT /api/connections/:id
-    server.put("/:id", async (request, reply) => {
+    server.put("/:id", { schema: { body: bodySchema } }, async (request, reply) => {
         try {
             const { id } = request.params;
             const connection = await connections_service_1.connectionsService.update(id, request.body);

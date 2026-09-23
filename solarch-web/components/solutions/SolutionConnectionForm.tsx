@@ -46,6 +46,7 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId,
       targetId:    connection ? (connection.from.id === solutionId ? connection.to.id : connection.from.id) : "",
       type:        connection?.type ?? "REST",
       description: connection?.description ?? "",
+      isActive: connection?.isActive ?? true,
     },
     validate: {
       targetId: v => !v ? "Selecciona una solución" : null,
@@ -61,6 +62,7 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId,
         fromId:      values.direction === "outgoing" ? solutionId : values.targetId,
         toId:        values.direction === "outgoing" ? values.targetId : solutionId,
         type:        values.type,
+        isActive: values.isActive,
         description: values.description,
       }
       if (connection) await connectionsService.update(connection.id, payload)
@@ -126,6 +128,16 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId,
             placeholder="Describe brevemente qué se intercambia o para qué sirve esta conexión..."
             rows={3}
             {...form.getInputProps("description")}
+          />
+
+          <Select
+            label="Estado de la conexión"
+            description="Indica si la conexión sigue en uso. Puedes conservar una conexión inactiva como referencia."
+            data={[{ value: "true", label: "Activa" }, { value: "false", label: "Inactiva" }]}
+            value={String(form.values.isActive)}
+            onChange={value => { if (value !== null) form.setFieldValue("isActive", value === "true") }}
+            allowDeselect={false}
+            disabled={loading}
           />
 
           <Group justify="flex-end" mt="sm">

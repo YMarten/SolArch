@@ -369,6 +369,7 @@ model AreaOnSolution {
 // ─────────────────────────────────────────────
 
 model Connection {
+  isActive    Boolean @default(true)
   id          String         @id @default(cuid())
   type        ConnectionType
   description String?

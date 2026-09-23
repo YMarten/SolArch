@@ -64,6 +64,7 @@ export function SolutionConnections({ solutionId }: Props) {
   }
 
   const actions = (connection: Connection) => <>
+    <Badge color={connection.isActive ? "green" : "gray"} variant="light" size="sm">{connection.isActive ? "Activa" : "Inactiva"}</Badge>
     <Tooltip label="Editar conexión">
       <ActionIcon variant="subtle" size="sm" aria-label={`Editar conexión de ${connection.from.name} a ${connection.to.name}`} onClick={() => { setEditing(connection); open() }}>
         <IconEdit size={14} />
