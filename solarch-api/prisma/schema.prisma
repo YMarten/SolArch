@@ -193,6 +193,7 @@ model Solution {
   attachments     Attachment[]
   connectionsFrom Connection[]           @relation("ConnectionFrom")
   connectionsTo   Connection[]           @relation("ConnectionTo")
+  intermediatedConnections Connection[] @relation("ConnectionIntermediary")
   archReviews     ArchReview[]
   changelog       ChangeLog[]
   responsibleArea      BusinessArea? @relation("ResponsibleArea", fields: [responsibleAreaId], references: [id], onDelete: SetNull)
@@ -369,6 +370,8 @@ model AreaOnSolution {
 // ─────────────────────────────────────────────
 
 model Connection {
+  intermediarySolutionId String?
+  intermediarySolution Solution? @relation("ConnectionIntermediary", fields: [intermediarySolutionId], references: [id], onDelete: Restrict)
   isActive    Boolean @default(true)
   id          String         @id @default(cuid())
   type        ConnectionType
@@ -383,6 +386,7 @@ model Connection {
   updatedAt DateTime @updatedAt
 
   @@unique([fromId, toId, type]) // Evita duplicados del mismo tipo entre el mismo par
+  @@index([intermediarySolutionId])
   @@index([fromId])
   @@index([toId])
 }

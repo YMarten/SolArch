@@ -64,6 +64,7 @@ export function SolutionConnections({ solutionId }: Props) {
   }
 
   const actions = (connection: Connection) => <>
+    {connection.intermediarySolution && <Anchor size="xs" href={`/solutions/${connection.intermediarySolution.id}`}>Vía {connection.intermediarySolution.name}</Anchor>}
     <Badge color={connection.isActive ? "green" : "gray"} variant="light" size="sm">{connection.isActive ? "Activa" : "Inactiva"}</Badge>
     <Tooltip label="Editar conexión">
       <ActionIcon variant="subtle" size="sm" aria-label={`Editar conexión de ${connection.from.name} a ${connection.to.name}`} onClick={() => { setEditing(connection); open() }}>
@@ -81,6 +82,7 @@ export function SolutionConnections({ solutionId }: Props) {
 
   const incoming = connections.filter(c => c.to.id === solutionId)
   const outgoing = connections.filter(c => c.from.id === solutionId)
+  const intermediated = connections.filter(c => c.intermediarySolutionId === solutionId)
 
   return (
     <Stack gap="md">
@@ -159,11 +161,19 @@ export function SolutionConnections({ solutionId }: Props) {
         </>
       )}
 
+      {intermediated.length > 0 && <Stack gap="xs">
+        <Text size="sm" fw={500}>Conexiones que intermedia</Text>
+        {intermediated.map(c => <Paper key={c.id} withBorder p="sm" radius="md">
+          <Text size="sm">{c.from.name} → {c.to.name}</Text>
+          <Text size="xs" c="dimmed">{c.description}</Text>
+          <Group gap="xs"><Badge size="sm">{c.type}</Badge>{actions(c)}</Group>
+        </Paper>)}
+      </Stack>}
       {opened && <SolutionConnectionForm
         opened={opened}
         onClose={close}
         onSuccess={load}
-        solutionId={solutionId}
+        solutionId={editing?.intermediarySolutionId === solutionId ? editing.from.id : solutionId}
         connection={editing}
       />}
       <Modal opened={deleting !== null} onClose={() => { if (!busy) setDeleting(null) }} title="Eliminar conexión" centered closeOnClickOutside={!busy} closeOnEscape={!busy} withCloseButton={!busy}>

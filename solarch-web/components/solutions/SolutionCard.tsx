@@ -23,9 +23,10 @@ const roleConfig: Record<string, {
 
 interface Props {
   solution: Solution
+  onPreview?: () => void
 }
 
-export function SolutionCard({ solution }: Props) {
+export function SolutionCard({ solution, onPreview }: Props) {
   const router = useRouter()
   const role   = roleConfig[solution.role] ?? {
     label: solution.role,
@@ -40,7 +41,18 @@ export function SolutionCard({ solution }: Props) {
       radius="md"
       padding="md"
       style={{ cursor: "pointer" }}
-      onClick={() => router.push(`/solutions/${solution.id}`)}
+      role="button"
+      tabIndex={0}
+      aria-label={`Ver ${solution.name}`}
+      aria-haspopup={onPreview ? "dialog" : undefined}
+      onClick={() => onPreview ? onPreview() : router.push(`/solutions/${solution.id}`)}
+      onKeyDown={event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault()
+          if (onPreview) onPreview()
+          else router.push(`/solutions/${solution.id}`)
+        }
+      }}
     >
       <Stack gap="xs">
         <Group justify="space-between" align="flex-start">

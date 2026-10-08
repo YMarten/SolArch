@@ -216,17 +216,14 @@ export function SolutionDetail({ solution, preview = false }: Props) {
       {/* Tabs */}
       <Tabs defaultValue="survey" keepMounted={!preview}>
         <Tabs.List>
-          <Tabs.Tab value="groups">Grupos</Tabs.Tab>
+
           <Tabs.Tab value="survey">Levantamiento</Tabs.Tab>
           <Tabs.Tab value="connections">Conexiones</Tabs.Tab>
           <Tabs.Tab value="attachments">Adjuntos</Tabs.Tab>
           <Tabs.Tab value="environments">Ambientes</Tabs.Tab>
           <Tabs.Tab value="reviews">Revisiones</Tabs.Tab>
+          <Tabs.Tab value="groups">Grupos</Tabs.Tab>
         </Tabs.List>
-
-        <Tabs.Panel value="groups" pt="md">
-          <SolutionGroups key={solution.id} solutionId={solution.id} />
-        </Tabs.Panel>
 
         <Tabs.Panel value="survey" pt="md">
           <SolutionSurveyDetails solution={solution} />
@@ -247,6 +244,11 @@ export function SolutionDetail({ solution, preview = false }: Props) {
         <Tabs.Panel value="reviews" pt="md">
           <ReviewsList solutionId={solution.id} />
         </Tabs.Panel>
+
+        <Tabs.Panel value="groups" pt="md">
+          <SolutionGroups key={solution.id} solutionId={solution.id} />
+        </Tabs.Panel>
+
       </Tabs>
     </Stack>
   )

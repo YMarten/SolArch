@@ -11,6 +11,7 @@ import {
 import { usePathname } from "next/navigation"
 
 const breadcrumbLabels: Record<string, string> = {
+  settings:     "Configuración",
   groups:       "Grupos",
   solutions:    "Catálogo",
   new:          "Nueva solución",

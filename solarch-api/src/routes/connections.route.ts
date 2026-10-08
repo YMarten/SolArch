@@ -3,7 +3,7 @@ import { connectionsService } from "../services/connections.service"
 import { CreateConnectionDTO, UpdateConnectionDTO } from "../types/connection.types"
 
 export async function connectionsRoute(server: FastifyInstance) {
-  const bodySchema = { type: "object", properties: { isActive: { type: "boolean" } } }
+  const bodySchema = { type: "object", properties: { intermediarySolutionId: { anyOf: [{ type: "string", minLength: 1 }, { type: "null" }] }, isActive: { type: "boolean" } } }
 
   // GET /api/connections?solutionId=xxx
   server.get("/", async (request, reply) => {
@@ -15,6 +15,7 @@ export async function connectionsRoute(server: FastifyInstance) {
       const connections = await connectionsService.findBySolution(solutionId)
       return reply.send(connections)
     } catch (error) {
+      if (error instanceof Error && "statusCode" in error && error.statusCode === 400) return reply.status(400).send({ error: error.message })
       return reply.status(500).send({ error: "Error al obtener las conexiones" })
     }
   })
@@ -27,6 +28,7 @@ export async function connectionsRoute(server: FastifyInstance) {
       if (!connection) return reply.status(404).send({ error: "Conexión no encontrada" })
       return reply.send(connection)
     } catch (error) {
+      if (error instanceof Error && "statusCode" in error && error.statusCode === 400) return reply.status(400).send({ error: error.message })
       return reply.status(500).send({ error: "Error al obtener la conexión" })
     }
   })
@@ -37,6 +39,7 @@ export async function connectionsRoute(server: FastifyInstance) {
       const connection = await connectionsService.create(request.body as CreateConnectionDTO)
       return reply.status(201).send(connection)
     } catch (error) {
+      if (error instanceof Error && "statusCode" in error && error.statusCode === 400) return reply.status(400).send({ error: error.message })
       return reply.status(500).send({ error: "Error al crear la conexión" })
     }
   })
@@ -48,6 +51,7 @@ export async function connectionsRoute(server: FastifyInstance) {
       const connection = await connectionsService.update(id, request.body as UpdateConnectionDTO)
       return reply.send(connection)
     } catch (error) {
+      if (error instanceof Error && "statusCode" in error && error.statusCode === 400) return reply.status(400).send({ error: error.message })
       return reply.status(500).send({ error: "Error al actualizar la conexión" })
     }
   })
@@ -59,6 +63,7 @@ export async function connectionsRoute(server: FastifyInstance) {
       await connectionsService.remove(id)
       return reply.status(204).send()
     } catch (error) {
+      if (error instanceof Error && "statusCode" in error && error.statusCode === 400) return reply.status(400).send({ error: error.message })
       return reply.status(500).send({ error: "Error al eliminar la conexión" })
     }
   })

@@ -2,6 +2,10 @@ import { api } from "@/lib/api"
 
 export interface Connection {
   id: string
+  fromId: string
+  toId: string
+  intermediarySolutionId: string | null
+  intermediarySolution: { id: string; name: string } | null
   type: string
   isActive: boolean
   description?: string | null
@@ -10,6 +14,7 @@ export interface Connection {
 }
 
 interface ConnectionInput {
+  intermediarySolutionId?: string | null
   isActive?: boolean
   fromId: string
   toId: string

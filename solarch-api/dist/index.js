@@ -17,6 +17,7 @@ const attachments_route_1 = require("./routes/attachments.route");
 const environments_route_1 = require("./routes/environments.route");
 const reviews_route_1 = require("./routes/reviews.route");
 const groups_route_1 = require("./routes/groups.route");
+const export_route_1 = require("./routes/export.route");
 const prisma_1 = require("./prisma");
 const server = (0, fastify_1.default)({
     logger: true
@@ -73,4 +74,5 @@ server.register(attachments_route_1.attachmentsRoute, { prefix: "/api/attachment
 server.register(environments_route_1.environmentsRoute, { prefix: "/api/environments" });
 server.register(reviews_route_1.reviewsRoute, { prefix: "/api/reviews" });
 server.register(groups_route_1.groupsRoute, { prefix: "/api/groups" });
+server.register(export_route_1.exportRoute, { prefix: "/api/export" });
 start();

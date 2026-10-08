@@ -47,8 +47,10 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId,
       type:        connection?.type ?? "REST",
       description: connection?.description ?? "",
       isActive: connection?.isActive ?? true,
+      intermediarySolutionId: connection?.intermediarySolutionId ?? null as string | null,
     },
     validate: {
+      intermediarySolutionId: (value, values) => value && (value === solutionId || value === values.targetId) ? "El intermediario debe ser distinto del origen y del destino" : null,
       targetId: v => !v ? "Selecciona una solución" : null,
       type:     v => !v ? "Selecciona el tipo"      : null,
     }
@@ -63,6 +65,7 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId,
         toId:        values.direction === "outgoing" ? values.targetId : solutionId,
         type:        values.type,
         isActive: values.isActive,
+        intermediarySolutionId: values.intermediarySolutionId,
         description: values.description,
       }
       if (connection) await connectionsService.update(connection.id, payload)
@@ -128,6 +131,15 @@ export function SolutionConnectionForm({ opened, onClose, onSuccess, solutionId,
             placeholder="Describe brevemente qué se intercambia o para qué sirve esta conexión..."
             rows={3}
             {...form.getInputProps("description")}
+          />
+
+          <Select
+            label="Intermediario"
+            description="Solución por la que pasa la llamada. Déjalo vacío para una conexión directa."
+            placeholder="Sin intermediario (conexión directa)"
+            searchable clearable disabled={loading}
+            data={solutions.filter(s => s.id !== form.values.targetId).map(s => ({ value: s.id, label: s.name }))}
+            {...form.getInputProps("intermediarySolutionId")}
           />
 
           <Select

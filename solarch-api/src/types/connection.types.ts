@@ -2,6 +2,7 @@ import { ConnectionType } from "@prisma/client"
 
 export interface CreateConnectionDTO {
   fromId: string
+  intermediarySolutionId?: string | null
   toId: string
   type: ConnectionType
   isActive?: boolean

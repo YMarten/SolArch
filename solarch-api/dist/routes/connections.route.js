@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectionsRoute = connectionsRoute;
 const connections_service_1 = require("../services/connections.service");
 async function connectionsRoute(server) {
-    const bodySchema = { type: "object", properties: { isActive: { type: "boolean" } } };
+    const bodySchema = { type: "object", properties: { intermediarySolutionId: { anyOf: [{ type: "string", minLength: 1 }, { type: "null" }] }, isActive: { type: "boolean" } } };
     // GET /api/connections?solutionId=xxx
     server.get("/", async (request, reply) => {
         try {
@@ -15,6 +15,8 @@ async function connectionsRoute(server) {
             return reply.send(connections);
         }
         catch (error) {
+            if (error instanceof Error && "statusCode" in error && error.statusCode === 400)
+                return reply.status(400).send({ error: error.message });
             return reply.status(500).send({ error: "Error al obtener las conexiones" });
         }
     });
@@ -28,6 +30,8 @@ async function connectionsRoute(server) {
             return reply.send(connection);
         }
         catch (error) {
+            if (error instanceof Error && "statusCode" in error && error.statusCode === 400)
+                return reply.status(400).send({ error: error.message });
             return reply.status(500).send({ error: "Error al obtener la conexión" });
         }
     });
@@ -38,6 +42,8 @@ async function connectionsRoute(server) {
             return reply.status(201).send(connection);
         }
         catch (error) {
+            if (error instanceof Error && "statusCode" in error && error.statusCode === 400)
+                return reply.status(400).send({ error: error.message });
             return reply.status(500).send({ error: "Error al crear la conexión" });
         }
     });
@@ -49,6 +55,8 @@ async function connectionsRoute(server) {
             return reply.send(connection);
         }
         catch (error) {
+            if (error instanceof Error && "statusCode" in error && error.statusCode === 400)
+                return reply.status(400).send({ error: error.message });
             return reply.status(500).send({ error: "Error al actualizar la conexión" });
         }
     });
@@ -60,6 +68,8 @@ async function connectionsRoute(server) {
             return reply.status(204).send();
         }
         catch (error) {
+            if (error instanceof Error && "statusCode" in error && error.statusCode === 400)
+                return reply.status(400).send({ error: error.message });
             return reply.status(500).send({ error: "Error al eliminar la conexión" });
         }
     });

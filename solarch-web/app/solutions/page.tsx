@@ -7,23 +7,15 @@ import { solutionsService } from "@/services/solutions.service"
 import { Solution } from "@/types/solution"
 import { SolutionCard } from "@/components/solutions/SolutionCard"
 import { SolutionFilters } from "@/components/solutions/SolutionFilters"
+import { emptySolutionFilters, filterSolutions } from "@/lib/solution-filters"
+import { SolutionPreview } from "@/components/solutions/SolutionPreview"
 
 export default function SolutionsPage() {
   const [solutions, setSolutions] = useState<Solution[]>([])
+  const [previewSolution, setPreviewSolution] = useState<Solution | null>(null)
   const [loading, setLoading]     = useState(true)
   const [error, setError]         = useState<string | null>(null)
-  const [filters, setFilters]     = useState({
-    search:      "",
-    status:      "",
-    criticality: "",
-    role:        "",
-    usageStatus: "",
-    hostingMode: "",
-    managementModel: "",
-    supportStatus: "",
-    hasProblems: "",
-    hasReplacementInitiative: "",
-  })
+  const [filters, setFilters] = useState(emptySolutionFilters)
 
   useEffect(() => {
     solutionsService.getAll()
@@ -32,39 +24,7 @@ export default function SolutionsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  const filtered = useMemo(() => {
-    return solutions.filter(s => {
-      const matchSearch =
-        !filters.search ||
-        s.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.description?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.vendor?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.owner?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.businessProcess?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.knownDependencies?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.problemDetails?.toLowerCase().includes(filters.search.toLowerCase()) ||
-        s.userGroups?.some(group => group.toLowerCase().includes(filters.search.toLowerCase()))
-
-      const matchStatus =
-        !filters.status || s.status === filters.status
-
-      const matchCriticality =
-        !filters.criticality || s.criticality === filters.criticality
-
-      const matchRole =
-        !filters.role || s.role === filters.role
-
-      const matchSurvey =
-        (!filters.usageStatus || s.usageStatus === filters.usageStatus) &&
-        (!filters.hostingMode || s.hostingMode === filters.hostingMode) &&
-        (!filters.managementModel || s.managementModel === filters.managementModel) &&
-        (!filters.supportStatus || s.supportStatus === filters.supportStatus) &&
-        (!filters.hasProblems || String(s.hasProblems) === filters.hasProblems) &&
-        (!filters.hasReplacementInitiative || String(s.hasReplacementInitiative) === filters.hasReplacementInitiative)
-
-      return matchSearch && matchStatus && matchCriticality && matchRole && matchSurvey
-    })
-  }, [solutions, filters])
+  const filtered = useMemo(() => filterSolutions(solutions, filters), [solutions, filters])
 
   if (loading) {
     return (
@@ -93,6 +53,10 @@ export default function SolutionsPage() {
 
       <SolutionFilters filters={filters} onChange={setFilters} />
 
+      <Text size="sm" c="dimmed" fw={500}>
+        {filtered.length} {filtered.length === 1 ? "solución encontrada" : "soluciones encontradas"}
+      </Text>
+
       {filtered.length === 0 ? (
         <Center h={300}>
           <Text c="dimmed">
@@ -104,10 +68,11 @@ export default function SolutionsPage() {
       ) : (
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="md">
           {filtered.map(solution => (
-            <SolutionCard key={solution.id} solution={solution} />
+            <SolutionCard key={solution.id} solution={solution} onPreview={() => setPreviewSolution(solution)} />
           ))}
         </SimpleGrid>
       )}
+      <SolutionPreview solution={previewSolution} onClose={() => setPreviewSolution(null)} />
     </Stack>
   )
 }

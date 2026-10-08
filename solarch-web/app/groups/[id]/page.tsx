@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { Alert, Badge, Button, Group, Loader, Modal, Paper, Select, Stack, Text, Title } from "@mantine/core"
@@ -8,8 +8,13 @@ import { groupsService } from "@/services/groups.service"
 import { solutionsService } from "@/services/solutions.service"
 import { participationOptions, SolutionGroup, SolutionParticipation } from "@/types/group"
 import { Solution } from "@/types/solution"
+import { EcosystemGraph } from "@/components/ecosystem/EcosystemGraph"
 import { GroupForm } from "@/components/groups/GroupForm"
 import { SolutionPreview } from "@/components/solutions/SolutionPreview"
+import { DescribedSelect } from "@/components/ui/DescribedSelect"
+import { FieldLabelHelp } from "@/components/ui/FieldLabelHelp"
+
+const participationHelp = "Indica cómo se incorpora la solución al proyecto o iniciativa de este grupo: como una solución nueva, reutilizando una existente o adaptándola. La clasificación aplica solo a este grupo; la misma solución puede tener otra participación en otros grupos."
 
 export default function GroupPage() {
   const { id } = useParams<{ id: string }>()
@@ -27,6 +32,8 @@ function GroupContent({ id }: { id: string }) {
   const [deleting, setDeleting] = useState(false)
   const [solutionId, setSolutionId] = useState<string | null>(null)
   const [participation, setParticipation] = useState<SolutionParticipation>("NEW")
+  const [diagramOpened, setDiagramOpened] = useState(false)
+  const diagramSolutionIds = useMemo(() => group?.members.map(member => member.solutionId) ?? [], [group])
   const [preview, setPreview] = useState<Solution | null>(null)
   useEffect(() => {
     let active = true
@@ -46,6 +53,7 @@ function GroupContent({ id }: { id: string }) {
   if (!group) return <Stack p="xl"><Alert color="red">{error ?? "Grupo no encontrado"}</Alert><Button component={Link} href="/groups">Volver a grupos</Button></Stack>
   return <Stack p="xl">
     <Group justify="space-between"><Button component={Link} href="/groups" variant="subtle">Volver a grupos</Button><Group>
+      <Button variant="light" onClick={() => setDiagramOpened(true)}>Ver diagrama</Button>
       <Button variant="light" onClick={() => setEditing(true)} disabled={busy}>Editar grupo</Button>
       <Button color="red" variant="light" onClick={() => setDeleting(true)} disabled={busy}>Eliminar grupo</Button>
     </Group></Group>
@@ -56,7 +64,7 @@ function GroupContent({ id }: { id: string }) {
       <Title order={4}>Agregar solución</Title>
       <Select label="Solución" placeholder="Selecciona una solución" searchable clearable value={solutionId} onChange={setSolutionId} disabled={busy}
         data={solutions.filter(solution => !group.members.some(member => member.solutionId === solution.id)).map(solution => ({ value: solution.id, label: solution.name }))} />
-      <Select label="Participación en este grupo" data={participationOptions} value={participation} allowDeselect={false} onChange={value => value && setParticipation(value as SolutionParticipation)} disabled={busy} />
+      <DescribedSelect label={<FieldLabelHelp label="Participación en este grupo" help={participationHelp} />} data={participationOptions} value={participation} allowDeselect={false} onChange={value => value && setParticipation(value as SolutionParticipation)} disabled={busy} />
       <Button disabled={!solutionId || busy} loading={busy} onClick={async () => {
         if (solutionId && await mutate(() => groupsService.setMember(id, solutionId, participation))) setSolutionId(null)
       }}>Agregar al grupo</Button>
@@ -72,7 +80,7 @@ function GroupContent({ id }: { id: string }) {
         <Button color="red" variant="subtle" disabled={busy} onClick={() => void mutate(() => groupsService.removeMember(id, member.solutionId))}>Quitar del grupo</Button>
       </Group>
       <Text size="sm">{member.solution.description}</Text>
-      <Select label={`Participación de ${member.solution.name}`} data={participationOptions} value={member.participation} allowDeselect={false} disabled={busy}
+      <DescribedSelect label={<FieldLabelHelp label={`Participación de ${member.solution.name}`} help={participationHelp} />} data={participationOptions} value={member.participation} allowDeselect={false} disabled={busy}
         onChange={value => { if (value) void mutate(() => groupsService.setMember(id, member.solutionId, value as SolutionParticipation)) }} />
     </Stack></Paper>)}
     <Modal opened={editing} onClose={() => setEditing(false)} title="Editar grupo" closeOnClickOutside={false}>
@@ -87,6 +95,9 @@ function GroupContent({ id }: { id: string }) {
           finally { setBusy(false) }
         }}>Eliminar grupo</Button>
       </Stack>
+    </Modal>
+    <Modal opened={diagramOpened} onClose={() => setDiagramOpened(false)} title={`Diagrama de ${group.name}`} size="90%">
+      {diagramOpened && <EcosystemGraph solutionIds={diagramSolutionIds} title={group.name} />}
     </Modal>
     <SolutionPreview solution={preview} onClose={() => setPreview(null)} />
   </Stack>
