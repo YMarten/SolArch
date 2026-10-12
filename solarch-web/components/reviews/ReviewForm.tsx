@@ -137,7 +137,7 @@ export function ReviewForm({ solutionId, solutionName }: Props) {
   }
 
   return (
-    <Box maw={860} mx="auto" p="xl">
+    <Box className="review-form" maw={860} mx="auto" p="xl">
       <Group mb="xl">
         <ActionIcon variant="subtle" onClick={() => router.push(`/solutions/${solutionId}`)}>
           <IconArrowLeft size={18} />

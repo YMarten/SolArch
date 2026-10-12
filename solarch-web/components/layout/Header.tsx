@@ -1,29 +1,14 @@
 "use client"
 
+import { useMounted } from "@mantine/hooks"
 import {
-  Box, Group, Text, Breadcrumbs, Anchor, ActionIcon,
-  useMantineColorScheme, Avatar, Menu, UnstyledButton
+  Group, Text, ActionIcon,
+  useMantineColorScheme, useComputedColorScheme, Avatar, Menu, UnstyledButton, Burger, TextInput
 } from "@mantine/core"
 import {
   IconSun, IconMoon, IconUser,
-  IconSettings, IconLogout
+  IconSettings, IconLogout, IconSearch
 } from "@tabler/icons-react"
-import { usePathname } from "next/navigation"
-
-const breadcrumbLabels: Record<string, string> = {
-  settings:     "Configuración",
-  groups:       "Grupos",
-  solutions:    "Catálogo",
-  new:          "Nueva solución",
-  edit:         "Editar",
-  ecosystem:    "Ecosistema",
-  reviews:      "Revisiones",
-  catalog:      "Catálogos",
-  technologies: "Tecnologías",
-  domains:      "Dominios",
-  areas:        "Áreas",
-  capabilities: "Capacidades",
-}
 
 // Usuario hardcodeado por ahora — en Fase 2 vendrá de la sesión de Auth.js
 const CURRENT_USER = {
@@ -32,44 +17,29 @@ const CURRENT_USER = {
   initials: "AR",
 }
 
-export function Header() {
-  const pathname                            = usePathname()
+export function Header({ opened, onToggleNavigation }: { opened: boolean; onToggleNavigation: () => void }) {
   const { toggleColorScheme } = useMantineColorScheme()
-
-  const segments = pathname
-    .split("/")
-    .filter(Boolean)
-    .filter(s => !s.match(/^[a-z0-9]{20,}$/i))
-
-  const crumbs = segments.map((seg, i) => ({
-    label: breadcrumbLabels[seg] ?? seg,
-    href:  "/" + segments.slice(0, i + 1).join("/"),
-  }))
+  const colorScheme = useComputedColorScheme("dark", { getInitialValueInEffect: true })
+  const mounted = useMounted()
+  // The saved preference is only available in the browser. Keep the server
+  // and first client render identical, then reflect it after hydration.
+  const isDark = !mounted || colorScheme === "dark"
+  const themeAction = isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
 
   return (
-    <Group h="100%" px="md" justify="space-between">
-      <Breadcrumbs>
-        <Anchor href="/" size="sm">Inicio</Anchor>
-        {crumbs.map((c, i) =>
-          i === crumbs.length - 1
-            ? <Text key={c.href} size="sm">{c.label}</Text>
-            : <Anchor key={c.href} href={c.href} size="sm">{c.label}</Anchor>
-        )}
-      </Breadcrumbs>
-
+    <Group h="100%" px="lg" justify="space-between" wrap="nowrap" className="workspace-header">
+      <Group wrap="nowrap" gap="sm" style={{ minWidth: 0 }}>
+      <Burger opened={opened} onClick={onToggleNavigation} hiddenFrom="sm" size="sm" aria-label="Abrir o cerrar navegación" />
+      <TextInput className="header-search-placeholder" size="xs" disabled aria-label="Búsqueda global, próximamente" placeholder="Buscar en SolArch · Próximamente" leftSection={<IconSearch size={15} />} />
+      </Group>
       <Group gap="sm">
         <ActionIcon
           variant="subtle"
           onClick={toggleColorScheme}
-          title="Cambiar modo"
-          aria-label="Cambiar modo"
+          title={themeAction}
+          aria-label={themeAction}
         >
-          <Box component="span" lightHidden style={{ display: "flex" }}>
-            <IconSun size={18} />
-          </Box>
-          <Box component="span" darkHidden style={{ display: "flex" }}>
-            <IconMoon size={18} />
-          </Box>
+          {isDark ? <IconSun size={18} /> : <IconMoon size={18} />}
         </ActionIcon>
 
         <Menu shadow="md" width={200} position="bottom-end">

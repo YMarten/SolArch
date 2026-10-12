@@ -15,7 +15,10 @@ import { domainsService } from "@/services/domains.service"
 import { Capability, CreateCapabilityDTO } from "@/types/capability"
 import { Domain } from "@/types/domain"
 
+import { CatalogSearch, matchesCatalogSearch } from "./CatalogSearch"
+
 export function CapabilitiesTable() {
+  const [search, setSearch] = useState("")
   const [capabilities, setCapabilities] = useState<Capability[]>([])
   const [domains, setDomains]           = useState<Domain[]>([])
   const [loading, setLoading]           = useState(true)
@@ -106,9 +109,7 @@ export function CapabilitiesTable() {
     }
   }
 
-  const filtered = filterDomain
-    ? capabilities.filter(c => c.domainId === filterDomain)
-    : capabilities
+  const filtered = capabilities.filter(c => (!filterDomain || c.domainId === filterDomain) && matchesCatalogSearch(search, [c.name, c.description, domains.find(d => d.id === c.domainId)?.name, capabilities.find(parent => parent.id === c.parentId)?.name, `Nivel ${c.level}`]))
 
   const getDomainName = (id: string) =>
     domains.find(d => d.id === id)?.name ?? "—"
@@ -119,32 +120,38 @@ export function CapabilitiesTable() {
   if (loading) return <Center h={200}><Loader /></Center>
 
   return (
-    <Stack gap="md" p="xl">
+    <Stack gap="lg" p="xl" className="catalog-page">
       <Group justify="space-between">
-        <Title order={4}>Capacidades empresariales</Title>
+        <Title order={2}>Capacidades empresariales</Title>
         <Button leftSection={<IconPlus size={14} />} onClick={() => handleOpen()}>
           Nueva capacidad
         </Button>
       </Group>
 
+      <Group gap="sm">
+      <CatalogSearch value={search} onChange={setSearch} />
       <Select
         placeholder="Filtrar por dominio..."
         clearable
         value={filterDomain}
         onChange={setFilterDomain}
         data={domains.map(d => ({ value: d.id, label: d.name }))}
-        style={{ width: 260 }}
+        aria-label="Filtrar por dominio"
+        style={{ width: 260, maxWidth: "100%" }}
       />
 
-      <Table withTableBorder withColumnBorders>
+      </Group>
+      <div className="catalog-table-card">
+      <div className="catalog-table-scroll" role="region" aria-label="Tabla del catálogo" tabIndex={0}>
+      <Table className="catalog-table" highlightOnHover>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Nombre</Table.Th>
-            <Table.Th>Dominio</Table.Th>
-            <Table.Th>Nivel</Table.Th>
-            <Table.Th>Capacidad padre</Table.Th>
-            <Table.Th>Descripción</Table.Th>
-            <Table.Th style={{ width: 80 }}>Acciones</Table.Th>
+            <Table.Th scope="col">Nombre</Table.Th>
+            <Table.Th scope="col">Dominio</Table.Th>
+            <Table.Th scope="col">Nivel</Table.Th>
+            <Table.Th scope="col">Capacidad padre</Table.Th>
+            <Table.Th scope="col">Descripción</Table.Th>
+            <Table.Th scope="col" style={{ width: 100 }}>Acciones</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
@@ -152,33 +159,33 @@ export function CapabilitiesTable() {
             <Table.Tr>
               <Table.Td colSpan={6}>
                 <Text c="dimmed" ta="center" size="sm">
-                  No hay capacidades registradas.
+                  {capabilities.length ? "No hay resultados para la búsqueda o el dominio seleccionado." : "No hay capacidades registradas."}
                 </Text>
               </Table.Td>
             </Table.Tr>
           ) : filtered.map(c => (
             <Table.Tr key={c.id}>
-              <Table.Td><Text size="sm" fw={500}>{c.name}</Text></Table.Td>
+              <Table.Td><Text size="sm" fw={600}>{c.name}</Text></Table.Td>
               <Table.Td>
                 <Badge variant="light" color="blue" size="sm">
                   {getDomainName(c.domainId)}
                 </Badge>
               </Table.Td>
               <Table.Td>
-                <Badge variant="default" size="sm">Nivel {c.level}</Badge>
+                <Badge variant="default" radius="sm" className="catalog-level" size="sm">Nivel {c.level}</Badge>
               </Table.Td>
               <Table.Td>
                 <Text size="sm" c="dimmed">{getParentName(c.parentId)}</Text>
               </Table.Td>
               <Table.Td>
-                <Text size="sm" c="dimmed">{c.description ?? "—"}</Text>
+                <Text size="sm" c="dimmed" className="catalog-description" title={c.description ?? undefined}>{c.description ?? "—"}</Text>
               </Table.Td>
               <Table.Td>
-                <Group gap="xs">
-                  <ActionIcon variant="subtle" onClick={() => handleOpen(c)}>
+                <Group gap={4} justify="flex-end" wrap="nowrap">
+                  <ActionIcon variant="subtle" className="catalog-edit" aria-label={`Editar capacidad: ${c.name}`} title="Editar capacidad" onClick={() => handleOpen(c)}>
                     <IconEdit size={16} />
                   </ActionIcon>
-                  <ActionIcon variant="subtle" color="red" onClick={() => handleDelete(c.id)}>
+                  <ActionIcon variant="subtle" color="red" className="catalog-delete" aria-label={`Eliminar capacidad: ${c.name}`} title="Eliminar capacidad" onClick={() => handleDelete(c.id)}>
                     <IconTrash size={16} />
                   </ActionIcon>
                 </Group>
@@ -187,6 +194,8 @@ export function CapabilitiesTable() {
           ))}
         </Table.Tbody>
       </Table>
+      </div>
+      </div>
 
       {/* Modal */}
       <Modal

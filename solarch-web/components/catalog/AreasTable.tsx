@@ -17,7 +17,10 @@ const fields = [
   { key: "description", label: "Descripción", type: "textarea" as const, placeholder: "Descripción del área organizacional" },
 ]
 
+import { CatalogSearch, matchesCatalogSearch } from "./CatalogSearch"
+
 export function AreasTable() {
+  const [search, setSearch] = useState("")
   const [areas, setAreas]           = useState<Area[]>([])
   const [loading, setLoading]       = useState(true)
   const [saving, setSaving]         = useState(false)
@@ -72,42 +75,47 @@ export function AreasTable() {
     }
   }
 
+  const filtered = areas.filter(item => matchesCatalogSearch(search, [item.name, item.description]))
+
   if (loading) return <Center h={200}><Loader /></Center>
 
   return (
-    <Stack gap="md">
+    <Stack gap="lg" p="xl" className="catalog-page">
       <Group justify="space-between">
-        <Title order={4}>Áreas de negocio</Title>
+        <Title order={2}>Áreas de negocio</Title>
         <Button leftSection={<IconPlus size={14} />} onClick={() => handleOpen()}>
           Nueva área
         </Button>
       </Group>
 
-      <Table withTableBorder withColumnBorders>
+      <CatalogSearch value={search} onChange={setSearch} />
+      <div className="catalog-table-card">
+      <div className="catalog-table-scroll" role="region" aria-label="Tabla del catálogo" tabIndex={0}>
+      <Table className="catalog-table" highlightOnHover>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Nombre</Table.Th>
-            <Table.Th>Descripción</Table.Th>
-            <Table.Th style={{ width: 80 }}>Acciones</Table.Th>
+            <Table.Th scope="col">Nombre</Table.Th>
+            <Table.Th scope="col">Descripción</Table.Th>
+            <Table.Th scope="col" style={{ width: 100 }}>Acciones</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {areas.length === 0 ? (
+          {filtered.length === 0 ? (
             <Table.Tr>
               <Table.Td colSpan={3}>
-                <Text c="dimmed" ta="center" size="sm">No hay áreas registradas.</Text>
+                <Text c="dimmed" ta="center" size="sm">{areas.length ? "No hay resultados para la búsqueda." : "No hay áreas registradas."}</Text>
               </Table.Td>
             </Table.Tr>
-          ) : areas.map(a => (
+          ) : filtered.map(a => (
             <Table.Tr key={a.id}>
-              <Table.Td><Text size="sm" fw={500}>{a.name}</Text></Table.Td>
-              <Table.Td><Text size="sm" c="dimmed">{a.description ?? "—"}</Text></Table.Td>
+              <Table.Td><Text size="sm" fw={600}>{a.name}</Text></Table.Td>
+              <Table.Td><Text size="sm" c="dimmed" className="catalog-description" title={a.description ?? undefined}>{a.description ?? "—"}</Text></Table.Td>
               <Table.Td>
-                <Group gap="xs">
-                  <ActionIcon variant="subtle" onClick={() => handleOpen(a)}>
+                <Group gap={4} justify="flex-end" wrap="nowrap">
+                  <ActionIcon variant="subtle" className="catalog-edit" aria-label={`Editar área: ${a.name}`} title="Editar área" onClick={() => handleOpen(a)}>
                     <IconEdit size={16} />
                   </ActionIcon>
-                  <ActionIcon variant="subtle" color="red" onClick={() => handleDelete(a.id)}>
+                  <ActionIcon variant="subtle" color="red" className="catalog-delete" aria-label={`Eliminar área: ${a.name}`} title="Eliminar área" onClick={() => handleDelete(a.id)}>
                     <IconTrash size={16} />
                   </ActionIcon>
                 </Group>
@@ -116,6 +124,8 @@ export function AreasTable() {
           ))}
         </Table.Tbody>
       </Table>
+      </div>
+      </div>
 
       <CatalogModal
         opened={opened}

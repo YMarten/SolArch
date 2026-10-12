@@ -56,7 +56,7 @@ export function SolutionDetail({ solution, preview = false }: Props) {
   const router = useRouter()
 
   return (
-    <Stack p={preview ? 0 : "xl"} gap="md" style={{ overflowWrap: "anywhere" }}>
+    <Stack className="solution-detail" p={preview ? "md" : "xl"} gap="md" style={{ overflowWrap: "anywhere" }}>
       {/* Topbar */}
       {!preview && <Group justify="space-between">
         <Group>
@@ -75,7 +75,7 @@ export function SolutionDetail({ solution, preview = false }: Props) {
 
       {/* Hero */}
       <Paper withBorder p="lg" radius="md">
-        <SimpleGrid cols={preview ? 1 : { base: 1, md: 2 }} spacing="xl">
+        <SimpleGrid cols={1} spacing="xl" className="solution-detail-hero-grid">
           <Stack gap="sm">
             <Group gap="xs" wrap="wrap">
               <Title order={3}>{solution.name}</Title>
@@ -169,7 +169,7 @@ export function SolutionDetail({ solution, preview = false }: Props) {
       </Paper>
 
       {/* Contexto de negocio y tecnologías */}
-      <SimpleGrid cols={preview ? 1 : { base: 1, sm: 2 }} spacing="md">
+      <SimpleGrid cols={1} spacing="md" className="solution-detail-context-grid">
         <Paper withBorder p="md" radius="md">
           <Text size="sm" fw={500} mb="sm">Contexto de negocio</Text>
           <Stack gap="xs">

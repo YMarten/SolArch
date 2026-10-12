@@ -117,7 +117,7 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
   }
   const steps = ["Identificación", "Uso", "Soporte", "Tecnología", "Situación"]
 
-  return <Box component="form" noValidate onSubmit={form.onSubmit(handleSubmit, errors => {
+  return <Box className="solution-form" component="form" noValidate onSubmit={form.onSubmit(handleSubmit, errors => {
     const firstInvalidStep = errors.name || errors.status ? 1
       : ["owner", "responsibleAreaId", "businessProcess", "usageStatus", "similarSolutionId"].some(field => errors[field]) ? 2
       : errors.hostingMode || errors.managementModel ? 4 : 5
@@ -125,7 +125,7 @@ export function SolutionForm({ technologies, domains, areas, capabilities, solut
     notifications.show({ message: "Revisa los campos indicados antes de guardar.", color: "red" })
   })} maw={920} mx="auto" p="xl">
     <Group mb="xl"><ActionIcon variant="subtle" onClick={() => router.back()} aria-label="Volver"><IconArrowLeft size={18} /></ActionIcon><Title order={3} style={{ overflowWrap: "anywhere", minWidth: 0, flex: 1 }}>{isEditing ? `Editar solución${initialValues?.name ? ` · ${initialValues.name}` : ""}` : "Nueva solución"}</Title></Group>
-    <Group mb="xl" gap="xs">{steps.map((name, i) => <Button key={name} size="xs" variant={step === i + 1 ? "filled" : "default"} onClick={() => setStep(i + 1)}>{i + 1}. {name}</Button>)}</Group>
+    <Group mb="xl" gap="xs" className="solution-form-steps">{steps.map((name, i) => <Button key={name} size="xs" variant={step === i + 1 ? "filled" : "default"} onClick={() => setStep(i + 1)}>{i + 1}. {name}</Button>)}</Group>
     <Paper withBorder p="lg" radius="md">
       {step === 1 && <Stack gap="md"><Title order={5}>Identificación</Title><Divider />
         <SimpleGrid cols={{ base: 1, sm: 2 }}><TextInput label="Nombre" /* required */ {...form.getInputProps("name")} /><TextInput label="Versión actual" {...form.getInputProps("version")} /></SimpleGrid>

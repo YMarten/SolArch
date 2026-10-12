@@ -17,7 +17,10 @@ const fields = [
   { key: "description", label: "Descripción", type: "textarea" as const, placeholder: "Descripción del dominio empresarial" },
 ]
 
+import { CatalogSearch, matchesCatalogSearch } from "./CatalogSearch"
+
 export function DomainsTable() {
+  const [search, setSearch] = useState("")
   const [domains, setDomains]       = useState<Domain[]>([])
   const [loading, setLoading]       = useState(true)
   const [saving, setSaving]         = useState(false)
@@ -72,42 +75,47 @@ export function DomainsTable() {
     }
   }
 
+  const filtered = domains.filter(item => matchesCatalogSearch(search, [item.name, item.description]))
+
   if (loading) return <Center h={200}><Loader /></Center>
 
   return (
-    <Stack gap="md">
+    <Stack gap="lg" p="xl" className="catalog-page">
       <Group justify="space-between">
-        <Title order={4}>Dominios empresariales</Title>
+        <Title order={2}>Dominios empresariales</Title>
         <Button leftSection={<IconPlus size={14} />} onClick={() => handleOpen()}>
           Nuevo dominio
         </Button>
       </Group>
 
-      <Table withTableBorder withColumnBorders>
+      <CatalogSearch value={search} onChange={setSearch} />
+      <div className="catalog-table-card">
+      <div className="catalog-table-scroll" role="region" aria-label="Tabla del catálogo" tabIndex={0}>
+      <Table className="catalog-table" highlightOnHover>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Nombre</Table.Th>
-            <Table.Th>Descripción</Table.Th>
-            <Table.Th style={{ width: 80 }}>Acciones</Table.Th>
+            <Table.Th scope="col">Nombre</Table.Th>
+            <Table.Th scope="col">Descripción</Table.Th>
+            <Table.Th scope="col" style={{ width: 100 }}>Acciones</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {domains.length === 0 ? (
+          {filtered.length === 0 ? (
             <Table.Tr>
               <Table.Td colSpan={3}>
-                <Text c="dimmed" ta="center" size="sm">No hay dominios registrados.</Text>
+                <Text c="dimmed" ta="center" size="sm">{domains.length ? "No hay resultados para la búsqueda." : "No hay dominios registrados."}</Text>
               </Table.Td>
             </Table.Tr>
-          ) : domains.map(d => (
+          ) : filtered.map(d => (
             <Table.Tr key={d.id}>
-              <Table.Td><Text size="sm" fw={500}>{d.name}</Text></Table.Td>
-              <Table.Td><Text size="sm" c="dimmed">{d.description ?? "—"}</Text></Table.Td>
+              <Table.Td><Text size="sm" fw={600}>{d.name}</Text></Table.Td>
+              <Table.Td><Text size="sm" c="dimmed" className="catalog-description" title={d.description ?? undefined}>{d.description ?? "—"}</Text></Table.Td>
               <Table.Td>
-                <Group gap="xs">
-                  <ActionIcon variant="subtle" onClick={() => handleOpen(d)}>
+                <Group gap={4} justify="flex-end" wrap="nowrap">
+                  <ActionIcon variant="subtle" className="catalog-edit" aria-label={`Editar dominio: ${d.name}`} title="Editar dominio" onClick={() => handleOpen(d)}>
                     <IconEdit size={16} />
                   </ActionIcon>
-                  <ActionIcon variant="subtle" color="red" onClick={() => handleDelete(d.id)}>
+                  <ActionIcon variant="subtle" color="red" className="catalog-delete" aria-label={`Eliminar dominio: ${d.name}`} title="Eliminar dominio" onClick={() => handleDelete(d.id)}>
                     <IconTrash size={16} />
                   </ActionIcon>
                 </Group>
@@ -116,6 +124,8 @@ export function DomainsTable() {
           ))}
         </Table.Tbody>
       </Table>
+      </div>
+      </div>
 
       <CatalogModal
         opened={opened}

@@ -42,11 +42,12 @@ export function SolutionPreview({ solution, onClose }: { solution: Solution | nu
       onClose={onClose}
       position="right"
       size="min(900px, 100vw)"
-      padding="md"
+      padding={0}
+      classNames={{ content: "solarch-shell solution-preview-content" }}
       closeOnClickOutside
       closeOnEscape
       closeButtonProps={{ "aria-label": "Cerrar vista previa" }}
-      styles={{ title: { flex: 1, minWidth: 0 } }}
+      styles={{ title: { flex: 1, minWidth: 0 }, header: { padding: "16px 20px", borderBottom: "1px solid var(--workspace-border)" } }}
       title={
         <Group justify="space-between" wrap="nowrap" gap="sm">
           <Text fw={600} truncate>{solution?.name ?? "Vista previa"}</Text>

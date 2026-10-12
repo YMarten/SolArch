@@ -4,7 +4,7 @@ import { NavLink, Stack, Text, Divider, Box } from "@mantine/core"
 import {
   IconLayoutGrid, IconHierarchy, IconMap2,
   IconBuilding, IconCpu, IconSettings,
-  IconChartBar
+  IconChartBar, IconStack2
 } from "@tabler/icons-react"
 import { usePathname, useRouter } from "next/navigation"
 
@@ -35,26 +35,21 @@ const navItems = [
   },
 ]
 
-export function Sidebar() {
+export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
   const pathname = usePathname()
   const router   = useRouter()
 
   return (
-    <Box
-      h="100%"
-      style={{
-        background: "var(--mantine-color-dark-8)",
-        borderRight: "1px solid var(--mantine-color-dark-6)",
-      }}
-    >
+    <Box h="100%" className="workspace-sidebar">
       <Stack gap={0} h="100%">
         {/* Logo */}
-        <Box px="md" py="lg">
-          <Text fw={700} size="lg" c="white">SolArch</Text>
-          <Text size="xs" c="dark.2">Arquitectura de soluciones</Text>
+        <Box px="lg" py="xl" className="workspace-brand">
+          <span className="workspace-brand-icon"><IconStack2 size={22} /></span>
+          <div><Text fw={700} size="md">SolArch</Text>
+          <Text size="xs" c="dimmed">Arquitectura de soluciones</Text></div>
         </Box>
 
-        <Divider color="dark.6" />
+        <Divider />
 
         {/* Nav items */}
         <Stack gap={0} pt="sm" style={{ flex: 1, overflowY: "auto" }}>
@@ -65,7 +60,7 @@ export function Sidebar() {
                 fw={600}
                 px="md"
                 py={6}
-                c="dark.3"
+                c="dimmed"
                 style={{ textTransform: "uppercase", letterSpacing: "0.06em" }}
               >
                 {section.section}
@@ -79,25 +74,9 @@ export function Sidebar() {
                     label={item.label}
                     leftSection={<item.icon size={16} />}
                     active={isActive}
-                    onClick={() => router.push(item.href)}
+                    onClick={() => { router.push(item.href); onNavigate() }}
                     style={{ cursor: "pointer" }}
-                    styles={{
-                      root: {
-                        color: isActive ? "white" : "var(--mantine-color-dark-1)",
-                        background: isActive
-                          ? "var(--mantine-color-blue-9)"
-                          : "transparent",
-                        borderRadius: "var(--mantine-radius-md)",
-                        margin: "0 8px",
-                        width: "calc(100% - 16px)",
-                        "&:hover": {
-                          background: "var(--mantine-color-dark-6)",
-                        }
-                      },
-                      label: {
-                        color: isActive ? "white" : "var(--mantine-color-dark-1)",
-                      }
-                    }}
+                    className="workspace-nav-link"
                   />
                 )
               })}
@@ -105,21 +84,16 @@ export function Sidebar() {
           ))}
         </Stack>
 
-        <Divider color="dark.6" />
+        <Divider />
 
         {/* Settings */}
         <NavLink
           label="Configuración"
           leftSection={<IconSettings size={16} />}
-          onClick={() => router.push("/settings")}
+          active={pathname === "/settings"}
+          onClick={() => { router.push("/settings"); onNavigate() }}
           style={{ cursor: "pointer" }}
-          styles={{
-            root: {
-              color: "var(--mantine-color-dark-1)",
-              margin: "8px",
-              borderRadius: "var(--mantine-radius-md)",
-            }
-          }}
+          className="workspace-nav-link workspace-settings"
         />
       </Stack>
     </Box>

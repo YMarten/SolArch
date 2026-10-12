@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
-import { SimpleGrid, Text, Stack, Title, Loader, Center, Alert } from "@mantine/core"
-import { IconAlertCircle } from "@tabler/icons-react"
+import { SimpleGrid, Text, Stack, Title, Loader, Center, Alert, Paper, Group, ThemeIcon } from "@mantine/core"
+import { IconAlertCircle, IconApps, IconShieldExclamation, IconHeadset, IconReplace } from "@tabler/icons-react"
 import { solutionsService } from "@/services/solutions.service"
 import { Solution } from "@/types/solution"
 import { SolutionCard } from "@/components/solutions/SolutionCard"
@@ -48,8 +48,20 @@ export default function SolutionsPage() {
   }
 
   return (
-    <Stack p="xl" gap="md">
+    <Stack p="xl" gap="lg" className="solutions-page">
       <Title order={2}>Catálogo de soluciones</Title>
+      <SimpleGrid cols={{ base: 2, md: 4 }} spacing="sm" aria-label="Resumen del inventario">
+        {[
+          { label: "Total de soluciones", value: solutions.length, icon: IconApps, color: "blue" },
+          { label: "Alta criticidad", value: solutions.filter(s => s.criticality === "HIGH").length, icon: IconShieldExclamation, color: "red" },
+          { label: "Sin soporte vigente", value: solutions.filter(s => s.supportStatus === "NO").length, icon: IconHeadset, color: "orange" },
+          { label: "Con iniciativa de retiro o sustitución", value: solutions.filter(s => s.hasReplacementInitiative).length, icon: IconReplace, color: "violet" },
+        ].map(metric => <Paper key={metric.label} withBorder p="md" className="inventory-kpi">
+          <Group justify="space-between" wrap="nowrap" gap="xs"><Text size="xs" c="dimmed" fw={550}>{metric.label}</Text><ThemeIcon size={28} radius="md" variant="light" color={metric.color}><metric.icon size={16} /></ThemeIcon></Group>
+          <Text size="xl" fw={700} mt={4}>{metric.value}</Text>
+        </Paper>)}
+      </SimpleGrid>
+      <Text size="xs" c="dimmed">Indicadores del inventario completo; los filtros se aplican al listado.</Text>
 
       <SolutionFilters filters={filters} onChange={setFilters} />
 
@@ -66,7 +78,7 @@ export default function SolutionsPage() {
           </Text>
         </Center>
       ) : (
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="md">
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="sm">
           {filtered.map(solution => (
             <SolutionCard key={solution.id} solution={solution} onPreview={() => setPreviewSolution(solution)} />
           ))}

@@ -2,8 +2,10 @@
 
 import { solutionStatusOptions, usageStatusOptions } from "@/lib/solution-status"
 import { hostingModeOptions, managementModelOptions } from "@/lib/hosting-mode"
-import { Group, TextInput, MultiSelect, Button, Stack, Text } from "@mantine/core"
-import { IconSearch, IconPlus } from "@tabler/icons-react"
+import { Group, TextInput, Button, Stack, Text, Collapse, Badge } from "@mantine/core"
+import { CompactMultiSelect as MultiSelect } from "@/components/ui/CompactMultiSelect"
+import { IconSearch, IconPlus, IconAdjustmentsHorizontal, IconChevronDown, IconChevronUp } from "@tabler/icons-react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { emptySolutionFilters, SolutionFiltersState as Filters } from "@/lib/solution-filters"
@@ -15,23 +17,27 @@ interface Props {
 
 export function SolutionFilters({ filters, onChange }: Props) {
   const router = useRouter()
+  const [expanded, setExpanded] = useState(false)
+  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "search" && value.length > 0).length
 
   const update = <K extends keyof Filters>(key: K, value: Filters[K]) =>
     onChange({ ...filters, [key]: value })
 
   return (
-    <Stack gap="xs">
-    <Text size="xs" c="dimmed">Puedes elegir varios valores por campo. Se muestran coincidencias con cualquiera de ellos y se combinan los filtros de campos distintos.</Text>
-    <Group justify="space-between" mb="md" align="flex-start">
-      <Group gap="sm" wrap="wrap" style={{ flex: 1 }}>
-        <TextInput
-          label="Buscar"
-          placeholder="Buscar solución..."
-          leftSection={<IconSearch size={14} />}
-          value={filters.search}
-          onChange={e => update("search", e.currentTarget.value)}
-          style={{ width: 220 }}
-        />
+    <Stack gap="md" className="solution-filter-panel">
+    <Group justify="space-between" gap="sm" className="compact-filter-bar">
+      <TextInput aria-label="Buscar soluciones" placeholder="Buscar solución..." leftSection={<IconSearch size={14} />} value={filters.search} onChange={e => update("search", e.currentTarget.value)} className="catalog-search" />
+      <Group gap="xs">
+        <Button variant="default" leftSection={<IconAdjustmentsHorizontal size={16} />} rightSection={expanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />} aria-expanded={expanded} aria-controls="solution-filter-options" onClick={() => setExpanded(value => !value)}>Filtros {activeCount > 0 && <Badge size="sm" ml={6}>{activeCount}</Badge>}</Button>
+        <Button variant="subtle" onClick={() => onChange(emptySolutionFilters())}>Limpiar filtros</Button>
+        <Button leftSection={<IconPlus size={14} />} onClick={() => router.push("/solutions/new")}>Nueva solución</Button>
+      </Group>
+    </Group>
+    {activeCount > 0 && !expanded && <Text size="xs" c="dimmed">{activeCount} {activeCount === 1 ? "campo filtrado" : "campos filtrados"} · Los filtros siguen aplicados al cerrar el panel.</Text>}
+    <Collapse expanded={expanded} id="solution-filter-options">
+    <Text size="xs" c="dimmed" mb="sm">Puedes elegir varios valores por campo. Se muestran coincidencias con cualquiera de ellos y se combinan los filtros de campos distintos.</Text>
+    <Group justify="space-between" align="flex-end" className="solution-filter-toolbar">
+      <Group gap="sm" wrap="wrap" className="solution-filter-fields">
         <MultiSelect
           placeholder="Estado arquitectónico" label="Estado arquitectónico"
           clearable searchable
@@ -72,14 +78,8 @@ export function SolutionFilters({ filters, onChange }: Props) {
         <MultiSelect placeholder="Problemas" label="Problemas" clearable searchable value={filters.hasProblems} onChange={v => update("hasProblems", v)} style={{ width: 145 }} data={[{value:"true",label:"Con problemas"},{value:"false",label:"Sin problemas"}]} />
         <MultiSelect placeholder="Sustitución/retiro" label="Sustitución/retiro" clearable searchable value={filters.hasReplacementInitiative} onChange={v => update("hasReplacementInitiative", v)} style={{ width: 190 }} data={[{value:"true",label:"Con iniciativa"},{value:"false",label:"Sin iniciativa"}]} />
       </Group>
-      <Button variant="subtle" onClick={() => onChange(emptySolutionFilters())}>Limpiar filtros</Button>
-      <Button
-        leftSection={<IconPlus size={14} />}
-        onClick={() => router.push("/solutions/new")}
-      >
-        Nueva solución
-      </Button>
     </Group>
+    </Collapse>
     </Stack>
   )
 }

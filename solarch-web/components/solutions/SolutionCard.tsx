@@ -38,7 +38,8 @@ export function SolutionCard({ solution, onPreview }: Props) {
   return (
     <Card
       withBorder
-      radius="md"
+      className="solution-card"
+      radius={20}
       padding="md"
       style={{ cursor: "pointer" }}
       role="button"
@@ -54,23 +55,19 @@ export function SolutionCard({ solution, onPreview }: Props) {
         }
       }}
     >
-      <Stack gap="xs">
+      <Stack gap="xs" h="100%">
+        <Group justify="space-between" gap="xs">
+          <ThemeIcon variant="light" color={role.color} size={26} radius="md"><Icon size={15} /></ThemeIcon>
+          <StatusBadge status={solution.status} />
+        </Group>
         <Group justify="space-between" align="flex-start">
-          <Text fw={500} size="sm" lineClamp={1} style={{ flex: 1 }}>
+          <Text fw={650} size="sm" lineClamp={2} style={{ flex: 1 }}>
             {solution.name}
           </Text>
-          <ThemeIcon
-            variant="light"
-            color={role.color}
-            size="md"
-            radius="md"
-          >
-            <Icon size={16} />
-          </ThemeIcon>
         </Group>
 
         {solution.description && (
-          <Text size="xs" c="dimmed" lineClamp={2}>
+          <Text size="xs" c="dimmed" lineClamp={2} lh={1.5}>
             {solution.description}
           </Text>
         )}
@@ -78,7 +75,7 @@ export function SolutionCard({ solution, onPreview }: Props) {
         <Badge
           variant="light"
           color={role.color}
-          size="xs"
+          size="sm"
         >
           {role.label}
         </Badge>
@@ -98,7 +95,7 @@ export function SolutionCard({ solution, onPreview }: Props) {
           </Group>
         )}
 
-        <Group justify="space-between" mt="xs">
+        <Group justify="space-between" className="solution-card-footer">
           <CriticalityBadge criticality={solution.criticality} />
           {solution.version && (
             <Group gap={4}>
@@ -108,7 +105,6 @@ export function SolutionCard({ solution, onPreview }: Props) {
           )}
         </Group>
 
-        <StatusBadge status={solution.status} />
       </Stack>
     </Card>
   )

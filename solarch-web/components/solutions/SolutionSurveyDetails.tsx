@@ -33,7 +33,8 @@ export function SolutionSurveyDetails({ solution }: { solution: Solution }) {
     <Paper withBorder p="md"><Title order={5} mb="md">Tecnología y dependencias</Title><SimpleGrid cols={{ base: 1, sm: 2 }}>
       <Value label="Alojamiento" value={hostingModeOptions.find(option => option.value === solution.hostingMode)?.label ?? solution.hostingMode} /><Value label="Impacto de una falla" value={solution.failureImpact} />
       <Value label="Modelo de administración" value={managementModelOptions.find(option => option.value === solution.managementModel)?.label ?? "No determinado"} />
-      <Value label="Dependencias conocidas" value={solution.knownDependencies} /><Value label="Detalle del impacto" value={solution.failureImpactDetails} />
+      <Value label="Dependencias conocidas" value={solution.knownDependencies} />
+      <div style={{ gridColumn: "1 / -1" }}><Value label="Detalle del impacto" value={solution.failureImpactDetails} /></div>
     </SimpleGrid></Paper>
     <Paper withBorder p="md"><Title order={5} mb="md">Situación actual</Title><Stack gap="sm">
       <Value label="Tiene problemas o limitaciones" value={solution.hasProblems ? "YES" : "NO"} />
